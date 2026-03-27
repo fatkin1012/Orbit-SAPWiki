@@ -16,15 +16,28 @@
     radial-gradient(circle at 80% 0%, #e8fff4, transparent 35%),
     var(--bg);
   min-height: 100vh;
+  /* prevent accidental horizontal overflow inside hosts */
+  overflow-x: hidden;
 }
 
 .app {
-  padding: 32px 20px 48px;
-  width: min(1600px, 98vw);
-  margin: 0 auto;
+  /* use full available width inside host while avoiding 100vw overflow */
+  box-sizing: border-box;
+  padding: 12px 20px 24px;
+  /* occupy the host's available content width but keep small side gutters */
+  width: calc(100% - 40px);
+  max-width: none;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
+}
+
+/* ensure all elements inside plugin use border-box sizing to avoid overflow */
+#plugin-sapwiki *,
+#plugin-sapwiki *::before,
+#plugin-sapwiki *::after {
+  box-sizing: inherit;
 }
 
 .card {
@@ -126,14 +139,22 @@
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(320px, 0.9fr) 1.1fr;
-  gap: 16px;
+  /* give the board more room for reviewing content */
+  grid-template-columns: 0.6fr 1.4fr;
+  gap: 20px;
+  align-items: start;
 }
 
 .panel {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+/* remove visible border on main panels so content breathes to edges */
+.panel.card {
+  border: none;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
 }
 
 .panel-header h2 {
