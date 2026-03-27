@@ -47,17 +47,30 @@ const normalizeLegacyTask = (value: any): any => {
   if (!value || typeof value !== 'object') return value;
   const next = { ...value } as Record<string, unknown>;
 
-  if (!next.imageData) {
-    const fallbackImage =
-      next.image ??
-      next.imageBase64 ??
-      next.screenshot ??
-      next.imageUri ??
-      next.photo ??
-      (Array.isArray(next.images) ? next.images[0] : undefined);
-    if (typeof fallbackImage === 'string') {
-      next.imageData = fallbackImage;
+  // Consolidate legacy single-image fields and arrays into `images` array
+  const images: string[] = Array.isArray(next.images) ? (next.images as string[]).slice() : [];
+  const candidates = [
+    next.imageData,
+    next.image,
+    next.imageBase64,
+    next.screenshot,
+    ...(Array.isArray(next.screenshots) ? (next.screenshots as unknown[]) : []),
+    next.imageUri,
+    next.photo,
+  ];
+  // include any already-present images array entries
+  if (Array.isArray(next.images)) candidates.push(...(next.images as any));
+
+  for (const c of candidates) {
+    if (typeof c === 'string' && c && !images.includes(c)) {
+      images.push(c);
     }
+  }
+
+  if (images.length) {
+    next.images = images;
+    // keep imageData for compatibility (first image)
+    if (!next.imageData) next.imageData = images[0];
   }
 
   if (!next.tCode && typeof (next as any).tcode === 'string') {

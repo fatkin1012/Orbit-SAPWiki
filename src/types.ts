@@ -15,6 +15,7 @@ export const TaskSchema = z.object({
   tCodes: z.array(z.string()).optional().default([]),
   createdAt: z.number().default(() => Date.now()),
   imageData: z.string().optional(),
+  images: z.array(z.string()).optional().default([]),
 });
 
 export type Task = z.infer<typeof TaskSchema>;

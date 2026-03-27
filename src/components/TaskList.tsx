@@ -5,13 +5,14 @@ type Props = {
   tasks: Task[];
   onDelete: (id: string) => void;
   onUpdate: (id: string, patch: Partial<Task>) => void;
+  onOpenViewer?: (taskId: string, images: string[], index: number, title?: string) => void;
 };
 
 const TaskList = ({ tasks, onDelete, onUpdate }: Props) => {
   if (!tasks.length) {
     return (
       <div className="empty card">
-        <h3>No tasks yet</h3>
+        <h3>No entries yet</h3>
         <p className="muted">Add a new entry or import from your legacy backup.</p>
       </div>
     );
@@ -40,7 +41,7 @@ const TaskList = ({ tasks, onDelete, onUpdate }: Props) => {
           </header>
 
           <div className="field">
-            <label>Requirement</label>
+            <label>Description</label>
             <textarea
               defaultValue={task.requirement}
               onBlur={(e) => onUpdate(task.id, { requirement: e.target.value })}
@@ -49,7 +50,7 @@ const TaskList = ({ tasks, onDelete, onUpdate }: Props) => {
           </div>
 
           <div className="field">
-            <label>Steps</label>
+            <label>Steps / Notes</label>
             <textarea
               defaultValue={task.steps}
               onBlur={(e) => onUpdate(task.id, { steps: e.target.value })}
@@ -57,12 +58,37 @@ const TaskList = ({ tasks, onDelete, onUpdate }: Props) => {
             />
           </div>
 
-          {task.imageData ? (
-            <div className="field">
-              <label>Image</label>
-              <img src={task.imageData} alt={task.title} className="preview" />
-            </div>
-          ) : null}
+          {
+            // prefer `images` array; fallback to single `imageData` for older entries
+          }
+          {(() => {
+            const imgs: string[] = Array.isArray((task as any).images) && (task as any).images.length
+              ? (task as any).images
+              : task.imageData
+              ? [task.imageData]
+              : [];
+            if (!imgs.length) return null;
+            return (
+              <div className="field images">
+                <label>Image(s)</label>
+                <div className="image-row">
+                        {imgs.map((src, idx) => (
+                          <img
+                            key={`${task.id}-img-${idx}`}
+                            src={src}
+                            alt={`${task.title} ${idx + 1}`}
+                            className="preview clickable"
+                            onClick={() => {
+                              if (typeof (TaskList as any).openViewerCallback === 'function') {
+                                (TaskList as any).openViewerCallback(task.id, imgs, idx, task.title);
+                              }
+                            }}
+                          />
+                        ))}
+                </div>
+              </div>
+            );
+          })()}
         </article>
       ))}
     </div>

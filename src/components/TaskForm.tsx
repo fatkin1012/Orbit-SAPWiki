@@ -12,16 +12,29 @@ const TaskForm = ({ onSubmit }: Props) => {
   const [tCodesText, setTCodesText] = useState('');
   const [requirement, setRequirement] = useState('');
   const [steps, setSteps] = useState('');
-  const [imageData, setImageData] = useState<string | undefined>();
+  const [images, setImages] = useState<string[]>([]);
 
-  const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImageData(typeof reader.result === 'string' ? reader.result : undefined);
-    };
-    reader.readAsDataURL(file);
+  const readFileAsDataURL = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') resolve(reader.result);
+        else reject(new Error('invalid file result'));
+      };
+      reader.onerror = () => reject(new Error('file read error'));
+      reader.readAsDataURL(file);
+    });
+
+  const handleImage = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || !files.length) return;
+    try {
+      const arr = Array.from(files);
+      const data = await Promise.all(arr.map((f) => readFileAsDataURL(f)));
+      setImages(data);
+    } catch (error) {
+      console.error('failed to read images', error);
+    }
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -40,7 +53,7 @@ const TaskForm = ({ onSubmit }: Props) => {
       tCodes: codes,
       requirement,
       steps,
-      imageData,
+      images,
     });
 
     setTitle('');
@@ -48,14 +61,14 @@ const TaskForm = ({ onSubmit }: Props) => {
     setTCodesText('');
     setRequirement('');
     setSteps('');
-    setImageData(undefined);
+    setImages([]);
   };
 
   return (
     <form className="task-form" onSubmit={handleSubmit}>
       <div className="field">
         <label>Title</label>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Case title" />
+        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Entry title" />
       </div>
       <div className="field two-col">
         <div>
@@ -85,12 +98,14 @@ const TaskForm = ({ onSubmit }: Props) => {
         />
       </div>
       <div className="field">
-        <label>Attach screenshot / diagram</label>
-        <input type="file" accept="image/*" onChange={handleImage} />
-        {imageData ? <small>Image attached ({Math.round((imageData.length * 3) / 4 / 1024)} KB)</small> : null}
+        <label>Attach screenshots / diagrams (optional)</label>
+        <input type="file" accept="image/*" multiple onChange={handleImage} />
+        {images && images.length ? (
+          <small>{images.length} image(s) attached ({Math.round((images.reduce((s, i) => s + i.length, 0) * 3) / 4 / 1024)} KB)</small>
+        ) : null}
       </div>
       <div className="actions">
-        <button type="submit">Save task</button>
+        <button type="submit">Save entry</button>
       </div>
     </form>
   );

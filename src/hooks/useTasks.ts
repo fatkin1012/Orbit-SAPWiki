@@ -11,7 +11,8 @@ const createTask = (input: Partial<Task> & { title: string }): Task => ({
   tCode: input.tCode ?? '',
   tCodes: input.tCodes ?? [],
   createdAt: Date.now(),
-  imageData: input.imageData,
+  images: input.images ?? [],
+  imageData: input.imageData ?? (Array.isArray(input.images) && input.images.length ? input.images[0] : undefined),
 });
 
 export const useTasks = (context: IAppContext) => {
