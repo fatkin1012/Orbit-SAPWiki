@@ -1,12 +1,12 @@
 import c, { useState as Z, useRef as je, useEffect as oe, useCallback as Q, useMemo as Ue } from "react";
 import { createRoot as Be } from "react-dom/client";
 const qe = ({ onSubmit: a }) => {
-  const [e, t] = Z(""), [r, s] = Z(""), [n, i] = Z(""), [o, u] = Z(""), [h, y] = Z(""), [b, E] = Z(), C = (k) => {
+  const [e, t] = Z(""), [r, s] = Z(""), [n, i] = Z(""), [o, u] = Z(""), [h, y] = Z(""), [b, C] = Z(), E = (k) => {
     const O = k.target.files?.[0];
     if (!O) return;
     const I = new FileReader();
     I.onload = () => {
-      E(typeof I.result == "string" ? I.result : void 0);
+      C(typeof I.result == "string" ? I.result : void 0);
     }, I.readAsDataURL(O);
   }, N = (k) => {
     k.preventDefault();
@@ -20,7 +20,7 @@ const qe = ({ onSubmit: a }) => {
       requirement: o,
       steps: h,
       imageData: b
-    }), t(""), s(""), i(""), u(""), y(""), E(void 0);
+    }), t(""), s(""), i(""), u(""), y(""), C(void 0);
   };
   return /* @__PURE__ */ c.createElement("form", { className: "task-form", onSubmit: N }, /* @__PURE__ */ c.createElement("div", { className: "field" }, /* @__PURE__ */ c.createElement("label", null, "Title"), /* @__PURE__ */ c.createElement("input", { value: e, onChange: (k) => t(k.target.value), placeholder: "Case title" })), /* @__PURE__ */ c.createElement("div", { className: "field two-col" }, /* @__PURE__ */ c.createElement("div", null, /* @__PURE__ */ c.createElement("label", null, "T-Code"), /* @__PURE__ */ c.createElement("input", { value: r, onChange: (k) => s(k.target.value), placeholder: "e.g. ZSE16" })), /* @__PURE__ */ c.createElement("div", null, /* @__PURE__ */ c.createElement("label", null, "T-Codes (comma)"), /* @__PURE__ */ c.createElement(
     "input",
@@ -37,7 +37,7 @@ const qe = ({ onSubmit: a }) => {
       placeholder: "Step-by-step or reminders",
       rows: 4
     }
-  )), /* @__PURE__ */ c.createElement("div", { className: "field" }, /* @__PURE__ */ c.createElement("label", null, "Attach screenshot / diagram"), /* @__PURE__ */ c.createElement("input", { type: "file", accept: "image/*", onChange: C }), b ? /* @__PURE__ */ c.createElement("small", null, "Image attached (", Math.round(b.length * 3 / 4 / 1024), " KB)") : null), /* @__PURE__ */ c.createElement("div", { className: "actions" }, /* @__PURE__ */ c.createElement("button", { type: "submit" }, "Save task")));
+  )), /* @__PURE__ */ c.createElement("div", { className: "field" }, /* @__PURE__ */ c.createElement("label", null, "Attach screenshot / diagram"), /* @__PURE__ */ c.createElement("input", { type: "file", accept: "image/*", onChange: E }), b ? /* @__PURE__ */ c.createElement("small", null, "Image attached (", Math.round(b.length * 3 / 4 / 1024), " KB)") : null), /* @__PURE__ */ c.createElement("div", { className: "actions" }, /* @__PURE__ */ c.createElement("button", { type: "submit" }, "Save task")));
 }, Fe = ({ tasks: a, onDelete: e, onUpdate: t }) => a.length ? /* @__PURE__ */ c.createElement("div", { className: "task-grid" }, a.map((r) => /* @__PURE__ */ c.createElement("article", { className: "card task-card", key: r.id }, /* @__PURE__ */ c.createElement("header", { className: "task-header" }, /* @__PURE__ */ c.createElement("div", null, /* @__PURE__ */ c.createElement("div", { className: "eyebrow" }, new Date(r.createdAt).toLocaleString()), /* @__PURE__ */ c.createElement("h3", null, r.title), /* @__PURE__ */ c.createElement("div", { className: "tags" }, r.tCode ? /* @__PURE__ */ c.createElement("span", { className: "pill" }, r.tCode) : null, r.tCodes?.map((s) => /* @__PURE__ */ c.createElement("span", { key: `${r.id}-${s}`, className: "pill" }, s)))), /* @__PURE__ */ c.createElement("button", { className: "ghost", onClick: () => e(r.id) }, "Delete")), /* @__PURE__ */ c.createElement("div", { className: "field" }, /* @__PURE__ */ c.createElement("label", null, "Requirement"), /* @__PURE__ */ c.createElement(
   "textarea",
   {
@@ -1496,7 +1496,7 @@ we.create = (a) => new we({
   typeName: g.ZodNull,
   ...v(a)
 });
-class Ee extends _ {
+class Ce extends _ {
   constructor() {
     super(...arguments), this._any = !0;
   }
@@ -1504,11 +1504,11 @@ class Ee extends _ {
     return S(e.data);
   }
 }
-Ee.create = (a) => new Ee({
+Ce.create = (a) => new Ce({
   typeName: g.ZodAny,
   ...v(a)
 });
-class Ce extends _ {
+class Ee extends _ {
   constructor() {
     super(...arguments), this._unknown = !0;
   }
@@ -1516,7 +1516,7 @@ class Ce extends _ {
     return S(e.data);
   }
 }
-Ce.create = (a) => new Ce({
+Ee.create = (a) => new Ee({
   typeName: g.ZodUnknown,
   ...v(a)
 });
@@ -1703,10 +1703,10 @@ class w extends _ {
     return s.common.async ? Promise.resolve().then(async () => {
       const h = [];
       for (const y of u) {
-        const b = await y.key, E = await y.value;
+        const b = await y.key, C = await y.value;
         h.push({
           key: b,
-          value: E,
+          value: C,
           alwaysSet: y.alwaysSet
         });
       }
@@ -2679,7 +2679,7 @@ const Ve = "tasks", xt = "1.0.0", kt = "TASK_COUNT_CHANGED", Me = "sapwiki", ne 
   } catch {
     return a;
   }
-}, Et = (a) => {
+}, Ct = (a) => {
   const e = Ze(a);
   if (Array.isArray(e))
     return { candidate: e, source: "raw" };
@@ -2692,10 +2692,18 @@ const Ve = "tasks", xt = "1.0.0", kt = "TASK_COUNT_CHANGED", Me = "sapwiki", ne 
     }
   }
   return { candidate: [], source: "raw" };
-}, he = (a) => {
-  const { candidate: e, source: t } = Et(a), r = me.safeParse(e);
-  return r.success ? { tasks: r.data, source: t, ok: !0 } : (console.error("[task-board] restore failed", r.error), { tasks: [], source: t, ok: !1 });
-}, Ct = async (a) => {
+}, Et = (a) => {
+  if (!a || typeof a != "object") return a;
+  const e = { ...a };
+  if (!e.imageData) {
+    const t = e.image ?? e.imageBase64 ?? e.screenshot ?? e.imageUri ?? e.photo ?? (Array.isArray(e.images) ? e.images[0] : void 0);
+    typeof t == "string" && (e.imageData = t);
+  }
+  return !e.tCode && typeof e.tcode == "string" && (e.tCode = e.tcode), !e.tCodes && Array.isArray(e.tcodes) && (e.tCodes = e.tcodes), e;
+}, Nt = (a) => Array.isArray(a) ? a.map((e) => Et(e)) : a, he = (a) => {
+  const { candidate: e, source: t } = Ct(a), r = Nt(e), s = me.safeParse(r);
+  return s.success ? { tasks: s.data, source: t, ok: !0 } : (console.error("[task-board] restore failed", s.error), { tasks: [], source: t, ok: !1 });
+}, Tt = async (a) => {
   console.info("[task-board] restore start");
   try {
     const e = await a.storage.get(Ve), { tasks: t, source: r, ok: s } = he(e);
@@ -2709,7 +2717,7 @@ const Ve = "tasks", xt = "1.0.0", kt = "TASK_COUNT_CHANGED", Me = "sapwiki", ne 
   } catch (e) {
     return console.error("[task-board] restore failed", e), [];
   }
-}, Nt = async (a, e) => {
+}, St = async (a, e) => {
   console.info(`[task-board] save triggered (count=${e.length})`);
   const t = me.safeParse(e);
   if (!t.success) {
@@ -2721,7 +2729,7 @@ const Ve = "tasks", xt = "1.0.0", kt = "TASK_COUNT_CHANGED", Me = "sapwiki", ne 
   } catch (r) {
     console.error("[task-board] save failed", r);
   }
-}, Tt = (a) => ({
+}, At = (a) => ({
   id: crypto.randomUUID ? crypto.randomUUID() : `task-${Date.now()}`,
   title: a.title.trim(),
   requirement: a.requirement ?? "",
@@ -2730,13 +2738,13 @@ const Ve = "tasks", xt = "1.0.0", kt = "TASK_COUNT_CHANGED", Me = "sapwiki", ne 
   tCodes: a.tCodes ?? [],
   createdAt: Date.now(),
   imageData: a.imageData
-}), St = (a) => {
+}), Ot = (a) => {
   const [e, t] = Z([]), [r, s] = Z(!1), n = je(!1);
   oe(() => {
     let b = !0;
     return (async () => {
-      const E = await Ct(a);
-      b && (t(E), s(!0));
+      const C = await Tt(a);
+      b && (t(C), s(!0));
     })(), () => {
       b = !1;
     };
@@ -2746,18 +2754,18 @@ const Ve = "tasks", xt = "1.0.0", kt = "TASK_COUNT_CHANGED", Me = "sapwiki", ne 
         n.current = !0;
         return;
       }
-      Nt(a, e), a.eventBus.emit(kt, { count: e.length });
+      St(a, e), a.eventBus.emit(kt, { count: e.length });
     }
   }, [a, r, e]);
   const i = Q((b) => {
-    t((E) => [...E, Tt(b)]);
-  }, []), o = Q((b, E) => {
-    t((C) => C.map((N) => N.id === b ? E(N) : N));
+    t((C) => [...C, At(b)]);
+  }, []), o = Q((b, C) => {
+    t((E) => E.map((N) => N.id === b ? C(N) : N));
   }, []), u = Q((b) => {
-    t((E) => E.filter((C) => C.id !== b));
+    t((C) => C.filter((E) => E.id !== b));
   }, []), h = Q((b) => {
-    const E = me.safeParse(b);
-    E.success && t(E.data);
+    const C = me.safeParse(b);
+    C.success && t(C.data);
   }, []), y = Ue(
     () => ({
       total: e.length
@@ -2773,47 +2781,47 @@ const Ve = "tasks", xt = "1.0.0", kt = "TASK_COUNT_CHANGED", Me = "sapwiki", ne 
     replaceTasks: h,
     stats: y
   };
-}, At = ({ context: a }) => {
-  const { tasks: e, hydrated: t, addTask: r, removeTask: s, updateTask: n, replaceTasks: i, stats: o } = St(a), u = je(null);
+}, Rt = ({ context: a }) => {
+  const { tasks: e, hydrated: t, addTask: r, removeTask: s, updateTask: n, replaceTasks: i, stats: o } = Ot(a), u = je(null);
   oe(() => {
-    const C = (N) => {
+    const E = (N) => {
       const { tasks: k, ok: O } = he(N);
       O && k.length && i(k);
     };
-    return a.eventBus.on("SAPWIKI_IMPORT", C), () => {
-      a.eventBus.off("SAPWIKI_IMPORT", C);
+    return a.eventBus.on("SAPWIKI_IMPORT", E), () => {
+      a.eventBus.off("SAPWIKI_IMPORT", E);
     };
   }, [a, i]);
-  const h = (C, N) => {
-    n(C, (k) => ({ ...k, ...N }));
-  }, y = async (C) => {
-    const N = C.target.files?.[0];
-    if (C.target.value = "", !N) return;
+  const h = (E, N) => {
+    n(E, (k) => ({ ...k, ...N }));
+  }, y = async (E) => {
+    const N = E.target.files?.[0];
+    if (E.target.value = "", !N) return;
     const k = await N.text(), { tasks: O, ok: I } = he(k);
     I && i(O);
-  }, b = () => u.current?.click(), E = () => {
-    const C = new Blob([JSON.stringify(e, null, 2)], { type: "application/json" }), N = URL.createObjectURL(C), k = document.createElement("a");
+  }, b = () => u.current?.click(), C = () => {
+    const E = new Blob([JSON.stringify(e, null, 2)], { type: "application/json" }), N = URL.createObjectURL(E), k = document.createElement("a");
     k.href = N, k.download = "sapwiki-tasks.json", k.click(), URL.revokeObjectURL(N);
   };
-  return /* @__PURE__ */ c.createElement("div", { className: "app", "data-theme": a.theme }, /* @__PURE__ */ c.createElement("header", { className: "hero card" }, /* @__PURE__ */ c.createElement("div", { className: "hero-copy" }, /* @__PURE__ */ c.createElement("p", { className: "eyebrow" }, "SAPWiki"), /* @__PURE__ */ c.createElement("h1", null, "Local task board"), /* @__PURE__ */ c.createElement("p", { className: "muted" }, "Persisted locally with host storage. Import legacy backups, add notes, and keep images with each entry."), /* @__PURE__ */ c.createElement("div", { className: "chips" }, /* @__PURE__ */ c.createElement("span", { className: `chip ${t ? "chip-ok" : "chip-warn"}` }, /* @__PURE__ */ c.createElement("span", { className: "dot" }), " ", t ? "Ready" : "Restoring data..."), /* @__PURE__ */ c.createElement("span", { className: "chip soft" }, o.total, " tasks"))), /* @__PURE__ */ c.createElement("div", { className: "hero-actions" }, /* @__PURE__ */ c.createElement("button", { className: "ghost", onClick: b, disabled: !t }, "Import JSON"), /* @__PURE__ */ c.createElement("button", { onClick: E, disabled: !t || !e.length }, "Export"), /* @__PURE__ */ c.createElement("input", { ref: u, type: "file", accept: "application/json", hidden: !0, onChange: y }))), /* @__PURE__ */ c.createElement("section", { className: "layout" }, /* @__PURE__ */ c.createElement("div", { className: "panel card" }, /* @__PURE__ */ c.createElement("div", { className: "panel-header" }, /* @__PURE__ */ c.createElement("div", null, /* @__PURE__ */ c.createElement("p", { className: "label" }, "Capture"), /* @__PURE__ */ c.createElement("h2", null, "Create a task"), /* @__PURE__ */ c.createElement("p", { className: "muted" }, "Quickly log SAP cases with codes, steps, and visuals."))), /* @__PURE__ */ c.createElement(qe, { onSubmit: r })), /* @__PURE__ */ c.createElement("div", { className: "panel card" }, /* @__PURE__ */ c.createElement("div", { className: "panel-header" }, /* @__PURE__ */ c.createElement("div", null, /* @__PURE__ */ c.createElement("p", { className: "label" }, "Board"), /* @__PURE__ */ c.createElement("h2", null, "Recent entries"), /* @__PURE__ */ c.createElement("p", { className: "muted" }, "Edit inline, keep evidence, and clean up when done."))), /* @__PURE__ */ c.createElement(Fe, { tasks: e, onDelete: s, onUpdate: h }))));
-}, Ot = "#plugin-sapwiki{--bg: #f4f6fb;--card: #ffffff;--card-strong: #0f172a;--border: #e2e8f0;--text: #0f172a;--muted: #5b6577;--primary: #0f52ba;--primary-strong: #0a3c87;--accent: #22c55e;--warn: #f59e0b;font-family:Segoe UI,system-ui,-apple-system,sans-serif;color:var(--text);background:radial-gradient(circle at 20% 20%,#e5edff,transparent 45%),radial-gradient(circle at 80% 0%,#e8fff4,transparent 35%),var(--bg);min-height:100vh}#plugin-sapwiki .app{padding:32px 28px 48px;max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:20px}#plugin-sapwiki .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;box-shadow:0 14px 38px #0f172a14}#plugin-sapwiki .hero{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,#0f172a,#153e75);color:#e2e8f0;border:none;box-shadow:0 20px 50px #0f172a47}#plugin-sapwiki .hero .muted{color:#e2e8f0d9}#plugin-sapwiki .hero h1{margin:6px 0 10px;color:#f8fafc}#plugin-sapwiki .hero-copy{max-width:640px}#plugin-sapwiki .hero-actions{display:flex;gap:10px;align-items:flex-start}#plugin-sapwiki .eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:inherit;margin:0 0 4px}#plugin-sapwiki .muted{color:var(--muted);margin:0}#plugin-sapwiki .chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}#plugin-sapwiki .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#ffffff14;color:#f8fafc;border:1px solid rgba(255,255,255,.16);font-weight:600}#plugin-sapwiki .chip.soft{background:#e2e8f0;color:var(--text);border:1px solid transparent}#plugin-sapwiki .chip-ok{background:#22c55e29;color:#e8fff2;border-color:#22c55e52}#plugin-sapwiki .chip-warn{background:#f59e0b2e;color:#fef3c7;border-color:#f59e0b4d}#plugin-sapwiki .dot{width:10px;height:10px;border-radius:50%;display:inline-block;background:#f8fafc;box-shadow:0 0 0 4px #ffffff14}#plugin-sapwiki .layout{display:grid;grid-template-columns:minmax(320px,.9fr) 1.1fr;gap:16px}#plugin-sapwiki .panel{display:flex;flex-direction:column;gap:12px}#plugin-sapwiki .panel-header h2{margin:4px 0 6px}#plugin-sapwiki .label{text-transform:uppercase;font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0}#plugin-sapwiki .toolbar,#plugin-sapwiki .actions{display:flex;gap:10px;align-items:center}#plugin-sapwiki button{padding:11px 16px;border-radius:12px;border:1px solid var(--primary-strong);background:var(--primary);color:#fff;font-weight:650;cursor:pointer;transition:transform .12s ease,box-shadow .16s ease,background .16s ease;box-shadow:0 8px 20px #0f52ba40}#plugin-sapwiki button:disabled{opacity:.6;cursor:not-allowed;box-shadow:none}#plugin-sapwiki button:hover:not(:disabled){transform:translateY(-1px);background:var(--primary-strong)}#plugin-sapwiki button.ghost{background:transparent;color:var(--primary-strong);border-color:var(--border);box-shadow:none}#plugin-sapwiki .hero button.ghost{color:#f8fafc;border-color:#ffffff47}#plugin-sapwiki .task-form{display:grid;gap:12px}#plugin-sapwiki .field{display:flex;flex-direction:column;gap:6px}#plugin-sapwiki .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}#plugin-sapwiki label{font-weight:600;color:var(--text)}#plugin-sapwiki input,#plugin-sapwiki textarea{width:100%;border-radius:12px;border:1px solid var(--border);padding:12px 14px;font:inherit;background:#f8fafc;transition:border .12s ease,box-shadow .12s ease}#plugin-sapwiki input:focus,#plugin-sapwiki textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px #0f52ba1f;outline:none}#plugin-sapwiki textarea{resize:vertical;min-height:100px}#plugin-sapwiki .task-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}#plugin-sapwiki .task-card h3{margin:4px 0 8px}#plugin-sapwiki .task-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}#plugin-sapwiki .tags{display:flex;flex-wrap:wrap;gap:6px}#plugin-sapwiki .pill{background:#e2e8f0;border-radius:999px;padding:4px 10px;font-size:12px;color:var(--text);border:1px solid transparent}#plugin-sapwiki .preview{width:100%;max-height:220px;object-fit:contain;border-radius:10px;border:1px solid var(--border);background:#f8fafc}#plugin-sapwiki .empty{text-align:left;padding:16px;border-style:dashed;border-color:var(--border);background:linear-gradient(135deg,#f8fafc,#eef2ff)}@media (max-width: 900px){#plugin-sapwiki .layout{grid-template-columns:1fr}#plugin-sapwiki .hero{align-items:flex-start}#plugin-sapwiki .hero-actions{width:100%;flex-wrap:wrap}#plugin-sapwiki button,#plugin-sapwiki button.ghost{width:auto}}";
+  return /* @__PURE__ */ c.createElement("div", { className: "app", "data-theme": a.theme }, /* @__PURE__ */ c.createElement("header", { className: "hero card" }, /* @__PURE__ */ c.createElement("div", { className: "hero-copy" }, /* @__PURE__ */ c.createElement("p", { className: "eyebrow" }, "SAPWiki"), /* @__PURE__ */ c.createElement("h1", null, "Local task board"), /* @__PURE__ */ c.createElement("p", { className: "muted" }, "Persisted locally with host storage. Import legacy backups, add notes, and keep images with each entry."), /* @__PURE__ */ c.createElement("div", { className: "chips" }, /* @__PURE__ */ c.createElement("span", { className: `chip ${t ? "chip-ok" : "chip-warn"}` }, /* @__PURE__ */ c.createElement("span", { className: "dot" }), " ", t ? "Ready" : "Restoring data..."), /* @__PURE__ */ c.createElement("span", { className: "chip soft" }, o.total, " tasks"))), /* @__PURE__ */ c.createElement("div", { className: "hero-actions" }, /* @__PURE__ */ c.createElement("button", { className: "ghost", onClick: b, disabled: !t }, "Import JSON"), /* @__PURE__ */ c.createElement("button", { onClick: C, disabled: !t || !e.length }, "Export"), /* @__PURE__ */ c.createElement("input", { ref: u, type: "file", accept: "application/json", hidden: !0, onChange: y }))), /* @__PURE__ */ c.createElement("section", { className: "layout" }, /* @__PURE__ */ c.createElement("div", { className: "panel card" }, /* @__PURE__ */ c.createElement("div", { className: "panel-header" }, /* @__PURE__ */ c.createElement("div", null, /* @__PURE__ */ c.createElement("p", { className: "label" }, "Capture"), /* @__PURE__ */ c.createElement("h2", null, "Create a task"), /* @__PURE__ */ c.createElement("p", { className: "muted" }, "Quickly log SAP cases with codes, steps, and visuals."))), /* @__PURE__ */ c.createElement(qe, { onSubmit: r })), /* @__PURE__ */ c.createElement("div", { className: "panel card" }, /* @__PURE__ */ c.createElement("div", { className: "panel-header" }, /* @__PURE__ */ c.createElement("div", null, /* @__PURE__ */ c.createElement("p", { className: "label" }, "Board"), /* @__PURE__ */ c.createElement("h2", null, "Recent entries"), /* @__PURE__ */ c.createElement("p", { className: "muted" }, "Edit inline, keep evidence, and clean up when done."))), /* @__PURE__ */ c.createElement(Fe, { tasks: e, onDelete: s, onUpdate: h }))));
+}, It = "#plugin-sapwiki{--bg: #f4f6fb;--card: #ffffff;--card-strong: #0f172a;--border: #e2e8f0;--text: #0f172a;--muted: #5b6577;--primary: #0f52ba;--primary-strong: #0a3c87;--accent: #22c55e;--warn: #f59e0b;font-family:Segoe UI,system-ui,-apple-system,sans-serif;color:var(--text);background:radial-gradient(circle at 20% 20%,#e5edff,transparent 45%),radial-gradient(circle at 80% 0%,#e8fff4,transparent 35%),var(--bg);min-height:100vh}#plugin-sapwiki .app{padding:32px 28px 48px;width:min(1400px,96vw);margin:0 auto;display:flex;flex-direction:column;gap:20px}#plugin-sapwiki .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;box-shadow:0 14px 38px #0f172a14}#plugin-sapwiki .hero{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,#0f172a,#153e75);color:#e2e8f0;border:none;box-shadow:0 20px 50px #0f172a47}#plugin-sapwiki .hero .muted{color:#e2e8f0d9}#plugin-sapwiki .hero h1{margin:6px 0 10px;color:#f8fafc}#plugin-sapwiki .hero-copy{max-width:640px}#plugin-sapwiki .hero-actions{display:flex;gap:10px;align-items:flex-start}#plugin-sapwiki .eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:inherit;margin:0 0 4px}#plugin-sapwiki .muted{color:var(--muted);margin:0}#plugin-sapwiki .chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}#plugin-sapwiki .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#ffffff14;color:#f8fafc;border:1px solid rgba(255,255,255,.16);font-weight:600}#plugin-sapwiki .chip.soft{background:#e2e8f0;color:var(--text);border:1px solid transparent}#plugin-sapwiki .chip-ok{background:#22c55e29;color:#e8fff2;border-color:#22c55e52}#plugin-sapwiki .chip-warn{background:#f59e0b2e;color:#fef3c7;border-color:#f59e0b4d}#plugin-sapwiki .dot{width:10px;height:10px;border-radius:50%;display:inline-block;background:#f8fafc;box-shadow:0 0 0 4px #ffffff14}#plugin-sapwiki .layout{display:grid;grid-template-columns:minmax(320px,.9fr) 1.1fr;gap:16px}#plugin-sapwiki .panel{display:flex;flex-direction:column;gap:12px}#plugin-sapwiki .panel-header h2{margin:4px 0 6px}#plugin-sapwiki .label{text-transform:uppercase;font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0}#plugin-sapwiki .toolbar,#plugin-sapwiki .actions{display:flex;gap:10px;align-items:center}#plugin-sapwiki button{padding:11px 16px;border-radius:12px;border:1px solid var(--primary-strong);background:var(--primary);color:#fff;font-weight:650;cursor:pointer;transition:transform .12s ease,box-shadow .16s ease,background .16s ease;box-shadow:0 8px 20px #0f52ba40}#plugin-sapwiki button:disabled{opacity:.6;cursor:not-allowed;box-shadow:none}#plugin-sapwiki button:hover:not(:disabled){transform:translateY(-1px);background:var(--primary-strong)}#plugin-sapwiki button.ghost{background:transparent;color:var(--primary-strong);border-color:var(--border);box-shadow:none}#plugin-sapwiki .hero button.ghost{color:#f8fafc;border-color:#ffffff47}#plugin-sapwiki .task-form{display:grid;gap:12px}#plugin-sapwiki .field{display:flex;flex-direction:column;gap:6px}#plugin-sapwiki .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}#plugin-sapwiki label{font-weight:600;color:var(--text)}#plugin-sapwiki input,#plugin-sapwiki textarea{width:100%;border-radius:12px;border:1px solid var(--border);padding:12px 14px;font:inherit;background:#f8fafc;transition:border .12s ease,box-shadow .12s ease}#plugin-sapwiki input:focus,#plugin-sapwiki textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px #0f52ba1f;outline:none}#plugin-sapwiki textarea{resize:vertical;min-height:100px}#plugin-sapwiki .task-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}#plugin-sapwiki .task-card h3{margin:4px 0 8px}#plugin-sapwiki .task-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}#plugin-sapwiki .tags{display:flex;flex-wrap:wrap;gap:6px}#plugin-sapwiki .pill{background:#e2e8f0;border-radius:999px;padding:4px 10px;font-size:12px;color:var(--text);border:1px solid transparent}#plugin-sapwiki .preview{width:100%;max-height:220px;object-fit:contain;border-radius:10px;border:1px solid var(--border);background:#f8fafc}#plugin-sapwiki .empty{text-align:left;padding:16px;border-style:dashed;border-color:var(--border);background:linear-gradient(135deg,#f8fafc,#eef2ff)}@media (max-width: 900px){#plugin-sapwiki .layout{grid-template-columns:1fr}#plugin-sapwiki .hero{align-items:flex-start}#plugin-sapwiki .hero-actions{width:100%;flex-wrap:wrap}#plugin-sapwiki button,#plugin-sapwiki button.ghost{width:auto}}";
 let z = null, X = null, $ = null;
-const Rt = (a) => {
+const Zt = (a) => {
   const e = a.querySelector(`#${ne}`);
   if (e) return e;
   const t = document.createElement("div");
   return t.id = ne, a.appendChild(t), t;
-}, It = () => {
-  $ || ($ = document.createElement("style"), $.id = `${ne}-style`, $.textContent = Ot, document.head.appendChild($));
-}, $t = {
+}, jt = () => {
+  $ || ($ = document.createElement("style"), $.id = `${ne}-style`, $.textContent = It, document.head.appendChild($));
+}, Dt = {
   id: Me,
   name: "SAPWiki",
   version: "1.0.0",
   mount(a, e) {
-    It();
-    const t = Rt(a);
+    jt();
+    const t = Zt(a);
     X = t, z && z.unmount(), z = Be(t), z.render(
-      /* @__PURE__ */ c.createElement(c.StrictMode, null, /* @__PURE__ */ c.createElement(At, { context: e }))
+      /* @__PURE__ */ c.createElement(c.StrictMode, null, /* @__PURE__ */ c.createElement(Rt, { context: e }))
     );
   },
   unmount(a) {
@@ -2823,6 +2831,6 @@ const Rt = (a) => {
   }
 };
 export {
-  $t as default
+  Dt as default
 };
 //# sourceMappingURL=plugin.js.map

@@ -43,9 +43,43 @@ const extractArray = (raw: unknown): { candidate: unknown; source: RestoreSource
   return { candidate: [], source: 'raw' };
 };
 
+const normalizeLegacyTask = (value: any): any => {
+  if (!value || typeof value !== 'object') return value;
+  const next = { ...value } as Record<string, unknown>;
+
+  if (!next.imageData) {
+    const fallbackImage =
+      next.image ??
+      next.imageBase64 ??
+      next.screenshot ??
+      next.imageUri ??
+      next.photo ??
+      (Array.isArray(next.images) ? next.images[0] : undefined);
+    if (typeof fallbackImage === 'string') {
+      next.imageData = fallbackImage;
+    }
+  }
+
+  if (!next.tCode && typeof (next as any).tcode === 'string') {
+    next.tCode = (next as any).tcode;
+  }
+
+  if (!next.tCodes && Array.isArray((next as any).tcodes)) {
+    next.tCodes = (next as any).tcodes;
+  }
+
+  return next;
+};
+
+const normalizeArray = (candidate: unknown): unknown => {
+  if (!Array.isArray(candidate)) return candidate;
+  return candidate.map((item) => normalizeLegacyTask(item));
+};
+
 export const coerceTasksFromUnknown = (raw: unknown): { tasks: Task[]; source: RestoreSource; ok: boolean } => {
   const { candidate, source } = extractArray(raw);
-  const parsed = TaskListSchema.safeParse(candidate);
+  const normalized = normalizeArray(candidate);
+  const parsed = TaskListSchema.safeParse(normalized);
   if (!parsed.success) {
     console.error('[task-board] restore failed', parsed.error);
     return { tasks: [], source, ok: false };
