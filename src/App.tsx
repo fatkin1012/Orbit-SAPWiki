@@ -143,24 +143,25 @@ const App = ({ context }: Props) => {
             onDelete={removeTask}
             onUpdate={handlePatch}
           />
-          <PictureViewer
-            isOpen={viewerOpen}
-            images={viewerImages}
-            initialIndex={viewerIndex}
-            title={viewerTitle}
-            onClose={() => setViewerOpen(false)}
-            onSaveAnnotated={(annotated, sourceIndex) => {
-              if (!viewerTaskId) return;
-              updateTask(viewerTaskId, (task) => {
-                const imgs = Array.isArray((task as any).images) ? (task as any).images.slice() : [];
-                imgs[sourceIndex] = annotated;
-                return { ...task, images: imgs, imageData: imgs[0] } as any;
-              });
-              setViewerOpen(false);
-            }}
-          />
         </div>
       </section>
+
+      <PictureViewer
+        isOpen={viewerOpen}
+        images={viewerImages}
+        initialIndex={viewerIndex}
+        title={viewerTitle}
+        onClose={() => setViewerOpen(false)}
+        onSaveAnnotated={(annotated, sourceIndex) => {
+          if (!viewerTaskId) return;
+          updateTask(viewerTaskId, (task) => {
+            const imgs = Array.isArray((task as any).images) ? (task as any).images.slice() : [];
+            imgs[sourceIndex] = annotated;
+            return { ...task, images: imgs, imageData: imgs[0] } as any;
+          });
+          setViewerOpen(false);
+        }}
+      />
     </div>
   );
 };

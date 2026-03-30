@@ -82,6 +82,15 @@ export default function PictureViewer({
     return () => window.removeEventListener('resize', onResize);
   }, [isOpen, currentIndex]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
+
   const drawLine = (from: { x: number; y: number }, to: { x: number; y: number }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Task } from '../types';
 
 type Props = {
@@ -9,6 +9,8 @@ type Props = {
 };
 
 const TaskList = ({ tasks, onDelete, onUpdate }: Props) => {
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingText, setEditingText] = useState('');
   if (!tasks.length) {
     return (
       <div className="empty card">
@@ -27,12 +29,58 @@ const TaskList = ({ tasks, onDelete, onUpdate }: Props) => {
               <div className="eyebrow">{new Date(task.createdAt).toLocaleString()}</div>
               <h3>{task.title}</h3>
               <div className="tags">
-                {task.tCode ? <span className="pill">{task.tCode}</span> : null}
-                {task.tCodes?.map((code) => (
-                  <span key={`${task.id}-${code}`} className="pill">
-                    {code}
-                  </span>
-                ))}
+                {editingId === task.id ? (
+                  <>
+                    <input
+                      className="edit-tcodes-input"
+                      value={editingText}
+                      onChange={(e) => setEditingText(e.target.value)}
+                      placeholder="SE16, MM03"
+                    />
+                    <div className="edit-actions">
+                      <button
+                        type="button"
+                        className="ghost small"
+                        onClick={() => {
+                          const parsed = editingText
+                            .split(',')
+                            .map((c) => c.trim())
+                            .filter(Boolean);
+                          onUpdate(task.id, { tCodes: parsed, tCode: '' });
+                          setEditingId(null);
+                        }}
+                      >
+                        Save
+                      </button>
+                      <button type="button" className="ghost small" onClick={() => setEditingId(null)}>
+                        Cancel
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {task.tCode ? <span className="pill">{task.tCode}</span> : null}
+                    {task.tCodes?.map((code) => (
+                      <span key={`${task.id}-${code}`} className="pill">
+                        {code}
+                      </span>
+                    ))}
+                    <button
+                      type="button"
+                      className="ghost small"
+                      onClick={() => {
+                        const start = [
+                          ...(Array.isArray(task.tCodes) ? task.tCodes : []),
+                        ];
+                        if (task.tCode && !start.includes(task.tCode)) start.unshift(task.tCode);
+                        setEditingText(start.join(', '));
+                        setEditingId(task.id);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             <button className="ghost" onClick={() => onDelete(task.id)}>
@@ -49,12 +97,12 @@ const TaskList = ({ tasks, onDelete, onUpdate }: Props) => {
             />
           </div>
 
-          <div className="field">
+          <div className="field notes-field">
             <label>Steps / Notes</label>
             <textarea
+              className="notes-input"
               defaultValue={task.steps}
               onBlur={(e) => onUpdate(task.id, { steps: e.target.value })}
-              rows={4}
             />
           </div>
 
