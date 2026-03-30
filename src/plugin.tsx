@@ -4,6 +4,7 @@ import { IAppContext, IPlugin } from '@toolbox/sdk';
 import App from './App';
 import { PLUGIN_ROOT_ID, PLUGIN_ID } from './types';
 import styles from './index.css?inline';
+import pkg from '../package.json';
 
 let root: Root | null = null;
 let mountedContainer: HTMLElement | null = null;
@@ -29,7 +30,7 @@ const ensureStyles = () => {
 const plugin: IPlugin = {
   id: PLUGIN_ID,
   name: 'SAPWiki',
-  version: '1.0.0',
+  version: pkg?.version || '0.0.0',
   mount(container: HTMLElement, context: IAppContext) {
     ensureStyles();
     const target = ensureContainer(container);
