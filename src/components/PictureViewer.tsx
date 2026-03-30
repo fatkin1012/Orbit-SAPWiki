@@ -221,15 +221,19 @@ export default function PictureViewer({
         </div>
 
         <div className="pv-toolbar">
-          <button type="button" onClick={() => setDrawEnabled((p) => !p)} className={drawEnabled ? 'active' : ''}>{drawEnabled ? 'Drawing On' : 'Enable Draw'}</button>
+          <button type="button" onClick={() => setDrawEnabled((p) => !p)} className={drawEnabled ? 'active' : ''}>{drawEnabled ? 'Drawing On' : 'Draw'}</button>
           <button type="button" onClick={() => { setEraseEnabled((p) => !p); if (!drawEnabled) setDrawEnabled(true); }} className={eraseEnabled ? 'active' : ''}>{eraseEnabled ? 'Eraser On' : 'Eraser'}</button>
-          <label>Color</label>
-          <input type="color" value={brushColor} onChange={(e) => setBrushColor(e.target.value)} aria-label="Brush color" />
-          <label htmlFor="brush-size">Brush</label>
-          <input id="brush-size" type="range" min={2} max={18} value={brushSize} onChange={(e) => setBrushSize(Number(e.target.value))} />
+
+          <div className="pv-brush-group">
+            <label>Color</label>
+            <input type="color" value={brushColor} onChange={(e) => setBrushColor(e.target.value)} aria-label="Brush color" />
+            <label htmlFor="brush-size">Brush</label>
+            <input id="brush-size" type="range" min={2} max={18} value={brushSize} onChange={(e) => setBrushSize(Number(e.target.value))} />
+          </div>
+
           <button type="button" onClick={handleUndo} disabled={undoCount === 0}>Undo</button>
-          <button type="button" onClick={handleClearMarks}>Clear Marks</button>
-          <button type="button" onClick={exportAnnotatedImage} disabled={saving} className="primary">{saving ? 'Saving...' : 'Save Marked Copy'}</button>
+          <button type="button" onClick={handleClearMarks}>Clear</button>
+          <button type="button" onClick={exportAnnotatedImage} disabled={saving} className="primary">{saving ? 'Saving...' : 'Save'}</button>
         </div>
 
         <div className="pv-body">

@@ -385,7 +385,29 @@ textarea {
 .attach-previews { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .attach-preview { position: relative; width: 96px; height: 96px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: #fff; }
 .attach-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.attach-preview .remove { position: absolute; right: 6px; top: 6px; }
+.attach-preview .remove {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+.attach-preview .remove:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
 
 .pill {
   background: #e2e8f0;
@@ -429,6 +451,14 @@ textarea {
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 16px;
+
+/* center the brush/color controls inside the toolbar */
+.pv-toolbar .pv-brush-group {
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
   box-shadow: 0 30px 60px rgba(2, 16, 40, 0.6);
   overflow: auto;
 }
@@ -457,13 +487,39 @@ textarea {
 }
 
 .pv-toolbar {
+  position: relative;
   display: flex;
   gap: 8px;
   align-items: center;
   margin-bottom: 12px;
+  --pv-toolbar-btn-h: 36px;
+  justify-content: center;
 }
 
-.pv-toolbar button { padding: 8px 10px; border-radius: 10px; }
+.pv-toolbar button,
+.pv-toolbar .primary,
+.pv-toolbar input[type="color"] {
+  height: var(--pv-toolbar-btn-h);
+  min-height: var(--pv-toolbar-btn-h);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border-radius: 10px;
+}
+
+.pv-toolbar button { padding: 0 12px; }
+.pv-toolbar input[type="color"] { width: var(--pv-toolbar-btn-h); padding: 0; border-radius: 8px; }
+.pv-toolbar input[type="range"] { height: 28px; margin: 0 8px; align-self: center; width: 340px; max-width: 40vw; }
+
+/* center the brush/color controls inside the toolbar using absolute centering */
+.pv-toolbar .pv-brush-group {
+  position: static;
+  margin: 0 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
 .pv-toolbar input[type="color"] {
   -webkit-appearance: none;
   -moz-appearance: none;

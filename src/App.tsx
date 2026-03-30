@@ -31,6 +31,15 @@ const App = ({ context }: Props) => {
 
   // expose callback so TaskList image clicks can open the viewer without changing many call sites
   (TaskList as any).openViewerCallback = openViewer;
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const d = (e as CustomEvent)?.detail as { taskId?: string; images?: string[]; index?: number; title?: string } | undefined;
+      if (!d || !d.images) return;
+      openViewer(d.taskId || '', d.images, d.index || 0, d.title || '');
+    };
+    window.addEventListener('sapwiki:openViewer', handler as EventListener);
+    return () => window.removeEventListener('sapwiki:openViewer', handler as EventListener);
+  }, [openViewer]);
   const [query, setQuery] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -92,7 +101,7 @@ const App = ({ context }: Props) => {
         </div>
           <div className="hero-actions">
           <button className="ghost" onClick={triggerFilePick} disabled={!hydrated}>
-            Import JSON
+            Import
           </button>
           <button onClick={handleExport} disabled={!hydrated || !tasks.length}>
             Export

@@ -125,7 +125,7 @@ const TaskForm = ({ onSubmit }: Props) => {
         <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Entry title" />
       </div>
       <div className="field">
-        <label>T-Codes (comma)</label>
+        <label>T-Codes / Tag</label>
         <input
           value={tCodesText}
           onChange={(e) => setTCodesText(e.target.value)}
@@ -156,9 +156,8 @@ const TaskForm = ({ onSubmit }: Props) => {
         onClick={() => fileInputRef.current?.click()}
       >
         <label>
-          Attach screenshots / diagrams (optional)
-          <span style={{ marginLeft: 8, color: 'rgba(0,0,0,0.45)', fontSize: 12 }}>(drop or paste images, or click to select)</span>
-        </label>
+          Attach screenshots (optional)
+        </label> 
         <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={handleImage} style={{ display: 'none' }} />
 
         {images && images.length ? (
@@ -168,13 +167,14 @@ const TaskForm = ({ onSubmit }: Props) => {
                 <img src={src} alt={`attachment-${idx}`} />
                 <button
                   type="button"
-                  className="ghost small remove"
+                  className="remove"
+                  aria-label="Remove image"
                   onClick={(e) => {
                     e.stopPropagation();
                     removeImage(idx);
                   }}
                 >
-                  Remove
+                  −
                 </button>
               </div>
             ))}
