@@ -445,6 +445,7 @@ textarea {
 
 .pv-dialog {
   width: min(96vw, 1400px);
+  height: calc((var(--pv-vh, 1vh) * 100) - 32px);
   max-height: calc((var(--pv-vh, 1vh) * 100) - 32px);
   border-radius: 16px;
   background: #04243a;
@@ -452,7 +453,9 @@ textarea {
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 16px;
   box-shadow: 0 30px 60px rgba(2, 16, 40, 0.6);
-  overflow: auto;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  overflow: hidden;
 }
 
 /* center the brush/color controls inside the toolbar */
@@ -547,11 +550,17 @@ textarea {
 .pv-toolbar .primary { background: #10b981; color: #fff; }
 
 .pv-body {
-  display: flex;
-  justify-content: center;
-  min-height: min(260px, calc(var(--pv-vh, 1vh) * 42));
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 }
-.pv-image-wrap { position: relative; }
+.pv-image-wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  max-height: 100%;
+}
 .pv-image {
   display: block;
   width: auto;
@@ -559,8 +568,8 @@ textarea {
   object-fit: contain;
   object-position: center center;
   transform: none;
-  max-width: min(90vw, 1320px);
-  max-height: calc(var(--pv-vh, 1vh) * 72);
+  max-width: 100%;
+  max-height: 100%;
   border-radius: 12px;
 }
 .pv-canvas { position: absolute; left: 0; top: 0; }
@@ -571,6 +580,8 @@ textarea {
 @media (max-width: 860px) {
   .pv-dialog {
     width: min(98vw, 1400px);
+    height: calc((var(--pv-vh, 1vh) * 100) - 24px);
+    max-height: calc((var(--pv-vh, 1vh) * 100) - 24px);
     padding: 12px;
     border-radius: 12px;
   }
@@ -593,10 +604,6 @@ textarea {
 
   .pv-toolbar {
     flex-wrap: wrap;
-  }
-
-  .pv-image {
-    max-height: calc(var(--pv-vh, 1vh) * 62);
   }
 }
 
