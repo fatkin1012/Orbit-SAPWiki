@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useRef } from 'react';
 import { Task } from '../types';
 
@@ -25,18 +25,6 @@ const TaskForm = ({ onSubmit }: Props) => {
       reader.readAsDataURL(file);
     });
 
-  const handleImage = async (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files || !files.length) return;
-    try {
-      const arr = Array.from(files);
-      const data = await Promise.all(arr.map((f) => readFileAsDataURL(f)));
-      setImages(data);
-    } catch (error) {
-      console.error('failed to read images', error);
-    }
-  };
-
   const handlePaste = async (e: React.ClipboardEvent<HTMLDivElement>) => {
     try {
       const items = e.clipboardData?.items;
@@ -58,7 +46,6 @@ const TaskForm = ({ onSubmit }: Props) => {
     }
   };
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dragCounterRef = useRef(0);
   const [dragging, setDragging] = useState(false);
 
@@ -153,12 +140,10 @@ const TaskForm = ({ onSubmit }: Props) => {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         tabIndex={0}
-        onClick={() => fileInputRef.current?.click()}
       >
         <label>
           Attach screenshots (optional)
         </label> 
-        <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={handleImage} style={{ display: 'none' }} />
 
         {images && images.length ? (
           <div className="attach-previews">
@@ -180,7 +165,7 @@ const TaskForm = ({ onSubmit }: Props) => {
             ))}
           </div>
         ) : (
-          <div className="attach-hint">Drop or paste images here, or click to select</div>
+          <div className="attach-hint">Drop or paste images here</div>
         )}
       </div>
       <div className="actions">

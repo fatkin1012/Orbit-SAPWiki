@@ -1,137 +1,126 @@
-import l, { useState as D, useRef as W, useMemo as Le, useEffect as ee, useCallback as _e } from "react";
+import l, { useState as $, useRef as Y, useMemo as ze, useEffect as te, useCallback as _e } from "react";
 import { createRoot as yt } from "react-dom/client";
 const xt = ({ onSubmit: a }) => {
-  const [e, t] = D(""), [r, n] = D(""), [s, i] = D(""), [o, u] = D(""), [d, v] = D([]), O = (E) => new Promise((R, C) => {
-    const _ = new FileReader();
-    _.onload = () => {
-      typeof _.result == "string" ? R(_.result) : C(new Error("invalid file result"));
-    }, _.onerror = () => C(new Error("file read error")), _.readAsDataURL(E);
-  }), f = async (E) => {
-    const R = E.target.files;
-    if (!(!R || !R.length))
-      try {
-        const C = Array.from(R), _ = await Promise.all(C.map((N) => O(N)));
-        v(_);
-      } catch (C) {
-        console.error("failed to read images", C);
-      }
-  }, k = async (E) => {
+  const [e, t] = $(""), [r, n] = $(""), [s, i] = $(""), [o, u] = $(""), [d, v] = $([]), A = (b) => new Promise((O, Z) => {
+    const D = new FileReader();
+    D.onload = () => {
+      typeof D.result == "string" ? O(D.result) : Z(new Error("invalid file result"));
+    }, D.onerror = () => Z(new Error("file read error")), D.readAsDataURL(b);
+  }), f = async (b) => {
     try {
-      const R = E.clipboardData?.items;
-      if (!R) return;
-      const C = [];
-      for (let N = 0; N < R.length; N++) {
-        const I = R[N];
-        if (I.kind === "file" && I.type.startsWith("image/")) {
-          const z = I.getAsFile();
-          z && C.push(z);
+      const O = b.clipboardData?.items;
+      if (!O) return;
+      const Z = [];
+      for (let P = 0; P < O.length; P++) {
+        const S = O[P];
+        if (S.kind === "file" && S.type.startsWith("image/")) {
+          const T = S.getAsFile();
+          T && Z.push(T);
         }
       }
-      if (!C.length) return;
-      E.preventDefault();
-      const _ = await Promise.all(C.map((N) => O(N)));
-      v((N) => [...N, ..._]);
-    } catch (R) {
-      console.error("failed to paste image", R);
+      if (!Z.length) return;
+      b.preventDefault();
+      const D = await Promise.all(Z.map((P) => A(P)));
+      v((P) => [...P, ...D]);
+    } catch (O) {
+      console.error("failed to paste image", O);
     }
-  }, w = W(null), Z = W(0), [j, M] = D(!1), L = (E) => {
-    E.preventDefault(), Z.current++, M(!0);
-  }, G = (E) => {
-    E.preventDefault(), Z.current--, Z.current <= 0 && (Z.current = 0, M(!1));
-  }, se = async (E) => {
-    E.preventDefault(), M(!1), Z.current = 0;
-    const R = Array.from(E.dataTransfer.files).filter((C) => C.type.startsWith("image/"));
-    if (R.length)
+  }, y = Y(0), [w, I] = $(!1), j = (b) => {
+    b.preventDefault(), y.current++, I(!0);
+  }, F = (b) => {
+    b.preventDefault(), y.current--, y.current <= 0 && (y.current = 0, I(!1));
+  }, M = async (b) => {
+    b.preventDefault(), I(!1), y.current = 0;
+    const O = Array.from(b.dataTransfer.files).filter((Z) => Z.type.startsWith("image/"));
+    if (O.length)
       try {
-        const C = await Promise.all(R.map((_) => O(_)));
-        v((_) => [..._, ...C]);
-      } catch (C) {
-        console.error("failed to drop images", C);
+        const Z = await Promise.all(O.map((D) => A(D)));
+        v((D) => [...D, ...Z]);
+      } catch (Z) {
+        console.error("failed to drop images", Z);
       }
-  }, U = (E) => v((R) => R.filter((C, _) => _ !== E)), Y = (E) => {
-    E.preventDefault();
-    const R = e.trim();
-    if (!R) return;
-    const C = r.split(",").map((_) => _.trim()).filter(Boolean);
+  }, K = (b) => v((O) => O.filter((Z, D) => D !== b)), ie = (b) => {
+    b.preventDefault();
+    const O = e.trim();
+    if (!O) return;
+    const Z = r.split(",").map((D) => D.trim()).filter(Boolean);
     a({
-      title: R,
-      tCodes: C,
+      title: O,
+      tCodes: Z,
       requirement: s,
       steps: o,
       images: d
     }), t(""), n(""), i(""), u(""), v([]);
   };
-  return /* @__PURE__ */ l.createElement("form", { className: "task-form", onSubmit: Y }, /* @__PURE__ */ l.createElement("div", { className: "field" }, /* @__PURE__ */ l.createElement("label", null, "Title"), /* @__PURE__ */ l.createElement("input", { value: e, onChange: (E) => t(E.target.value), placeholder: "Entry title" })), /* @__PURE__ */ l.createElement("div", { className: "field" }, /* @__PURE__ */ l.createElement("label", null, "T-Codes / Tag"), /* @__PURE__ */ l.createElement(
+  return /* @__PURE__ */ l.createElement("form", { className: "task-form", onSubmit: ie }, /* @__PURE__ */ l.createElement("div", { className: "field" }, /* @__PURE__ */ l.createElement("label", null, "Title"), /* @__PURE__ */ l.createElement("input", { value: e, onChange: (b) => t(b.target.value), placeholder: "Entry title" })), /* @__PURE__ */ l.createElement("div", { className: "field" }, /* @__PURE__ */ l.createElement("label", null, "T-Codes / Tag"), /* @__PURE__ */ l.createElement(
     "input",
     {
       value: r,
-      onChange: (E) => n(E.target.value),
+      onChange: (b) => n(b.target.value),
       placeholder: "SE16, MM03"
     }
-  )), /* @__PURE__ */ l.createElement("div", { className: "field" }, /* @__PURE__ */ l.createElement("label", null, "Description"), /* @__PURE__ */ l.createElement("textarea", { value: s, onChange: (E) => i(E.target.value), placeholder: "What are we solving?" })), /* @__PURE__ */ l.createElement("div", { className: "field steps-field" }, /* @__PURE__ */ l.createElement("label", null, "Steps"), /* @__PURE__ */ l.createElement(
+  )), /* @__PURE__ */ l.createElement("div", { className: "field" }, /* @__PURE__ */ l.createElement("label", null, "Description"), /* @__PURE__ */ l.createElement("textarea", { value: s, onChange: (b) => i(b.target.value), placeholder: "What are we solving?" })), /* @__PURE__ */ l.createElement("div", { className: "field steps-field" }, /* @__PURE__ */ l.createElement("label", null, "Steps"), /* @__PURE__ */ l.createElement(
     "textarea",
     {
       className: "steps-input",
       value: o,
-      onChange: (E) => u(E.target.value),
+      onChange: (b) => u(b.target.value),
       placeholder: "Step-by-step or reminders"
     }
   )), /* @__PURE__ */ l.createElement(
     "div",
     {
-      className: `field attach-field ${j ? "drag-over" : ""}`,
-      onPaste: k,
-      onDragOver: (E) => E.preventDefault(),
-      onDragEnter: L,
-      onDragLeave: G,
-      onDrop: se,
-      tabIndex: 0,
-      onClick: () => w.current?.click()
+      className: `field attach-field ${w ? "drag-over" : ""}`,
+      onPaste: f,
+      onDragOver: (b) => b.preventDefault(),
+      onDragEnter: j,
+      onDragLeave: F,
+      onDrop: M,
+      tabIndex: 0
     },
     /* @__PURE__ */ l.createElement("label", null, "Attach screenshots (optional)"),
-    /* @__PURE__ */ l.createElement("input", { ref: w, type: "file", accept: "image/*", multiple: !0, onChange: f, style: { display: "none" } }),
-    d && d.length ? /* @__PURE__ */ l.createElement("div", { className: "attach-previews" }, d.map((E, R) => /* @__PURE__ */ l.createElement("div", { className: "attach-preview", key: R }, /* @__PURE__ */ l.createElement("img", { src: E, alt: `attachment-${R}` }), /* @__PURE__ */ l.createElement(
+    d && d.length ? /* @__PURE__ */ l.createElement("div", { className: "attach-previews" }, d.map((b, O) => /* @__PURE__ */ l.createElement("div", { className: "attach-preview", key: O }, /* @__PURE__ */ l.createElement("img", { src: b, alt: `attachment-${O}` }), /* @__PURE__ */ l.createElement(
       "button",
       {
         type: "button",
         className: "remove",
         "aria-label": "Remove image",
-        onClick: (C) => {
-          C.stopPropagation(), U(R);
+        onClick: (Z) => {
+          Z.stopPropagation(), K(O);
         }
       },
       "−"
-    )))) : /* @__PURE__ */ l.createElement("div", { className: "attach-hint" }, "Drop or paste images here, or click to select")
+    )))) : /* @__PURE__ */ l.createElement("div", { className: "attach-hint" }, "Drop or paste images here")
   ), /* @__PURE__ */ l.createElement("div", { className: "actions" }, /* @__PURE__ */ l.createElement("button", { type: "submit" }, "Save entry")));
-}, be = ({ tasks: a, onDelete: e, onUpdate: t, onOpenViewer: r }) => {
-  const [n, s] = D(null), [i, o] = D(""), u = (f) => new Promise((k, w) => {
-    const Z = new FileReader();
-    Z.onload = () => {
-      typeof Z.result == "string" ? k(Z.result) : w(new Error("invalid file result"));
-    }, Z.onerror = () => w(new Error("file read error")), Z.readAsDataURL(f);
-  }), d = async (f, k) => {
-    if (!(!k || !k.length))
+}, ke = ({ tasks: a, onDelete: e, onUpdate: t, onOpenViewer: r }) => {
+  const [n, s] = $(null), [i, o] = $(""), u = (f) => new Promise((y, w) => {
+    const I = new FileReader();
+    I.onload = () => {
+      typeof I.result == "string" ? y(I.result) : w(new Error("invalid file result"));
+    }, I.onerror = () => w(new Error("file read error")), I.readAsDataURL(f);
+  }), d = async (f, y) => {
+    if (!(!y || !y.length))
       try {
-        const w = Array.from(k).filter((L) => L.type.startsWith("image/"));
+        const w = Array.from(y).filter((M) => M.type.startsWith("image/"));
         if (!w.length) return;
-        const Z = await Promise.all(w.map((L) => u(L))), j = a.find((L) => L.id === f), M = Array.isArray(j?.images) && j.images.length ? j.images : j?.imageData ? [j.imageData] : [];
-        t(f, { images: [...M, ...Z] });
+        const I = await Promise.all(w.map((M) => u(M))), j = a.find((M) => M.id === f), F = Array.isArray(j?.images) && j.images.length ? j.images : j?.imageData ? [j.imageData] : [];
+        t(f, { images: [...F, ...I] });
       } catch (w) {
         console.error("failed to add images", w);
       }
-  }, v = (f, k) => {
-    const w = a.find((M) => M.id === f);
+  }, v = (f, y) => {
+    const w = a.find((F) => F.id === f);
     if (!w) return;
-    const j = (Array.isArray(w.images) && w.images.length ? w.images : w.imageData ? [w.imageData] : []).filter((M, L) => L !== k);
+    const j = (Array.isArray(w.images) && w.images.length ? w.images : w.imageData ? [w.imageData] : []).filter((F, M) => M !== y);
     j.length ? t(f, { images: j }) : t(f, { images: [], imageData: void 0 });
-  }, O = (f, k, w, Z) => {
+  }, A = (f, y, w, I) => {
     if (typeof r == "function") {
-      r(f, k, w, Z);
+      r(f, y, w, I);
       return;
     }
-    typeof be.openViewerCallback == "function" && be.openViewerCallback(f, k, w, Z);
+    typeof ke.openViewerCallback == "function" && ke.openViewerCallback(f, y, w, I);
     try {
-      const j = new CustomEvent("sapwiki:openViewer", { detail: { taskId: f, images: k, index: w, title: Z } });
+      const j = new CustomEvent("sapwiki:openViewer", { detail: { taskId: f, images: y, index: w, title: I } });
       window.dispatchEvent(j);
     } catch {
     }
@@ -141,7 +130,7 @@ const xt = ({ onSubmit: a }) => {
     {
       className: "edit-tcodes-input",
       value: i,
-      onChange: (k) => o(k.target.value),
+      onChange: (y) => o(y.target.value),
       placeholder: "SE16, MM03"
     }
   ), /* @__PURE__ */ l.createElement("div", { className: "edit-actions" }, /* @__PURE__ */ l.createElement(
@@ -150,21 +139,21 @@ const xt = ({ onSubmit: a }) => {
       type: "button",
       className: "ghost small",
       onClick: () => {
-        const k = i.split(",").map((w) => w.trim()).filter(Boolean);
-        t(f.id, { tCodes: k, tCode: "" }), s(null);
+        const y = i.split(",").map((w) => w.trim()).filter(Boolean);
+        t(f.id, { tCodes: y, tCode: "" }), s(null);
       }
     },
     "Save"
-  ), /* @__PURE__ */ l.createElement("button", { type: "button", className: "ghost small", onClick: () => s(null) }, "Cancel"))) : /* @__PURE__ */ l.createElement(l.Fragment, null, f.tCode ? /* @__PURE__ */ l.createElement("span", { className: "pill" }, f.tCode) : null, f.tCodes?.map((k) => /* @__PURE__ */ l.createElement("span", { key: `${f.id}-${k}`, className: "pill" }, k)), /* @__PURE__ */ l.createElement(
+  ), /* @__PURE__ */ l.createElement("button", { type: "button", className: "ghost small", onClick: () => s(null) }, "Cancel"))) : /* @__PURE__ */ l.createElement(l.Fragment, null, f.tCode ? /* @__PURE__ */ l.createElement("span", { className: "pill" }, f.tCode) : null, f.tCodes?.map((y) => /* @__PURE__ */ l.createElement("span", { key: `${f.id}-${y}`, className: "pill" }, y)), /* @__PURE__ */ l.createElement(
     "button",
     {
       type: "button",
       className: "ghost small",
       onClick: () => {
-        const k = [
+        const y = [
           ...Array.isArray(f.tCodes) ? f.tCodes : []
         ];
-        f.tCode && !k.includes(f.tCode) && k.unshift(f.tCode), o(k.join(", ")), s(f.id);
+        f.tCode && !y.includes(f.tCode) && y.unshift(f.tCode), o(y.join(", ")), s(f.id);
       }
     },
     "Edit"
@@ -172,7 +161,7 @@ const xt = ({ onSubmit: a }) => {
     "textarea",
     {
       defaultValue: f.requirement,
-      onBlur: (k) => t(f.id, { requirement: k.target.value }),
+      onBlur: (y) => t(f.id, { requirement: y.target.value }),
       rows: 3
     }
   )), /* @__PURE__ */ l.createElement("div", { className: "field notes-field" }, /* @__PURE__ */ l.createElement("label", null, "Steps / Notes"), /* @__PURE__ */ l.createElement(
@@ -180,11 +169,11 @@ const xt = ({ onSubmit: a }) => {
     {
       className: "notes-input",
       defaultValue: f.steps,
-      onBlur: (k) => t(f.id, { steps: k.target.value })
+      onBlur: (y) => t(f.id, { steps: y.target.value })
     }
   )), (() => {
-    const k = Array.isArray(f.images) && f.images.length ? f.images : f.imageData ? [f.imageData] : [];
-    return k.length ? /* @__PURE__ */ l.createElement("div", { className: "field images" }, /* @__PURE__ */ l.createElement("label", null, "Image(s)", /* @__PURE__ */ l.createElement(
+    const y = Array.isArray(f.images) && f.images.length ? f.images : f.imageData ? [f.imageData] : [];
+    return y.length ? /* @__PURE__ */ l.createElement("div", { className: "field images" }, /* @__PURE__ */ l.createElement("label", null, "Image(s)", /* @__PURE__ */ l.createElement(
       "button",
       {
         type: "button",
@@ -205,23 +194,23 @@ const xt = ({ onSubmit: a }) => {
         style: { display: "none" },
         onChange: (w) => d(f.id, w.target.files)
       }
-    ), /* @__PURE__ */ l.createElement("div", { className: "image-row" }, k.map((w, Z) => /* @__PURE__ */ l.createElement(
+    ), /* @__PURE__ */ l.createElement("div", { className: "image-row" }, y.map((w, I) => /* @__PURE__ */ l.createElement(
       "div",
       {
         className: "attach-preview",
-        key: `${f.id}-img-${Z}`,
-        onClick: () => O(f.id, k, Z, f.title),
+        key: `${f.id}-img-${I}`,
+        onClick: () => A(f.id, y, I, f.title),
         role: "button",
         tabIndex: 0,
         onKeyDown: (j) => {
-          (j.key === "Enter" || j.key === " ") && O(f.id, k, Z, f.title);
+          (j.key === "Enter" || j.key === " ") && A(f.id, y, I, f.title);
         }
       },
       /* @__PURE__ */ l.createElement(
         "img",
         {
           src: w,
-          alt: `${f.title} ${Z + 1}`,
+          alt: `${f.title} ${I + 1}`,
           className: "preview clickable"
         }
       ),
@@ -232,7 +221,7 @@ const xt = ({ onSubmit: a }) => {
           className: "remove",
           "aria-label": "Delete image",
           onClick: (j) => {
-            j.stopPropagation(), v(f.id, Z);
+            j.stopPropagation(), v(f.id, I);
           }
         },
         "−"
@@ -248,109 +237,109 @@ function _t({
   onClose: n,
   onSaveAnnotated: s
 }) {
-  const [i, o] = D(t), [u, d] = D(!1), [v, O] = D(!1), [f, k] = D("#ff3344"), [w, Z] = D(4), [j, M] = D(0), [L, G] = D(!1), se = W(null), U = W(null), Y = W(!1), E = W(!1), R = W(null), C = W([]), _ = Le(() => e[i], [e, i]);
-  ee(() => {
-    a && (o(t), d(!1), O(!1));
-  }, [t, a]), ee(() => {
+  const [i, o] = $(t), [u, d] = $(!1), [v, A] = $(!1), [f, y] = $("#ff3344"), [w, I] = $(4), [j, F] = $(0), [M, K] = $(!1), ie = Y(null), b = Y(null), O = Y(!1), Z = Y(!1), D = Y(null), P = Y([]), S = ze(() => e[i], [e, i]);
+  te(() => {
+    a && (o(t), d(!1), A(!1));
+  }, [t, a]), te(() => {
     if (!a) return;
-    const g = (T) => {
-      T.key === "Escape" && n(), T.key === "ArrowRight" && o((P) => (P + 1) % e.length), T.key === "ArrowLeft" && o((P) => (P - 1 + e.length) % e.length);
+    const g = (E) => {
+      E.key === "Escape" && n(), E.key === "ArrowRight" && o((z) => (z + 1) % e.length), E.key === "ArrowLeft" && o((z) => (z - 1 + e.length) % e.length);
     };
     return window.addEventListener("keydown", g), () => window.removeEventListener("keydown", g);
   }, [e.length, a, n]);
-  const N = () => {
-    const g = U.current;
+  const T = () => {
+    const g = b.current;
     if (!g) return;
-    const T = g.toDataURL("image/png");
-    C.current[C.current.length - 1] !== T && (C.current = [...C.current, T], M(C.current.length - 1));
-  }, I = () => {
-    const g = se.current, T = U.current;
-    if (!g || !T) return;
-    T.width = g.clientWidth, T.height = g.clientHeight;
-    const P = T.getContext("2d");
-    P && (P.clearRect(0, 0, T.width, T.height), C.current = [T.toDataURL("image/png")], M(0));
+    const E = g.toDataURL("image/png");
+    P.current[P.current.length - 1] !== E && (P.current = [...P.current, E], F(P.current.length - 1));
+  }, R = () => {
+    const g = ie.current, E = b.current;
+    if (!g || !E) return;
+    E.width = g.clientWidth, E.height = g.clientHeight;
+    const z = E.getContext("2d");
+    z && (z.clearRect(0, 0, E.width, E.height), P.current = [E.toDataURL("image/png")], F(0));
   };
-  ee(() => {
+  te(() => {
     if (!a) return;
-    const g = () => I();
+    const g = () => R();
     return window.addEventListener("resize", g), () => window.removeEventListener("resize", g);
-  }, [a, i]), ee(() => {
+  }, [a, i]), te(() => {
     if (!a) return;
     const g = document.body.style.overflow;
     return document.body.style.overflow = "hidden", () => {
       document.body.style.overflow = g;
     };
   }, [a]);
-  const z = (g, T) => {
-    const P = U.current;
-    if (!P) return;
-    const V = P.getContext("2d");
-    V && (V.globalCompositeOperation = v ? "destination-out" : "source-over", V.strokeStyle = v ? "rgba(0,0,0,1)" : f, V.lineWidth = w, V.lineCap = "round", V.lineJoin = "round", V.beginPath(), V.moveTo(g.x, g.y), V.lineTo(T.x, T.y), V.stroke());
-  }, ye = (g) => {
-    const T = U.current;
-    if (!T) return { x: 0, y: 0 };
-    const P = T.getBoundingClientRect();
-    return { x: g.clientX - P.left, y: g.clientY - P.top };
-  }, ht = (g) => {
+  const V = (g, E) => {
+    const z = b.current;
+    if (!z) return;
+    const U = z.getContext("2d");
+    U && (U.globalCompositeOperation = v ? "destination-out" : "source-over", U.strokeStyle = v ? "rgba(0,0,0,1)" : f, U.lineWidth = w, U.lineCap = "round", U.lineJoin = "round", U.beginPath(), U.moveTo(g.x, g.y), U.lineTo(E.x, E.y), U.stroke());
+  }, q = (g) => {
+    const E = b.current;
+    if (!E) return { x: 0, y: 0 };
+    const z = E.getBoundingClientRect();
+    return { x: g.clientX - z.left, y: g.clientY - z.top };
+  }, Se = (g) => {
     if (!u) return;
-    const T = ye(g);
-    Y.current = !0, E.current = !0, R.current = T, z(T, T), g.currentTarget.setPointerCapture(g.pointerId);
-  }, mt = (g) => {
-    if (!u || !Y.current || !R.current) return;
-    const T = ye(g);
-    z(R.current, T), E.current = !0, R.current = T;
-  }, Me = (g) => {
-    Y.current && E.current && N(), Y.current = !1, E.current = !1, R.current = null, g.currentTarget.hasPointerCapture(g.pointerId) && g.currentTarget.releasePointerCapture(g.pointerId);
+    const E = q(g);
+    O.current = !0, Z.current = !0, D.current = E, V(E, E), g.currentTarget.setPointerCapture(g.pointerId);
+  }, Re = (g) => {
+    if (!u || !O.current || !D.current) return;
+    const E = q(g);
+    V(D.current, E), Z.current = !0, D.current = E;
+  }, Be = (g) => {
+    O.current && Z.current && T(), O.current = !1, Z.current = !1, D.current = null, g.currentTarget.hasPointerCapture(g.pointerId) && g.currentTarget.releasePointerCapture(g.pointerId);
   }, gt = () => {
-    const g = U.current;
-    if (!g || C.current.length <= 1) return;
-    C.current = C.current.slice(0, -1);
-    const T = C.current[C.current.length - 1];
-    if (!T) return;
-    const P = g.getContext("2d");
-    if (!P) return;
-    const V = new Image();
-    V.onload = () => {
-      P.clearRect(0, 0, g.width, g.height), P.drawImage(V, 0, 0, g.width, g.height), M(C.current.length - 1);
-    }, V.src = T;
-  }, Ue = () => {
-    const g = U.current;
+    const g = b.current;
+    if (!g || P.current.length <= 1) return;
+    P.current = P.current.slice(0, -1);
+    const E = P.current[P.current.length - 1];
+    if (!E) return;
+    const z = g.getContext("2d");
+    if (!z) return;
+    const U = new Image();
+    U.onload = () => {
+      z.clearRect(0, 0, g.width, g.height), z.drawImage(U, 0, 0, g.width, g.height), F(P.current.length - 1);
+    }, U.src = E;
+  }, Fe = () => {
+    const g = b.current;
     if (!g) return;
-    const T = g.getContext("2d");
-    T && (T.clearRect(0, 0, g.width, g.height), N());
+    const E = g.getContext("2d");
+    E && (E.clearRect(0, 0, g.width, g.height), T());
   }, vt = async () => {
-    const g = e[i], T = U.current, P = se.current;
-    if (!(!g || !T || !P)) {
-      G(!0);
+    const g = e[i], E = b.current, z = ie.current;
+    if (!(!g || !E || !z)) {
+      K(!0);
       try {
-        const V = await new Promise((Be, Fe) => {
-          const le = new Image();
-          le.onload = () => {
+        const U = await new Promise((We, qe) => {
+          const ce = new Image();
+          ce.onload = () => {
             const J = document.createElement("canvas");
-            J.width = le.naturalWidth, J.height = le.naturalHeight;
-            const Se = J.getContext("2d");
-            if (!Se) {
-              Fe(new Error("Could not create drawing context."));
+            J.width = ce.naturalWidth, J.height = ce.naturalHeight;
+            const Ie = J.getContext("2d");
+            if (!Ie) {
+              qe(new Error("Could not create drawing context."));
               return;
             }
-            Se.drawImage(le, 0, 0, J.width, J.height);
+            Ie.drawImage(ce, 0, 0, J.width, J.height);
             const xe = new Image();
             xe.onload = () => {
-              Se.drawImage(xe, 0, 0, J.width, J.height), Be(J.toDataURL("image/png"));
-            }, xe.onerror = () => Be(J.toDataURL("image/png")), xe.src = T.toDataURL("image/png");
-          }, le.onerror = () => Fe(new Error("Failed to load source image.")), le.src = g;
+              Ie.drawImage(xe, 0, 0, J.width, J.height), We(J.toDataURL("image/png"));
+            }, xe.onerror = () => We(J.toDataURL("image/png")), xe.src = E.toDataURL("image/png");
+          }, ce.onerror = () => qe(new Error("Failed to load source image.")), ce.src = g;
         });
-        s(V, i), Ue(), d(!1), O(!1);
+        s(U, i), Fe(), d(!1), A(!1);
       } finally {
-        G(!1);
+        K(!1);
       }
     }
   };
-  return !a || e.length === 0 || !_ ? null : /* @__PURE__ */ l.createElement("div", { className: "pv-overlay", role: "dialog", "aria-modal": "true" }, /* @__PURE__ */ l.createElement("div", { className: "pv-dialog" }, /* @__PURE__ */ l.createElement("div", { className: "pv-header" }, /* @__PURE__ */ l.createElement("p", { className: "pv-title" }, r, " - Image ", i + 1, " / ", e.length), /* @__PURE__ */ l.createElement("div", { className: "pv-controls" }, /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => o((g) => (g - 1 + e.length) % e.length) }, "Prev"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => o((g) => (g + 1) % e.length) }, "Next"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: n, className: "ghost" }, "Close"))), /* @__PURE__ */ l.createElement("div", { className: "pv-toolbar" }, /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => d((g) => !g), className: u ? "active" : "" }, u ? "Drawing On" : "Draw"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => {
-    O((g) => !g), u || d(!0);
-  }, className: v ? "active" : "" }, v ? "Eraser On" : "Eraser"), /* @__PURE__ */ l.createElement("div", { className: "pv-brush-group" }, /* @__PURE__ */ l.createElement("label", null, "Color"), /* @__PURE__ */ l.createElement("input", { type: "color", value: f, onChange: (g) => k(g.target.value), "aria-label": "Brush color" }), /* @__PURE__ */ l.createElement("label", { htmlFor: "brush-size" }, "Brush"), /* @__PURE__ */ l.createElement("input", { id: "brush-size", type: "range", min: 2, max: 18, value: w, onChange: (g) => Z(Number(g.target.value)) })), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: gt, disabled: j === 0 }, "Undo"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: Ue }, "Clear"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: vt, disabled: L, className: "primary" }, L ? "Saving..." : "Save")), /* @__PURE__ */ l.createElement("div", { className: "pv-body" }, /* @__PURE__ */ l.createElement("div", { className: "pv-image-wrap" }, /* @__PURE__ */ l.createElement("img", { ref: se, src: _, alt: `Viewer image ${i + 1}`, className: "pv-image", onLoad: I }), /* @__PURE__ */ l.createElement("canvas", { ref: U, className: `pv-canvas ${u ? v ? "erase" : "draw" : "disabled"}`, onPointerDown: ht, onPointerMove: mt, onPointerUp: Me, onPointerLeave: Me })))));
+  return !a || e.length === 0 || !S ? null : /* @__PURE__ */ l.createElement("div", { className: "pv-overlay", role: "dialog", "aria-modal": "true" }, /* @__PURE__ */ l.createElement("div", { className: "pv-dialog" }, /* @__PURE__ */ l.createElement("div", { className: "pv-header" }, /* @__PURE__ */ l.createElement("p", { className: "pv-title" }, r, " - Image ", i + 1, " / ", e.length), /* @__PURE__ */ l.createElement("div", { className: "pv-controls" }, /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => o((g) => (g - 1 + e.length) % e.length) }, "Prev"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => o((g) => (g + 1) % e.length) }, "Next"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: n, className: "ghost" }, "Close"))), /* @__PURE__ */ l.createElement("div", { className: "pv-toolbar" }, /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => d((g) => !g), className: u ? "active" : "" }, u ? "Drawing On" : "Draw"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => {
+    A((g) => !g), u || d(!0);
+  }, className: v ? "active" : "" }, v ? "Eraser On" : "Eraser"), /* @__PURE__ */ l.createElement("div", { className: "pv-brush-group" }, /* @__PURE__ */ l.createElement("label", null, "Color"), /* @__PURE__ */ l.createElement("input", { type: "color", value: f, onChange: (g) => y(g.target.value), "aria-label": "Brush color" }), /* @__PURE__ */ l.createElement("label", { htmlFor: "brush-size" }, "Brush"), /* @__PURE__ */ l.createElement("input", { id: "brush-size", type: "range", min: 2, max: 18, value: w, onChange: (g) => I(Number(g.target.value)) })), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: gt, disabled: j === 0 }, "Undo"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: Fe }, "Clear"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: vt, disabled: M, className: "primary" }, M ? "Saving..." : "Save")), /* @__PURE__ */ l.createElement("div", { className: "pv-body" }, /* @__PURE__ */ l.createElement("div", { className: "pv-image-wrap" }, /* @__PURE__ */ l.createElement("img", { ref: ie, src: S, alt: `Viewer image ${i + 1}`, className: "pv-image", onLoad: R }), /* @__PURE__ */ l.createElement("canvas", { ref: b, className: `pv-canvas ${u ? v ? "erase" : "draw" : "disabled"}`, onPointerDown: Se, onPointerMove: Re, onPointerUp: Be, onPointerLeave: Be })))));
 }
-var S;
+var N;
 (function(a) {
   a.assertEqual = (n) => {
   };
@@ -386,16 +375,16 @@ var S;
     return n.map((i) => typeof i == "string" ? `'${i}'` : i).join(s);
   }
   a.joinValues = r, a.jsonStringifyReplacer = (n, s) => typeof s == "bigint" ? s.toString() : s;
-})(S || (S = {}));
-var We;
+})(N || (N = {}));
+var He;
 (function(a) {
   a.mergeShapes = (e, t) => ({
     ...e,
     ...t
     // second overwrites first
   });
-})(We || (We = {}));
-const h = S.arrayToEnum([
+})(He || (He = {}));
+const h = N.arrayToEnum([
   "string",
   "nan",
   "number",
@@ -416,7 +405,7 @@ const h = S.arrayToEnum([
   "never",
   "map",
   "set"
-]), Q = (a) => {
+]), X = (a) => {
   switch (typeof a) {
     case "undefined":
       return h.undefined;
@@ -437,7 +426,7 @@ const h = S.arrayToEnum([
     default:
       return h.unknown;
   }
-}, c = S.arrayToEnum([
+}, c = N.arrayToEnum([
   "invalid_type",
   "invalid_literal",
   "custom",
@@ -455,7 +444,7 @@ const h = S.arrayToEnum([
   "not_multiple_of",
   "not_finite"
 ]);
-class H extends Error {
+class G extends Error {
   get errors() {
     return this.issues;
   }
@@ -492,14 +481,14 @@ class H extends Error {
     return n(this), r;
   }
   static assert(e) {
-    if (!(e instanceof H))
+    if (!(e instanceof G))
       throw new Error(`Not a ZodError: ${e}`);
   }
   toString() {
     return this.message;
   }
   get message() {
-    return JSON.stringify(this.issues, S.jsonStringifyReplacer, 2);
+    return JSON.stringify(this.issues, N.jsonStringifyReplacer, 2);
   }
   get isEmpty() {
     return this.issues.length === 0;
@@ -518,27 +507,27 @@ class H extends Error {
     return this.flatten();
   }
 }
-H.create = (a) => new H(a);
-const Ie = (a, e) => {
+G.create = (a) => new G(a);
+const Ze = (a, e) => {
   let t;
   switch (a.code) {
     case c.invalid_type:
       a.received === h.undefined ? t = "Required" : t = `Expected ${a.expected}, received ${a.received}`;
       break;
     case c.invalid_literal:
-      t = `Invalid literal value, expected ${JSON.stringify(a.expected, S.jsonStringifyReplacer)}`;
+      t = `Invalid literal value, expected ${JSON.stringify(a.expected, N.jsonStringifyReplacer)}`;
       break;
     case c.unrecognized_keys:
-      t = `Unrecognized key(s) in object: ${S.joinValues(a.keys, ", ")}`;
+      t = `Unrecognized key(s) in object: ${N.joinValues(a.keys, ", ")}`;
       break;
     case c.invalid_union:
       t = "Invalid input";
       break;
     case c.invalid_union_discriminator:
-      t = `Invalid discriminator value. Expected ${S.joinValues(a.options)}`;
+      t = `Invalid discriminator value. Expected ${N.joinValues(a.options)}`;
       break;
     case c.invalid_enum_value:
-      t = `Invalid enum value. Expected ${S.joinValues(a.options)}, received '${a.received}'`;
+      t = `Invalid enum value. Expected ${N.joinValues(a.options)}, received '${a.received}'`;
       break;
     case c.invalid_arguments:
       t = "Invalid function arguments";
@@ -550,7 +539,7 @@ const Ie = (a, e) => {
       t = "Invalid date";
       break;
     case c.invalid_string:
-      typeof a.validation == "object" ? "includes" in a.validation ? (t = `Invalid input: must include "${a.validation.includes}"`, typeof a.validation.position == "number" && (t = `${t} at one or more positions greater than or equal to ${a.validation.position}`)) : "startsWith" in a.validation ? t = `Invalid input: must start with "${a.validation.startsWith}"` : "endsWith" in a.validation ? t = `Invalid input: must end with "${a.validation.endsWith}"` : S.assertNever(a.validation) : a.validation !== "regex" ? t = `Invalid ${a.validation}` : t = "Invalid";
+      typeof a.validation == "object" ? "includes" in a.validation ? (t = `Invalid input: must include "${a.validation.includes}"`, typeof a.validation.position == "number" && (t = `${t} at one or more positions greater than or equal to ${a.validation.position}`)) : "startsWith" in a.validation ? t = `Invalid input: must start with "${a.validation.startsWith}"` : "endsWith" in a.validation ? t = `Invalid input: must end with "${a.validation.endsWith}"` : N.assertNever(a.validation) : a.validation !== "regex" ? t = `Invalid ${a.validation}` : t = "Invalid";
       break;
     case c.too_small:
       a.type === "array" ? t = `Array must contain ${a.exact ? "exactly" : a.inclusive ? "at least" : "more than"} ${a.minimum} element(s)` : a.type === "string" ? t = `String must contain ${a.exact ? "exactly" : a.inclusive ? "at least" : "over"} ${a.minimum} character(s)` : a.type === "number" ? t = `Number must be ${a.exact ? "exactly equal to " : a.inclusive ? "greater than or equal to " : "greater than "}${a.minimum}` : a.type === "bigint" ? t = `Number must be ${a.exact ? "exactly equal to " : a.inclusive ? "greater than or equal to " : "greater than "}${a.minimum}` : a.type === "date" ? t = `Date must be ${a.exact ? "exactly equal to " : a.inclusive ? "greater than or equal to " : "greater than "}${new Date(Number(a.minimum))}` : t = "Invalid input";
@@ -571,13 +560,13 @@ const Ie = (a, e) => {
       t = "Number must be finite";
       break;
     default:
-      t = e.defaultError, S.assertNever(a);
+      t = e.defaultError, N.assertNever(a);
   }
   return { message: t };
 };
-let kt = Ie;
-function bt() {
-  return kt;
+let bt = Ze;
+function kt() {
+  return bt;
 }
 const wt = (a) => {
   const { data: e, path: t, errorMaps: r, issueData: n } = a, s = [...t, ...n.path || []], i = {
@@ -601,7 +590,7 @@ const wt = (a) => {
   };
 };
 function p(a, e) {
-  const t = bt(), r = wt({
+  const t = kt(), r = wt({
     issueData: e,
     data: a.data,
     path: a.path,
@@ -612,7 +601,7 @@ function p(a, e) {
       // then schema-bound map if available
       t,
       // then global override map
-      t === Ie ? void 0 : Ie
+      t === Ze ? void 0 : Ze
       // then global default map
     ].filter((n) => !!n)
   });
@@ -632,7 +621,7 @@ class B {
     const r = [];
     for (const n of t) {
       if (n.status === "aborted")
-        return y;
+        return x;
       n.status === "dirty" && e.dirty(), r.push(n.value);
     }
     return { status: e.value, value: r };
@@ -653,20 +642,20 @@ class B {
     for (const n of t) {
       const { key: s, value: i } = n;
       if (s.status === "aborted" || i.status === "aborted")
-        return y;
+        return x;
       s.status === "dirty" && e.dirty(), i.status === "dirty" && e.dirty(), s.value !== "__proto__" && (typeof i.value < "u" || n.alwaysSet) && (r[s.value] = i.value);
     }
     return { status: e.value, value: r };
   }
 }
-const y = Object.freeze({
+const x = Object.freeze({
   status: "aborted"
-}), me = (a) => ({ status: "dirty", value: a }), F = (a) => ({ status: "valid", value: a }), qe = (a) => a.status === "aborted", Je = (a) => a.status === "dirty", de = (a) => a.status === "valid", we = (a) => typeof Promise < "u" && a instanceof Promise;
+}), ge = (a) => ({ status: "dirty", value: a }), W = (a) => ({ status: "valid", value: a }), Je = (a) => a.status === "aborted", Ye = (a) => a.status === "dirty", ue = (a) => a.status === "valid", we = (a) => typeof Promise < "u" && a instanceof Promise;
 var m;
 (function(a) {
   a.errToObj = (e) => typeof e == "string" ? { message: e } : e || {}, a.toString = (e) => typeof e == "string" ? e : e?.message;
 })(m || (m = {}));
-class re {
+class ne {
   constructor(e, t, r, n) {
     this._cachedPath = [], this.parent = e, this.data = t, this._path = r, this._key = n;
   }
@@ -674,8 +663,8 @@ class re {
     return this._cachedPath.length || (Array.isArray(this._key) ? this._cachedPath.push(...this._path, ...this._key) : this._cachedPath.push(...this._path, this._key)), this._cachedPath;
   }
 }
-const He = (a, e) => {
-  if (de(e))
+const Ge = (a, e) => {
+  if (ue(e))
     return { success: !0, data: e.value };
   if (!a.common.issues.length)
     throw new Error("Validation failed but no issues detected.");
@@ -684,12 +673,12 @@ const He = (a, e) => {
     get error() {
       if (this._error)
         return this._error;
-      const t = new H(a.common.issues);
+      const t = new G(a.common.issues);
       return this._error = t, this._error;
     }
   };
 };
-function b(a) {
+function k(a) {
   if (!a)
     return {};
   const { errorMap: e, invalid_type_error: t, required_error: r, description: n } = a;
@@ -700,18 +689,18 @@ function b(a) {
     return i.code === "invalid_enum_value" ? { message: u ?? o.defaultError } : typeof o.data > "u" ? { message: u ?? r ?? o.defaultError } : i.code !== "invalid_type" ? { message: o.defaultError } : { message: u ?? t ?? o.defaultError };
   }, description: n };
 }
-class A {
+class C {
   get description() {
     return this._def.description;
   }
   _getType(e) {
-    return Q(e.data);
+    return X(e.data);
   }
   _getOrReturnCtx(e, t) {
     return t || {
       common: e.parent.common,
       data: e.data,
-      parsedType: Q(e.data),
+      parsedType: X(e.data),
       schemaErrorMap: this._def.errorMap,
       path: e.path,
       parent: e.parent
@@ -723,7 +712,7 @@ class A {
       ctx: {
         common: e.parent.common,
         data: e.data,
-        parsedType: Q(e.data),
+        parsedType: X(e.data),
         schemaErrorMap: this._def.errorMap,
         path: e.path,
         parent: e.parent
@@ -757,9 +746,9 @@ class A {
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data: e,
-      parsedType: Q(e)
+      parsedType: X(e)
     }, n = this._parseSync({ data: e, path: r.path, parent: r });
-    return He(r, n);
+    return Ge(r, n);
   }
   "~validate"(e) {
     const t = {
@@ -771,12 +760,12 @@ class A {
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data: e,
-      parsedType: Q(e)
+      parsedType: X(e)
     };
     if (!this["~standard"].async)
       try {
         const r = this._parseSync({ data: e, path: [], parent: t });
-        return de(r) ? {
+        return ue(r) ? {
           value: r.value
         } : {
           issues: t.common.issues
@@ -787,7 +776,7 @@ class A {
           async: !0
         };
       }
-    return this._parseAsync({ data: e, path: [], parent: t }).then((r) => de(r) ? {
+    return this._parseAsync({ data: e, path: [], parent: t }).then((r) => ue(r) ? {
       value: r.value
     } : {
       issues: t.common.issues
@@ -810,9 +799,9 @@ class A {
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data: e,
-      parsedType: Q(e)
+      parsedType: X(e)
     }, n = this._parse({ data: e, path: r.path, parent: r }), s = await (we(n) ? n : Promise.resolve(n));
-    return He(r, s);
+    return Ge(r, s);
   }
   refine(e, t) {
     const r = (n) => typeof t == "string" || typeof t > "u" ? { message: t } : typeof t == "function" ? t(n) : t;
@@ -828,9 +817,9 @@ class A {
     return this._refinement((r, n) => e(r) ? !0 : (n.addIssue(typeof t == "function" ? t(r, n) : t), !1));
   }
   _refinement(e) {
-    return new fe({
+    return new he({
       schema: this,
-      typeName: x.ZodEffects,
+      typeName: _.ZodEffects,
       effect: { type: "refinement", refinement: e }
     });
   }
@@ -845,16 +834,16 @@ class A {
     };
   }
   optional() {
-    return ae.create(this, this._def);
+    return re.create(this, this._def);
   }
   nullable() {
-    return he.create(this, this._def);
+    return me.create(this, this._def);
   }
   nullish() {
     return this.nullable().optional();
   }
   array() {
-    return q.create(this);
+    return H.create(this);
   }
   promise() {
     return Te.create(this, this._def);
@@ -866,36 +855,36 @@ class A {
     return Ne.create(this, e, this._def);
   }
   transform(e) {
-    return new fe({
-      ...b(this._def),
+    return new he({
+      ...k(this._def),
       schema: this,
-      typeName: x.ZodEffects,
+      typeName: _.ZodEffects,
       effect: { type: "transform", transform: e }
     });
   }
   default(e) {
     const t = typeof e == "function" ? e : () => e;
-    return new Ze({
-      ...b(this._def),
+    return new De({
+      ...k(this._def),
       innerType: this,
       defaultValue: t,
-      typeName: x.ZodDefault
+      typeName: _.ZodDefault
     });
   }
   brand() {
     return new qt({
-      typeName: x.ZodBranded,
+      typeName: _.ZodBranded,
       type: this,
-      ...b(this._def)
+      ...k(this._def)
     });
   }
   catch(e) {
     const t = typeof e == "function" ? e : () => e;
-    return new je({
-      ...b(this._def),
+    return new $e({
+      ...k(this._def),
       innerType: this,
       catchValue: t,
-      typeName: x.ZodCatch
+      typeName: _.ZodCatch
     });
   }
   describe(e) {
@@ -906,10 +895,10 @@ class A {
     });
   }
   pipe(e) {
-    return Ve.create(this, e);
+    return Me.create(this, e);
   }
   readonly() {
-    return De.create(this);
+    return Pe.create(this);
   }
   isOptional() {
     return this.safeParse(void 0).success;
@@ -919,19 +908,19 @@ class A {
   }
 }
 const Et = /^c[^\s-]{8,}$/i, Ct = /^[0-9a-z]+$/, Nt = /^[0-9A-HJKMNP-TV-Z]{26}$/i, Tt = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i, At = /^[a-z0-9_-]{21}$/i, St = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]*$/, Rt = /^[-+]?P(?!$)(?:(?:[-+]?\d+Y)|(?:[-+]?\d+[.,]\d+Y$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:(?:[-+]?\d+W)|(?:[-+]?\d+[.,]\d+W$))?(?:(?:[-+]?\d+D)|(?:[-+]?\d+[.,]\d+D$))?(?:T(?=[\d+-])(?:(?:[-+]?\d+H)|(?:[-+]?\d+[.,]\d+H$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:[-+]?\d+(?:[.,]\d+)?S)?)??$/, It = /^(?!\.)(?!.*\.\.)([A-Z0-9_'+\-\.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i, Ot = "^(\\p{Extended_Pictographic}|\\p{Emoji_Component})+$";
-let Re;
-const Zt = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$/, jt = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\/(3[0-2]|[12]?[0-9])$/, Dt = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/, $t = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))\/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$/, Pt = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/, Lt = /^([0-9a-zA-Z-_]{4})*(([0-9a-zA-Z-_]{2}(==)?)|([0-9a-zA-Z-_]{3}(=)?))?$/, ct = "((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))", Vt = new RegExp(`^${ct}$`);
-function dt(a) {
+let Oe;
+const Zt = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$/, jt = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\/(3[0-2]|[12]?[0-9])$/, Dt = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/, $t = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))\/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$/, Pt = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/, Lt = /^([0-9a-zA-Z-_]{4})*(([0-9a-zA-Z-_]{2}(==)?)|([0-9a-zA-Z-_]{3}(=)?))?$/, ut = "((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))", Vt = new RegExp(`^${ut}$`);
+function pt(a) {
   let e = "[0-5]\\d";
   a.precision ? e = `${e}\\.\\d{${a.precision}}` : a.precision == null && (e = `${e}(\\.\\d+)?`);
   const t = a.precision ? "+" : "?";
   return `([01]\\d|2[0-3]):[0-5]\\d(:${e})${t}`;
 }
 function zt(a) {
-  return new RegExp(`^${dt(a)}$`);
+  return new RegExp(`^${pt(a)}$`);
 }
 function Mt(a) {
-  let e = `${ct}T${dt(a)}`;
+  let e = `${ut}T${pt(a)}`;
   const t = [];
   return t.push(a.local ? "Z?" : "Z"), a.offset && t.push("([+-]\\d{2}:?\\d{2})"), e = `${e}(${t.join("|")})`, new RegExp(`^${e}$`);
 }
@@ -954,7 +943,7 @@ function Bt(a, e) {
 function Ft(a, e) {
   return !!((e === "v4" || !e) && jt.test(a) || (e === "v6" || !e) && $t.test(a));
 }
-class te extends A {
+class ae extends C {
   _parse(e) {
     if (this._def.coerce && (e.data = String(e.data)), this._getType(e) !== h.string) {
       const s = this._getOrReturnCtx(e);
@@ -962,7 +951,7 @@ class te extends A {
         code: c.invalid_type,
         expected: h.string,
         received: s.parsedType
-      }), y;
+      }), x;
     }
     const r = new B();
     let n;
@@ -1009,7 +998,7 @@ class te extends A {
           message: s.message
         }), r.dirty());
       else if (s.kind === "emoji")
-        Re || (Re = new RegExp(Ot, "u")), Re.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+        Oe || (Oe = new RegExp(Ot, "u")), Oe.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
           validation: "emoji",
           code: c.invalid_string,
           message: s.message
@@ -1106,7 +1095,7 @@ class te extends A {
         validation: "base64url",
         code: c.invalid_string,
         message: s.message
-      }), r.dirty()) : S.assertNever(s);
+      }), r.dirty()) : N.assertNever(s);
     return { status: r.value, value: e.data };
   }
   _regex(e, t, r) {
@@ -1117,7 +1106,7 @@ class te extends A {
     });
   }
   _addCheck(e) {
-    return new te({
+    return new ae({
       ...this._def,
       checks: [...this._def.checks, e]
     });
@@ -1253,19 +1242,19 @@ class te extends A {
     return this.min(1, m.errToObj(e));
   }
   trim() {
-    return new te({
+    return new ae({
       ...this._def,
       checks: [...this._def.checks, { kind: "trim" }]
     });
   }
   toLowerCase() {
-    return new te({
+    return new ae({
       ...this._def,
       checks: [...this._def.checks, { kind: "toLowerCase" }]
     });
   }
   toUpperCase() {
-    return new te({
+    return new ae({
       ...this._def,
       checks: [...this._def.checks, { kind: "toUpperCase" }]
     });
@@ -1331,17 +1320,17 @@ class te extends A {
     return e;
   }
 }
-te.create = (a) => new te({
+ae.create = (a) => new ae({
   checks: [],
-  typeName: x.ZodString,
+  typeName: _.ZodString,
   coerce: a?.coerce ?? !1,
-  ...b(a)
+  ...k(a)
 });
 function Wt(a, e) {
   const t = (a.toString().split(".")[1] || "").length, r = (e.toString().split(".")[1] || "").length, n = t > r ? t : r, s = Number.parseInt(a.toFixed(n).replace(".", "")), i = Number.parseInt(e.toFixed(n).replace(".", ""));
   return s % i / 10 ** n;
 }
-class ue extends A {
+class pe extends C {
   constructor() {
     super(...arguments), this.min = this.gte, this.max = this.lte, this.step = this.multipleOf;
   }
@@ -1352,12 +1341,12 @@ class ue extends A {
         code: c.invalid_type,
         expected: h.number,
         received: s.parsedType
-      }), y;
+      }), x;
     }
     let r;
     const n = new B();
     for (const s of this._def.checks)
-      s.kind === "int" ? S.isInteger(e.data) || (r = this._getOrReturnCtx(e, r), p(r, {
+      s.kind === "int" ? N.isInteger(e.data) || (r = this._getOrReturnCtx(e, r), p(r, {
         code: c.invalid_type,
         expected: "integer",
         received: "float",
@@ -1383,7 +1372,7 @@ class ue extends A {
       }), n.dirty()) : s.kind === "finite" ? Number.isFinite(e.data) || (r = this._getOrReturnCtx(e, r), p(r, {
         code: c.not_finite,
         message: s.message
-      }), n.dirty()) : S.assertNever(s);
+      }), n.dirty()) : N.assertNever(s);
     return { status: n.value, value: e.data };
   }
   gte(e, t) {
@@ -1399,7 +1388,7 @@ class ue extends A {
     return this.setLimit("max", e, !1, m.toString(t));
   }
   setLimit(e, t, r, n) {
-    return new ue({
+    return new pe({
       ...this._def,
       checks: [
         ...this._def.checks,
@@ -1413,7 +1402,7 @@ class ue extends A {
     });
   }
   _addCheck(e) {
-    return new ue({
+    return new pe({
       ...this._def,
       checks: [...this._def.checks, e]
     });
@@ -1495,7 +1484,7 @@ class ue extends A {
     return e;
   }
   get isInt() {
-    return !!this._def.checks.find((e) => e.kind === "int" || e.kind === "multipleOf" && S.isInteger(e.value));
+    return !!this._def.checks.find((e) => e.kind === "int" || e.kind === "multipleOf" && N.isInteger(e.value));
   }
   get isFinite() {
     let e = null, t = null;
@@ -1507,13 +1496,13 @@ class ue extends A {
     return Number.isFinite(t) && Number.isFinite(e);
   }
 }
-ue.create = (a) => new ue({
+pe.create = (a) => new pe({
   checks: [],
-  typeName: x.ZodNumber,
+  typeName: _.ZodNumber,
   coerce: a?.coerce || !1,
-  ...b(a)
+  ...k(a)
 });
-class ge extends A {
+class ve extends C {
   constructor() {
     super(...arguments), this.min = this.gte, this.max = this.lte;
   }
@@ -1545,7 +1534,7 @@ class ge extends A {
         code: c.not_multiple_of,
         multipleOf: s.value,
         message: s.message
-      }), n.dirty()) : S.assertNever(s);
+      }), n.dirty()) : N.assertNever(s);
     return { status: n.value, value: e.data };
   }
   _getInvalidInput(e) {
@@ -1554,7 +1543,7 @@ class ge extends A {
       code: c.invalid_type,
       expected: h.bigint,
       received: t.parsedType
-    }), y;
+    }), x;
   }
   gte(e, t) {
     return this.setLimit("min", e, !0, m.toString(t));
@@ -1569,7 +1558,7 @@ class ge extends A {
     return this.setLimit("max", e, !1, m.toString(t));
   }
   setLimit(e, t, r, n) {
-    return new ge({
+    return new ve({
       ...this._def,
       checks: [
         ...this._def.checks,
@@ -1583,7 +1572,7 @@ class ge extends A {
     });
   }
   _addCheck(e) {
-    return new ge({
+    return new ve({
       ...this._def,
       checks: [...this._def.checks, e]
     });
@@ -1640,13 +1629,13 @@ class ge extends A {
     return e;
   }
 }
-ge.create = (a) => new ge({
+ve.create = (a) => new ve({
   checks: [],
-  typeName: x.ZodBigInt,
+  typeName: _.ZodBigInt,
   coerce: a?.coerce ?? !1,
-  ...b(a)
+  ...k(a)
 });
-class Ge extends A {
+class Ke extends C {
   _parse(e) {
     if (this._def.coerce && (e.data = !!e.data), this._getType(e) !== h.boolean) {
       const r = this._getOrReturnCtx(e);
@@ -1654,17 +1643,17 @@ class Ge extends A {
         code: c.invalid_type,
         expected: h.boolean,
         received: r.parsedType
-      }), y;
+      }), x;
     }
-    return F(e.data);
+    return W(e.data);
   }
 }
-Ge.create = (a) => new Ge({
-  typeName: x.ZodBoolean,
+Ke.create = (a) => new Ke({
+  typeName: _.ZodBoolean,
   coerce: a?.coerce || !1,
-  ...b(a)
+  ...k(a)
 });
-class Ee extends A {
+class Ee extends C {
   _parse(e) {
     if (this._def.coerce && (e.data = new Date(e.data)), this._getType(e) !== h.date) {
       const s = this._getOrReturnCtx(e);
@@ -1672,13 +1661,13 @@ class Ee extends A {
         code: c.invalid_type,
         expected: h.date,
         received: s.parsedType
-      }), y;
+      }), x;
     }
     if (Number.isNaN(e.data.getTime())) {
       const s = this._getOrReturnCtx(e);
       return p(s, {
         code: c.invalid_date
-      }), y;
+      }), x;
     }
     const r = new B();
     let n;
@@ -1697,7 +1686,7 @@ class Ee extends A {
         exact: !1,
         maximum: s.value,
         type: "date"
-      }), r.dirty()) : S.assertNever(s);
+      }), r.dirty()) : N.assertNever(s);
     return {
       status: r.value,
       value: new Date(e.data.getTime())
@@ -1739,10 +1728,10 @@ class Ee extends A {
 Ee.create = (a) => new Ee({
   checks: [],
   coerce: a?.coerce || !1,
-  typeName: x.ZodDate,
-  ...b(a)
+  typeName: _.ZodDate,
+  ...k(a)
 });
-class Ye extends A {
+class Qe extends C {
   _parse(e) {
     if (this._getType(e) !== h.symbol) {
       const r = this._getOrReturnCtx(e);
@@ -1750,16 +1739,16 @@ class Ye extends A {
         code: c.invalid_type,
         expected: h.symbol,
         received: r.parsedType
-      }), y;
+      }), x;
     }
-    return F(e.data);
+    return W(e.data);
   }
 }
-Ye.create = (a) => new Ye({
-  typeName: x.ZodSymbol,
-  ...b(a)
+Qe.create = (a) => new Qe({
+  typeName: _.ZodSymbol,
+  ...k(a)
 });
-class Ke extends A {
+class Xe extends C {
   _parse(e) {
     if (this._getType(e) !== h.undefined) {
       const r = this._getOrReturnCtx(e);
@@ -1767,16 +1756,16 @@ class Ke extends A {
         code: c.invalid_type,
         expected: h.undefined,
         received: r.parsedType
-      }), y;
+      }), x;
     }
-    return F(e.data);
+    return W(e.data);
   }
 }
-Ke.create = (a) => new Ke({
-  typeName: x.ZodUndefined,
-  ...b(a)
+Xe.create = (a) => new Xe({
+  typeName: _.ZodUndefined,
+  ...k(a)
 });
-class Qe extends A {
+class et extends C {
   _parse(e) {
     if (this._getType(e) !== h.null) {
       const r = this._getOrReturnCtx(e);
@@ -1784,54 +1773,54 @@ class Qe extends A {
         code: c.invalid_type,
         expected: h.null,
         received: r.parsedType
-      }), y;
+      }), x;
     }
-    return F(e.data);
+    return W(e.data);
   }
 }
-Qe.create = (a) => new Qe({
-  typeName: x.ZodNull,
-  ...b(a)
+et.create = (a) => new et({
+  typeName: _.ZodNull,
+  ...k(a)
 });
-class Xe extends A {
+class tt extends C {
   constructor() {
     super(...arguments), this._any = !0;
   }
   _parse(e) {
-    return F(e.data);
+    return W(e.data);
   }
 }
-Xe.create = (a) => new Xe({
-  typeName: x.ZodAny,
-  ...b(a)
+tt.create = (a) => new tt({
+  typeName: _.ZodAny,
+  ...k(a)
 });
-class et extends A {
+class at extends C {
   constructor() {
     super(...arguments), this._unknown = !0;
   }
   _parse(e) {
-    return F(e.data);
+    return W(e.data);
   }
 }
-et.create = (a) => new et({
-  typeName: x.ZodUnknown,
-  ...b(a)
+at.create = (a) => new at({
+  typeName: _.ZodUnknown,
+  ...k(a)
 });
-class ne extends A {
+class se extends C {
   _parse(e) {
     const t = this._getOrReturnCtx(e);
     return p(t, {
       code: c.invalid_type,
       expected: h.never,
       received: t.parsedType
-    }), y;
+    }), x;
   }
 }
-ne.create = (a) => new ne({
-  typeName: x.ZodNever,
-  ...b(a)
+se.create = (a) => new se({
+  typeName: _.ZodNever,
+  ...k(a)
 });
-class tt extends A {
+class rt extends C {
   _parse(e) {
     if (this._getType(e) !== h.undefined) {
       const r = this._getOrReturnCtx(e);
@@ -1839,16 +1828,16 @@ class tt extends A {
         code: c.invalid_type,
         expected: h.void,
         received: r.parsedType
-      }), y;
+      }), x;
     }
-    return F(e.data);
+    return W(e.data);
   }
 }
-tt.create = (a) => new tt({
-  typeName: x.ZodVoid,
-  ...b(a)
+rt.create = (a) => new rt({
+  typeName: _.ZodVoid,
+  ...k(a)
 });
-class q extends A {
+class H extends C {
   _parse(e) {
     const { ctx: t, status: r } = this._processInputParams(e), n = this._def;
     if (t.parsedType !== h.array)
@@ -1856,7 +1845,7 @@ class q extends A {
         code: c.invalid_type,
         expected: h.array,
         received: t.parsedType
-      }), y;
+      }), x;
     if (n.exactLength !== null) {
       const i = t.data.length > n.exactLength.value, o = t.data.length < n.exactLength.value;
       (i || o) && (p(t, {
@@ -1884,27 +1873,27 @@ class q extends A {
       exact: !1,
       message: n.maxLength.message
     }), r.dirty()), t.common.async)
-      return Promise.all([...t.data].map((i, o) => n.type._parseAsync(new re(t, i, t.path, o)))).then((i) => B.mergeArray(r, i));
-    const s = [...t.data].map((i, o) => n.type._parseSync(new re(t, i, t.path, o)));
+      return Promise.all([...t.data].map((i, o) => n.type._parseAsync(new ne(t, i, t.path, o)))).then((i) => B.mergeArray(r, i));
+    const s = [...t.data].map((i, o) => n.type._parseSync(new ne(t, i, t.path, o)));
     return B.mergeArray(r, s);
   }
   get element() {
     return this._def.type;
   }
   min(e, t) {
-    return new q({
+    return new H({
       ...this._def,
       minLength: { value: e, message: m.toString(t) }
     });
   }
   max(e, t) {
-    return new q({
+    return new H({
       ...this._def,
       maxLength: { value: e, message: m.toString(t) }
     });
   }
   length(e, t) {
-    return new q({
+    return new H({
       ...this._def,
       exactLength: { value: e, message: m.toString(t) }
     });
@@ -1913,38 +1902,38 @@ class q extends A {
     return this.min(1, e);
   }
 }
-q.create = (a, e) => new q({
+H.create = (a, e) => new H({
   type: a,
   minLength: null,
   maxLength: null,
   exactLength: null,
-  typeName: x.ZodArray,
-  ...b(e)
+  typeName: _.ZodArray,
+  ...k(e)
 });
-function ce(a) {
-  if (a instanceof $) {
+function de(a) {
+  if (a instanceof L) {
     const e = {};
     for (const t in a.shape) {
       const r = a.shape[t];
-      e[t] = ae.create(ce(r));
+      e[t] = re.create(de(r));
     }
-    return new $({
+    return new L({
       ...a._def,
       shape: () => e
     });
-  } else return a instanceof q ? new q({
+  } else return a instanceof H ? new H({
     ...a._def,
-    type: ce(a.element)
-  }) : a instanceof ae ? ae.create(ce(a.unwrap())) : a instanceof he ? he.create(ce(a.unwrap())) : a instanceof oe ? oe.create(a.items.map((e) => ce(e))) : a;
+    type: de(a.element)
+  }) : a instanceof re ? re.create(de(a.unwrap())) : a instanceof me ? me.create(de(a.unwrap())) : a instanceof le ? le.create(a.items.map((e) => de(e))) : a;
 }
-class $ extends A {
+class L extends C {
   constructor() {
     super(...arguments), this._cached = null, this.nonstrict = this.passthrough, this.augment = this.extend;
   }
   _getCached() {
     if (this._cached !== null)
       return this._cached;
-    const e = this._def.shape(), t = S.objectKeys(e);
+    const e = this._def.shape(), t = N.objectKeys(e);
     return this._cached = { shape: e, keys: t }, this._cached;
   }
   _parse(e) {
@@ -1954,22 +1943,22 @@ class $ extends A {
         code: c.invalid_type,
         expected: h.object,
         received: d.parsedType
-      }), y;
+      }), x;
     }
     const { status: r, ctx: n } = this._processInputParams(e), { shape: s, keys: i } = this._getCached(), o = [];
-    if (!(this._def.catchall instanceof ne && this._def.unknownKeys === "strip"))
+    if (!(this._def.catchall instanceof se && this._def.unknownKeys === "strip"))
       for (const d in n.data)
         i.includes(d) || o.push(d);
     const u = [];
     for (const d of i) {
-      const v = s[d], O = n.data[d];
+      const v = s[d], A = n.data[d];
       u.push({
         key: { status: "valid", value: d },
-        value: v._parse(new re(n, O, n.path, d)),
+        value: v._parse(new ne(n, A, n.path, d)),
         alwaysSet: d in n.data
       });
     }
-    if (this._def.catchall instanceof ne) {
+    if (this._def.catchall instanceof se) {
       const d = this._def.unknownKeys;
       if (d === "passthrough")
         for (const v of o)
@@ -1986,11 +1975,11 @@ class $ extends A {
     } else {
       const d = this._def.catchall;
       for (const v of o) {
-        const O = n.data[v];
+        const A = n.data[v];
         u.push({
           key: { status: "valid", value: v },
           value: d._parse(
-            new re(n, O, n.path, v)
+            new ne(n, A, n.path, v)
             //, ctx.child(key), value, getParsedType(value)
           ),
           alwaysSet: v in n.data
@@ -2000,9 +1989,9 @@ class $ extends A {
     return n.common.async ? Promise.resolve().then(async () => {
       const d = [];
       for (const v of u) {
-        const O = await v.key, f = await v.value;
+        const A = await v.key, f = await v.value;
         d.push({
-          key: O,
+          key: A,
           value: f,
           alwaysSet: v.alwaysSet
         });
@@ -2014,7 +2003,7 @@ class $ extends A {
     return this._def.shape();
   }
   strict(e) {
-    return m.errToObj, new $({
+    return m.errToObj, new L({
       ...this._def,
       unknownKeys: "strict",
       ...e !== void 0 ? {
@@ -2030,13 +2019,13 @@ class $ extends A {
     });
   }
   strip() {
-    return new $({
+    return new L({
       ...this._def,
       unknownKeys: "strip"
     });
   }
   passthrough() {
-    return new $({
+    return new L({
       ...this._def,
       unknownKeys: "passthrough"
     });
@@ -2059,7 +2048,7 @@ class $ extends A {
   //     }) as any;
   //   };
   extend(e) {
-    return new $({
+    return new L({
       ...this._def,
       shape: () => ({
         ...this._def.shape(),
@@ -2073,14 +2062,14 @@ class $ extends A {
    * upgrade if you are experiencing issues.
    */
   merge(e) {
-    return new $({
+    return new L({
       unknownKeys: e._def.unknownKeys,
       catchall: e._def.catchall,
       shape: () => ({
         ...this._def.shape(),
         ...e._def.shape()
       }),
-      typeName: x.ZodObject
+      typeName: _.ZodObject
     });
   }
   // merge<
@@ -2143,25 +2132,25 @@ class $ extends A {
   //   return merged;
   // }
   catchall(e) {
-    return new $({
+    return new L({
       ...this._def,
       catchall: e
     });
   }
   pick(e) {
     const t = {};
-    for (const r of S.objectKeys(e))
+    for (const r of N.objectKeys(e))
       e[r] && this.shape[r] && (t[r] = this.shape[r]);
-    return new $({
+    return new L({
       ...this._def,
       shape: () => t
     });
   }
   omit(e) {
     const t = {};
-    for (const r of S.objectKeys(this.shape))
+    for (const r of N.objectKeys(this.shape))
       e[r] || (t[r] = this.shape[r]);
-    return new $({
+    return new L({
       ...this._def,
       shape: () => t
     });
@@ -2170,61 +2159,61 @@ class $ extends A {
    * @deprecated
    */
   deepPartial() {
-    return ce(this);
+    return de(this);
   }
   partial(e) {
     const t = {};
-    for (const r of S.objectKeys(this.shape)) {
+    for (const r of N.objectKeys(this.shape)) {
       const n = this.shape[r];
       e && !e[r] ? t[r] = n : t[r] = n.optional();
     }
-    return new $({
+    return new L({
       ...this._def,
       shape: () => t
     });
   }
   required(e) {
     const t = {};
-    for (const r of S.objectKeys(this.shape))
+    for (const r of N.objectKeys(this.shape))
       if (e && !e[r])
         t[r] = this.shape[r];
       else {
         let s = this.shape[r];
-        for (; s instanceof ae; )
+        for (; s instanceof re; )
           s = s._def.innerType;
         t[r] = s;
       }
-    return new $({
+    return new L({
       ...this._def,
       shape: () => t
     });
   }
   keyof() {
-    return ut(S.objectKeys(this.shape));
+    return ft(N.objectKeys(this.shape));
   }
 }
-$.create = (a, e) => new $({
+L.create = (a, e) => new L({
   shape: () => a,
   unknownKeys: "strip",
-  catchall: ne.create(),
-  typeName: x.ZodObject,
-  ...b(e)
+  catchall: se.create(),
+  typeName: _.ZodObject,
+  ...k(e)
 });
-$.strictCreate = (a, e) => new $({
+L.strictCreate = (a, e) => new L({
   shape: () => a,
   unknownKeys: "strict",
-  catchall: ne.create(),
-  typeName: x.ZodObject,
-  ...b(e)
+  catchall: se.create(),
+  typeName: _.ZodObject,
+  ...k(e)
 });
-$.lazycreate = (a, e) => new $({
+L.lazycreate = (a, e) => new L({
   shape: a,
   unknownKeys: "strip",
-  catchall: ne.create(),
-  typeName: x.ZodObject,
-  ...b(e)
+  catchall: se.create(),
+  typeName: _.ZodObject,
+  ...k(e)
 });
-class Ce extends A {
+class Ce extends C {
   _parse(e) {
     const { ctx: t } = this._processInputParams(e), r = this._def.options;
     function n(s) {
@@ -2234,11 +2223,11 @@ class Ce extends A {
       for (const o of s)
         if (o.result.status === "dirty")
           return t.common.issues.push(...o.ctx.common.issues), o.result;
-      const i = s.map((o) => new H(o.ctx.common.issues));
+      const i = s.map((o) => new G(o.ctx.common.issues));
       return p(t, {
         code: c.invalid_union,
         unionErrors: i
-      }), y;
+      }), x;
     }
     if (t.common.async)
       return Promise.all(r.map(async (s) => {
@@ -2281,11 +2270,11 @@ class Ce extends A {
       }
       if (s)
         return t.common.issues.push(...s.ctx.common.issues), s.result;
-      const o = i.map((u) => new H(u));
+      const o = i.map((u) => new G(u));
       return p(t, {
         code: c.invalid_union,
         unionErrors: o
-      }), y;
+      }), x;
     }
   }
   get options() {
@@ -2294,17 +2283,17 @@ class Ce extends A {
 }
 Ce.create = (a, e) => new Ce({
   options: a,
-  typeName: x.ZodUnion,
-  ...b(e)
+  typeName: _.ZodUnion,
+  ...k(e)
 });
-function Oe(a, e) {
-  const t = Q(a), r = Q(e);
+function je(a, e) {
+  const t = X(a), r = X(e);
   if (a === e)
     return { valid: !0, data: a };
   if (t === h.object && r === h.object) {
-    const n = S.objectKeys(e), s = S.objectKeys(a).filter((o) => n.indexOf(o) !== -1), i = { ...a, ...e };
+    const n = N.objectKeys(e), s = N.objectKeys(a).filter((o) => n.indexOf(o) !== -1), i = { ...a, ...e };
     for (const o of s) {
-      const u = Oe(a[o], e[o]);
+      const u = je(a[o], e[o]);
       if (!u.valid)
         return { valid: !1 };
       i[o] = u.data;
@@ -2315,7 +2304,7 @@ function Oe(a, e) {
       return { valid: !1 };
     const n = [];
     for (let s = 0; s < a.length; s++) {
-      const i = a[s], o = e[s], u = Oe(i, o);
+      const i = a[s], o = e[s], u = je(i, o);
       if (!u.valid)
         return { valid: !1 };
       n.push(u.data);
@@ -2323,15 +2312,15 @@ function Oe(a, e) {
     return { valid: !0, data: n };
   } else return t === h.date && r === h.date && +a == +e ? { valid: !0, data: a } : { valid: !1 };
 }
-class Ne extends A {
+class Ne extends C {
   _parse(e) {
     const { status: t, ctx: r } = this._processInputParams(e), n = (s, i) => {
-      if (qe(s) || qe(i))
-        return y;
-      const o = Oe(s.value, i.value);
-      return o.valid ? ((Je(s) || Je(i)) && t.dirty(), { status: t.value, value: o.data }) : (p(r, {
+      if (Je(s) || Je(i))
+        return x;
+      const o = je(s.value, i.value);
+      return o.valid ? ((Ye(s) || Ye(i)) && t.dirty(), { status: t.value, value: o.data }) : (p(r, {
         code: c.invalid_intersection_types
-      }), y);
+      }), x);
     };
     return r.common.async ? Promise.all([
       this._def.left._parseAsync({
@@ -2358,10 +2347,10 @@ class Ne extends A {
 Ne.create = (a, e, t) => new Ne({
   left: a,
   right: e,
-  typeName: x.ZodIntersection,
-  ...b(t)
+  typeName: _.ZodIntersection,
+  ...k(t)
 });
-class oe extends A {
+class le extends C {
   _parse(e) {
     const { status: t, ctx: r } = this._processInputParams(e);
     if (r.parsedType !== h.array)
@@ -2369,7 +2358,7 @@ class oe extends A {
         code: c.invalid_type,
         expected: h.array,
         received: r.parsedType
-      }), y;
+      }), x;
     if (r.data.length < this._def.items.length)
       return p(r, {
         code: c.too_small,
@@ -2377,7 +2366,7 @@ class oe extends A {
         inclusive: !0,
         exact: !1,
         type: "array"
-      }), y;
+      }), x;
     !this._def.rest && r.data.length > this._def.items.length && (p(r, {
       code: c.too_big,
       maximum: this._def.items.length,
@@ -2387,7 +2376,7 @@ class oe extends A {
     }), t.dirty());
     const s = [...r.data].map((i, o) => {
       const u = this._def.items[o] || this._def.rest;
-      return u ? u._parse(new re(r, i, r.path, o)) : null;
+      return u ? u._parse(new ne(r, i, r.path, o)) : null;
     }).filter((i) => !!i);
     return r.common.async ? Promise.all(s).then((i) => B.mergeArray(t, i)) : B.mergeArray(t, s);
   }
@@ -2395,23 +2384,23 @@ class oe extends A {
     return this._def.items;
   }
   rest(e) {
-    return new oe({
+    return new le({
       ...this._def,
       rest: e
     });
   }
 }
-oe.create = (a, e) => {
+le.create = (a, e) => {
   if (!Array.isArray(a))
     throw new Error("You must pass an array of schemas to z.tuple([ ... ])");
-  return new oe({
+  return new le({
     items: a,
-    typeName: x.ZodTuple,
+    typeName: _.ZodTuple,
     rest: null,
-    ...b(e)
+    ...k(e)
   });
 };
-class at extends A {
+class nt extends C {
   get keySchema() {
     return this._def.keyType;
   }
@@ -2425,10 +2414,10 @@ class at extends A {
         code: c.invalid_type,
         expected: h.map,
         received: r.parsedType
-      }), y;
+      }), x;
     const n = this._def.keyType, s = this._def.valueType, i = [...r.data.entries()].map(([o, u], d) => ({
-      key: n._parse(new re(r, o, r.path, [d, "key"])),
-      value: s._parse(new re(r, u, r.path, [d, "value"]))
+      key: n._parse(new ne(r, o, r.path, [d, "key"])),
+      value: s._parse(new ne(r, u, r.path, [d, "value"]))
     }));
     if (r.common.async) {
       const o = /* @__PURE__ */ new Map();
@@ -2436,7 +2425,7 @@ class at extends A {
         for (const u of i) {
           const d = await u.key, v = await u.value;
           if (d.status === "aborted" || v.status === "aborted")
-            return y;
+            return x;
           (d.status === "dirty" || v.status === "dirty") && t.dirty(), o.set(d.value, v.value);
         }
         return { status: t.value, value: o };
@@ -2446,20 +2435,20 @@ class at extends A {
       for (const u of i) {
         const d = u.key, v = u.value;
         if (d.status === "aborted" || v.status === "aborted")
-          return y;
+          return x;
         (d.status === "dirty" || v.status === "dirty") && t.dirty(), o.set(d.value, v.value);
       }
       return { status: t.value, value: o };
     }
   }
 }
-at.create = (a, e, t) => new at({
+nt.create = (a, e, t) => new nt({
   valueType: e,
   keyType: a,
-  typeName: x.ZodMap,
-  ...b(t)
+  typeName: _.ZodMap,
+  ...k(t)
 });
-class ve extends A {
+class ye extends C {
   _parse(e) {
     const { status: t, ctx: r } = this._processInputParams(e);
     if (r.parsedType !== h.set)
@@ -2467,7 +2456,7 @@ class ve extends A {
         code: c.invalid_type,
         expected: h.set,
         received: r.parsedType
-      }), y;
+      }), x;
     const n = this._def;
     n.minSize !== null && r.data.size < n.minSize.value && (p(r, {
       code: c.too_small,
@@ -2489,22 +2478,22 @@ class ve extends A {
       const d = /* @__PURE__ */ new Set();
       for (const v of u) {
         if (v.status === "aborted")
-          return y;
+          return x;
         v.status === "dirty" && t.dirty(), d.add(v.value);
       }
       return { status: t.value, value: d };
     }
-    const o = [...r.data.values()].map((u, d) => s._parse(new re(r, u, r.path, d)));
+    const o = [...r.data.values()].map((u, d) => s._parse(new ne(r, u, r.path, d)));
     return r.common.async ? Promise.all(o).then((u) => i(u)) : i(o);
   }
   min(e, t) {
-    return new ve({
+    return new ye({
       ...this._def,
       minSize: { value: e, message: m.toString(t) }
     });
   }
   max(e, t) {
-    return new ve({
+    return new ye({
       ...this._def,
       maxSize: { value: e, message: m.toString(t) }
     });
@@ -2516,14 +2505,14 @@ class ve extends A {
     return this.min(1, e);
   }
 }
-ve.create = (a, e) => new ve({
+ye.create = (a, e) => new ye({
   valueType: a,
   minSize: null,
   maxSize: null,
-  typeName: x.ZodSet,
-  ...b(e)
+  typeName: _.ZodSet,
+  ...k(e)
 });
-class rt extends A {
+class st extends C {
   get schema() {
     return this._def.getter();
   }
@@ -2532,12 +2521,12 @@ class rt extends A {
     return this._def.getter()._parse({ data: t.data, path: t.path, parent: t });
   }
 }
-rt.create = (a, e) => new rt({
+st.create = (a, e) => new st({
   getter: a,
-  typeName: x.ZodLazy,
-  ...b(e)
+  typeName: _.ZodLazy,
+  ...k(e)
 });
-class nt extends A {
+class it extends C {
   _parse(e) {
     if (e.data !== this._def.value) {
       const t = this._getOrReturnCtx(e);
@@ -2545,7 +2534,7 @@ class nt extends A {
         received: t.data,
         code: c.invalid_literal,
         expected: this._def.value
-      }), y;
+      }), x;
     }
     return { status: "valid", value: e.data };
   }
@@ -2553,27 +2542,27 @@ class nt extends A {
     return this._def.value;
   }
 }
-nt.create = (a, e) => new nt({
+it.create = (a, e) => new it({
   value: a,
-  typeName: x.ZodLiteral,
-  ...b(e)
+  typeName: _.ZodLiteral,
+  ...k(e)
 });
-function ut(a, e) {
-  return new pe({
+function ft(a, e) {
+  return new fe({
     values: a,
-    typeName: x.ZodEnum,
-    ...b(e)
+    typeName: _.ZodEnum,
+    ...k(e)
   });
 }
-class pe extends A {
+class fe extends C {
   _parse(e) {
     if (typeof e.data != "string") {
       const t = this._getOrReturnCtx(e), r = this._def.values;
       return p(t, {
-        expected: S.joinValues(r),
+        expected: N.joinValues(r),
         received: t.parsedType,
         code: c.invalid_type
-      }), y;
+      }), x;
     }
     if (this._cache || (this._cache = new Set(this._def.values)), !this._cache.has(e.data)) {
       const t = this._getOrReturnCtx(e), r = this._def.values;
@@ -2581,9 +2570,9 @@ class pe extends A {
         received: t.data,
         code: c.invalid_enum_value,
         options: r
-      }), y;
+      }), x;
     }
-    return F(e.data);
+    return W(e.data);
   }
   get options() {
     return this._def.values;
@@ -2607,50 +2596,50 @@ class pe extends A {
     return e;
   }
   extract(e, t = this._def) {
-    return pe.create(e, {
+    return fe.create(e, {
       ...this._def,
       ...t
     });
   }
   exclude(e, t = this._def) {
-    return pe.create(this.options.filter((r) => !e.includes(r)), {
+    return fe.create(this.options.filter((r) => !e.includes(r)), {
       ...this._def,
       ...t
     });
   }
 }
-pe.create = ut;
-class st extends A {
+fe.create = ft;
+class ot extends C {
   _parse(e) {
-    const t = S.getValidEnumValues(this._def.values), r = this._getOrReturnCtx(e);
+    const t = N.getValidEnumValues(this._def.values), r = this._getOrReturnCtx(e);
     if (r.parsedType !== h.string && r.parsedType !== h.number) {
-      const n = S.objectValues(t);
+      const n = N.objectValues(t);
       return p(r, {
-        expected: S.joinValues(n),
+        expected: N.joinValues(n),
         received: r.parsedType,
         code: c.invalid_type
-      }), y;
+      }), x;
     }
-    if (this._cache || (this._cache = new Set(S.getValidEnumValues(this._def.values))), !this._cache.has(e.data)) {
-      const n = S.objectValues(t);
+    if (this._cache || (this._cache = new Set(N.getValidEnumValues(this._def.values))), !this._cache.has(e.data)) {
+      const n = N.objectValues(t);
       return p(r, {
         received: r.data,
         code: c.invalid_enum_value,
         options: n
-      }), y;
+      }), x;
     }
-    return F(e.data);
+    return W(e.data);
   }
   get enum() {
     return this._def.values;
   }
 }
-st.create = (a, e) => new st({
+ot.create = (a, e) => new ot({
   values: a,
-  typeName: x.ZodNativeEnum,
-  ...b(e)
+  typeName: _.ZodNativeEnum,
+  ...k(e)
 });
-class Te extends A {
+class Te extends C {
   unwrap() {
     return this._def.type;
   }
@@ -2661,9 +2650,9 @@ class Te extends A {
         code: c.invalid_type,
         expected: h.promise,
         received: t.parsedType
-      }), y;
+      }), x;
     const r = t.parsedType === h.promise ? t.data : Promise.resolve(t.data);
-    return F(r.then((n) => this._def.type.parseAsync(n, {
+    return W(r.then((n) => this._def.type.parseAsync(n, {
       path: t.path,
       errorMap: t.common.contextualErrorMap
     })));
@@ -2671,15 +2660,15 @@ class Te extends A {
 }
 Te.create = (a, e) => new Te({
   type: a,
-  typeName: x.ZodPromise,
-  ...b(e)
+  typeName: _.ZodPromise,
+  ...k(e)
 });
-class fe extends A {
+class he extends C {
   innerType() {
     return this._def.schema;
   }
   sourceType() {
-    return this._def.schema._def.typeName === x.ZodEffects ? this._def.schema.sourceType() : this._def.schema;
+    return this._def.schema._def.typeName === _.ZodEffects ? this._def.schema.sourceType() : this._def.schema;
   }
   _parse(e) {
     const { status: t, ctx: r } = this._processInputParams(e), n = this._def.effect || null, s = {
@@ -2695,23 +2684,23 @@ class fe extends A {
       if (r.common.async)
         return Promise.resolve(i).then(async (o) => {
           if (t.value === "aborted")
-            return y;
+            return x;
           const u = await this._def.schema._parseAsync({
             data: o,
             path: r.path,
             parent: r
           });
-          return u.status === "aborted" ? y : u.status === "dirty" || t.value === "dirty" ? me(u.value) : u;
+          return u.status === "aborted" ? x : u.status === "dirty" || t.value === "dirty" ? ge(u.value) : u;
         });
       {
         if (t.value === "aborted")
-          return y;
+          return x;
         const o = this._def.schema._parseSync({
           data: i,
           path: r.path,
           parent: r
         });
-        return o.status === "aborted" ? y : o.status === "dirty" || t.value === "dirty" ? me(o.value) : o;
+        return o.status === "aborted" ? x : o.status === "dirty" || t.value === "dirty" ? ge(o.value) : o;
       }
     }
     if (n.type === "refinement") {
@@ -2729,9 +2718,9 @@ class fe extends A {
           path: r.path,
           parent: r
         });
-        return o.status === "aborted" ? y : (o.status === "dirty" && t.dirty(), i(o.value), { status: t.value, value: o.value });
+        return o.status === "aborted" ? x : (o.status === "dirty" && t.dirty(), i(o.value), { status: t.value, value: o.value });
       } else
-        return this._def.schema._parseAsync({ data: r.data, path: r.path, parent: r }).then((o) => o.status === "aborted" ? y : (o.status === "dirty" && t.dirty(), i(o.value).then(() => ({ status: t.value, value: o.value }))));
+        return this._def.schema._parseAsync({ data: r.data, path: r.path, parent: r }).then((o) => o.status === "aborted" ? x : (o.status === "dirty" && t.dirty(), i(o.value).then(() => ({ status: t.value, value: o.value }))));
     }
     if (n.type === "transform")
       if (r.common.async === !1) {
@@ -2740,59 +2729,59 @@ class fe extends A {
           path: r.path,
           parent: r
         });
-        if (!de(i))
-          return y;
+        if (!ue(i))
+          return x;
         const o = n.transform(i.value, s);
         if (o instanceof Promise)
           throw new Error("Asynchronous transform encountered during synchronous parse operation. Use .parseAsync instead.");
         return { status: t.value, value: o };
       } else
-        return this._def.schema._parseAsync({ data: r.data, path: r.path, parent: r }).then((i) => de(i) ? Promise.resolve(n.transform(i.value, s)).then((o) => ({
+        return this._def.schema._parseAsync({ data: r.data, path: r.path, parent: r }).then((i) => ue(i) ? Promise.resolve(n.transform(i.value, s)).then((o) => ({
           status: t.value,
           value: o
-        })) : y);
-    S.assertNever(n);
+        })) : x);
+    N.assertNever(n);
   }
 }
-fe.create = (a, e, t) => new fe({
+he.create = (a, e, t) => new he({
   schema: a,
-  typeName: x.ZodEffects,
+  typeName: _.ZodEffects,
   effect: e,
-  ...b(t)
+  ...k(t)
 });
-fe.createWithPreprocess = (a, e, t) => new fe({
+he.createWithPreprocess = (a, e, t) => new he({
   schema: e,
   effect: { type: "preprocess", transform: a },
-  typeName: x.ZodEffects,
-  ...b(t)
+  typeName: _.ZodEffects,
+  ...k(t)
 });
-class ae extends A {
+class re extends C {
   _parse(e) {
-    return this._getType(e) === h.undefined ? F(void 0) : this._def.innerType._parse(e);
+    return this._getType(e) === h.undefined ? W(void 0) : this._def.innerType._parse(e);
   }
   unwrap() {
     return this._def.innerType;
   }
 }
-ae.create = (a, e) => new ae({
+re.create = (a, e) => new re({
   innerType: a,
-  typeName: x.ZodOptional,
-  ...b(e)
+  typeName: _.ZodOptional,
+  ...k(e)
 });
-class he extends A {
+class me extends C {
   _parse(e) {
-    return this._getType(e) === h.null ? F(null) : this._def.innerType._parse(e);
+    return this._getType(e) === h.null ? W(null) : this._def.innerType._parse(e);
   }
   unwrap() {
     return this._def.innerType;
   }
 }
-he.create = (a, e) => new he({
+me.create = (a, e) => new me({
   innerType: a,
-  typeName: x.ZodNullable,
-  ...b(e)
+  typeName: _.ZodNullable,
+  ...k(e)
 });
-class Ze extends A {
+class De extends C {
   _parse(e) {
     const { ctx: t } = this._processInputParams(e);
     let r = t.data;
@@ -2806,13 +2795,13 @@ class Ze extends A {
     return this._def.innerType;
   }
 }
-Ze.create = (a, e) => new Ze({
+De.create = (a, e) => new De({
   innerType: a,
-  typeName: x.ZodDefault,
+  typeName: _.ZodDefault,
   defaultValue: typeof e.default == "function" ? e.default : () => e.default,
-  ...b(e)
+  ...k(e)
 });
-class je extends A {
+class $e extends C {
   _parse(e) {
     const { ctx: t } = this._processInputParams(e), r = {
       ...t,
@@ -2831,7 +2820,7 @@ class je extends A {
       status: "valid",
       value: s.status === "valid" ? s.value : this._def.catchValue({
         get error() {
-          return new H(r.common.issues);
+          return new G(r.common.issues);
         },
         input: r.data
       })
@@ -2839,7 +2828,7 @@ class je extends A {
       status: "valid",
       value: n.status === "valid" ? n.value : this._def.catchValue({
         get error() {
-          return new H(r.common.issues);
+          return new G(r.common.issues);
         },
         input: r.data
       })
@@ -2849,13 +2838,13 @@ class je extends A {
     return this._def.innerType;
   }
 }
-je.create = (a, e) => new je({
+$e.create = (a, e) => new $e({
   innerType: a,
-  typeName: x.ZodCatch,
+  typeName: _.ZodCatch,
   catchValue: typeof e.catch == "function" ? e.catch : () => e.catch,
-  ...b(e)
+  ...k(e)
 });
-class it extends A {
+class lt extends C {
   _parse(e) {
     if (this._getType(e) !== h.nan) {
       const r = this._getOrReturnCtx(e);
@@ -2863,16 +2852,16 @@ class it extends A {
         code: c.invalid_type,
         expected: h.nan,
         received: r.parsedType
-      }), y;
+      }), x;
     }
     return { status: "valid", value: e.data };
   }
 }
-it.create = (a) => new it({
-  typeName: x.ZodNaN,
-  ...b(a)
+lt.create = (a) => new lt({
+  typeName: _.ZodNaN,
+  ...k(a)
 });
-class qt extends A {
+class qt extends C {
   _parse(e) {
     const { ctx: t } = this._processInputParams(e), r = t.data;
     return this._def.type._parse({
@@ -2885,7 +2874,7 @@ class qt extends A {
     return this._def.type;
   }
 }
-class Ve extends A {
+class Me extends C {
   _parse(e) {
     const { status: t, ctx: r } = this._processInputParams(e);
     if (r.common.async)
@@ -2895,7 +2884,7 @@ class Ve extends A {
           path: r.path,
           parent: r
         });
-        return s.status === "aborted" ? y : s.status === "dirty" ? (t.dirty(), me(s.value)) : this._def.out._parseAsync({
+        return s.status === "aborted" ? x : s.status === "dirty" ? (t.dirty(), ge(s.value)) : this._def.out._parseAsync({
           data: s.value,
           path: r.path,
           parent: r
@@ -2907,7 +2896,7 @@ class Ve extends A {
         path: r.path,
         parent: r
       });
-      return n.status === "aborted" ? y : n.status === "dirty" ? (t.dirty(), {
+      return n.status === "aborted" ? x : n.status === "dirty" ? (t.dirty(), {
         status: "dirty",
         value: n.value
       }) : this._def.out._parseSync({
@@ -2918,59 +2907,59 @@ class Ve extends A {
     }
   }
   static create(e, t) {
-    return new Ve({
+    return new Me({
       in: e,
       out: t,
-      typeName: x.ZodPipeline
+      typeName: _.ZodPipeline
     });
   }
 }
-class De extends A {
+class Pe extends C {
   _parse(e) {
-    const t = this._def.innerType._parse(e), r = (n) => (de(n) && (n.value = Object.freeze(n.value)), n);
+    const t = this._def.innerType._parse(e), r = (n) => (ue(n) && (n.value = Object.freeze(n.value)), n);
     return we(t) ? t.then((n) => r(n)) : r(t);
   }
   unwrap() {
     return this._def.innerType;
   }
 }
-De.create = (a, e) => new De({
+Pe.create = (a, e) => new Pe({
   innerType: a,
-  typeName: x.ZodReadonly,
-  ...b(e)
+  typeName: _.ZodReadonly,
+  ...k(e)
 });
-var x;
+var _;
 (function(a) {
   a.ZodString = "ZodString", a.ZodNumber = "ZodNumber", a.ZodNaN = "ZodNaN", a.ZodBigInt = "ZodBigInt", a.ZodBoolean = "ZodBoolean", a.ZodDate = "ZodDate", a.ZodSymbol = "ZodSymbol", a.ZodUndefined = "ZodUndefined", a.ZodNull = "ZodNull", a.ZodAny = "ZodAny", a.ZodUnknown = "ZodUnknown", a.ZodNever = "ZodNever", a.ZodVoid = "ZodVoid", a.ZodArray = "ZodArray", a.ZodObject = "ZodObject", a.ZodUnion = "ZodUnion", a.ZodDiscriminatedUnion = "ZodDiscriminatedUnion", a.ZodIntersection = "ZodIntersection", a.ZodTuple = "ZodTuple", a.ZodRecord = "ZodRecord", a.ZodMap = "ZodMap", a.ZodSet = "ZodSet", a.ZodFunction = "ZodFunction", a.ZodLazy = "ZodLazy", a.ZodLiteral = "ZodLiteral", a.ZodEnum = "ZodEnum", a.ZodEffects = "ZodEffects", a.ZodNativeEnum = "ZodNativeEnum", a.ZodOptional = "ZodOptional", a.ZodNullable = "ZodNullable", a.ZodDefault = "ZodDefault", a.ZodCatch = "ZodCatch", a.ZodPromise = "ZodPromise", a.ZodBranded = "ZodBranded", a.ZodPipeline = "ZodPipeline", a.ZodReadonly = "ZodReadonly";
-})(x || (x = {}));
-const K = te.create, Jt = ue.create;
-ne.create;
-const $e = q.create, Ht = $.create;
+})(_ || (_ = {}));
+const Q = ae.create, Ht = pe.create;
+se.create;
+const Le = H.create, Jt = L.create;
 Ce.create;
 Ne.create;
-oe.create;
-pe.create;
+le.create;
+fe.create;
 Te.create;
-ae.create;
-he.create;
-const pt = "tasks", Gt = "1.0.0", Yt = "TASK_COUNT_CHANGED", ft = "sapwiki", Ae = `plugin-${ft}`, Kt = Ht({
-  id: K(),
-  title: K().min(1, "Title is required"),
-  requirement: K().optional().default(""),
-  steps: K().optional().default(""),
-  tCode: K().optional().default(""),
-  tCodes: $e(K()).optional().default([]),
-  createdAt: Jt().default(() => Date.now()),
-  imageData: K().optional(),
-  images: $e(K()).optional().default([])
-}), ze = $e(Kt), ot = 240, Qt = (a) => {
+re.create;
+me.create;
+const ht = "tasks", Yt = "1.0.0", Gt = "TASK_COUNT_CHANGED", mt = "sapwiki", Ae = `plugin-${mt}`, Kt = Jt({
+  id: Q(),
+  title: Q().min(1, "Title is required"),
+  requirement: Q().optional().default(""),
+  steps: Q().optional().default(""),
+  tCode: Q().optional().default(""),
+  tCodes: Le(Q()).optional().default([]),
+  createdAt: Ht().default(() => Date.now()),
+  imageData: Q().optional(),
+  images: Le(Q()).optional().default([])
+}), Ue = Le(Kt), ct = 240, Qt = (a) => {
   try {
     const e = typeof a == "string" ? a : JSON.stringify(a);
-    return e.length > ot ? `${e.slice(0, ot)}...` : e;
+    return e.length > ct ? `${e.slice(0, ct)}...` : e;
   } catch (e) {
     return `[unserializable ${String(e)}]`;
   }
-}, lt = (a) => {
+}, dt = (a) => {
   if (typeof a != "string") return a;
   try {
     return JSON.parse(a);
@@ -2978,13 +2967,13 @@ const pt = "tasks", Gt = "1.0.0", Yt = "TASK_COUNT_CHANGED", ft = "sapwiki", Ae 
     return a;
   }
 }, Xt = (a) => {
-  const e = lt(a);
+  const e = dt(a);
   if (Array.isArray(e))
     return { candidate: e, source: "raw" };
   if (e && typeof e == "object") {
     const t = e, r = ["data", "value", "payload", "tasks", "cases"];
     for (const n of r) {
-      const s = lt(t[n]);
+      const s = dt(t[n]);
       if (Array.isArray(s))
         return { candidate: s, source: n };
     }
@@ -3005,13 +2994,13 @@ const pt = "tasks", Gt = "1.0.0", Yt = "TASK_COUNT_CHANGED", ft = "sapwiki", Ae 
   for (const n of r)
     typeof n == "string" && n && !t.includes(n) && t.push(n);
   return t.length && (e.images = t, e.imageData || (e.imageData = t[0])), !e.tCode && typeof e.tcode == "string" && (e.tCode = e.tcode), !e.tCodes && Array.isArray(e.tcodes) && (e.tCodes = e.tcodes), e;
-}, ta = (a) => Array.isArray(a) ? a.map((e) => ea(e)) : a, Pe = (a) => {
-  const { candidate: e, source: t } = Xt(a), r = ta(e), n = ze.safeParse(r);
+}, ta = (a) => Array.isArray(a) ? a.map((e) => ea(e)) : a, Ve = (a) => {
+  const { candidate: e, source: t } = Xt(a), r = ta(e), n = Ue.safeParse(r);
   return n.success ? { tasks: n.data, source: t, ok: !0 } : (console.error("[task-board] restore failed", n.error), { tasks: [], source: t, ok: !1 });
 }, aa = async (a) => {
   console.info("[task-board] restore start");
   try {
-    const e = await a.storage.get(pt), { tasks: t, source: r, ok: n } = Pe(e);
+    const e = await a.storage.get(ht), { tasks: t, source: r, ok: n } = Ve(e);
     return console.info("[task-board] restore payload", {
       preview: Qt(e),
       extractedPath: r
@@ -3024,13 +3013,13 @@ const pt = "tasks", Gt = "1.0.0", Yt = "TASK_COUNT_CHANGED", ft = "sapwiki", Ae 
   }
 }, ra = async (a, e) => {
   console.info(`[task-board] save triggered (count=${e.length})`);
-  const t = ze.safeParse(e);
+  const t = Ue.safeParse(e);
   if (!t.success) {
     console.error("[task-board] save failed", t.error);
     return;
   }
   try {
-    await a.storage.save(pt, t.data, Gt);
+    await a.storage.save(ht, t.data, Yt);
   } catch (r) {
     console.error("[task-board] save failed", r);
   }
@@ -3045,34 +3034,34 @@ const pt = "tasks", Gt = "1.0.0", Yt = "TASK_COUNT_CHANGED", ft = "sapwiki", Ae 
   images: a.images ?? [],
   imageData: a.imageData ?? (Array.isArray(a.images) && a.images.length ? a.images[0] : void 0)
 }), sa = (a) => {
-  const [e, t] = D([]), [r, n] = D(!1), s = W(!1);
-  ee(() => {
-    let O = !0;
+  const [e, t] = $([]), [r, n] = $(!1), s = Y(!1);
+  te(() => {
+    let A = !0;
     return (async () => {
       const f = await aa(a);
-      O && (t(f), n(!0));
+      A && (t(f), n(!0));
     })(), () => {
-      O = !1;
+      A = !1;
     };
-  }, [a]), ee(() => {
+  }, [a]), te(() => {
     if (r) {
       if (!s.current) {
         s.current = !0;
         return;
       }
-      ra(a, e), a.eventBus.emit(Yt, { count: e.length });
+      ra(a, e), a.eventBus.emit(Gt, { count: e.length });
     }
   }, [a, r, e]);
-  const i = _e((O) => {
-    t((f) => [...f, na(O)]);
-  }, []), o = _e((O, f) => {
-    t((k) => k.map((w) => w.id === O ? f(w) : w));
-  }, []), u = _e((O) => {
-    t((f) => f.filter((k) => k.id !== O));
-  }, []), d = _e((O) => {
-    const f = ze.safeParse(O);
+  const i = _e((A) => {
+    t((f) => [...f, na(A)]);
+  }, []), o = _e((A, f) => {
+    t((y) => y.map((w) => w.id === A ? f(w) : w));
+  }, []), u = _e((A) => {
+    t((f) => f.filter((y) => y.id !== A));
+  }, []), d = _e((A) => {
+    const f = Ue.safeParse(A);
     f.success && t(f.data);
-  }, []), v = Le(
+  }, []), v = ze(
     () => ({
       total: e.length
     }),
@@ -3088,55 +3077,59 @@ const pt = "tasks", Gt = "1.0.0", Yt = "TASK_COUNT_CHANGED", ft = "sapwiki", Ae 
     stats: v
   };
 }, ia = ({ context: a }) => {
-  const { tasks: e, hydrated: t, addTask: r, removeTask: n, updateTask: s, replaceTasks: i, stats: o } = sa(a), [u, d] = D(!1), [v, O] = D([]), [f, k] = D(0), [w, Z] = D(""), [j, M] = D(null), L = (_, N, I, z) => {
-    !N || !N.length || (M(_), O(N), k(I || 0), Z(z || ""), d(!0));
+  const { tasks: e, hydrated: t, addTask: r, removeTask: n, updateTask: s, replaceTasks: i, stats: o } = sa(a), [u, d] = $(!1), [v, A] = $([]), [f, y] = $(0), [w, I] = $(""), [j, F] = $(null), M = (S, T, R, V) => {
+    !T || !T.length || (F(S), A(T), y(R || 0), I(V || ""), d(!0));
   };
-  be.openViewerCallback = L, ee(() => {
-    const _ = (N) => {
-      const I = N?.detail;
-      !I || !I.images || L(I.taskId || "", I.images, I.index || 0, I.title || "");
+  ke.openViewerCallback = M, te(() => {
+    const S = (T) => {
+      const R = T?.detail;
+      !R || !R.images || M(R.taskId || "", R.images, R.index || 0, R.title || "");
     };
-    return window.addEventListener("sapwiki:openViewer", _), () => window.removeEventListener("sapwiki:openViewer", _);
-  }, [L]);
-  const [G, se] = D(""), U = W(null);
-  ee(() => {
-    const _ = (N) => {
-      const { tasks: I, ok: z } = Pe(N);
-      z && I.length && i(I);
+    return window.addEventListener("sapwiki:openViewer", S), () => window.removeEventListener("sapwiki:openViewer", S);
+  }, [M]);
+  const [K, ie] = $(""), b = Y(null);
+  te(() => {
+    const S = (T) => {
+      const { tasks: R, ok: V } = Ve(T);
+      V && R.length && i(R);
     };
-    return a.eventBus.on("SAPWIKI_IMPORT", _), () => {
-      a.eventBus.off("SAPWIKI_IMPORT", _);
+    return a.eventBus.on("SAPWIKI_IMPORT", S), () => {
+      a.eventBus.off("SAPWIKI_IMPORT", S);
     };
   }, [a, i]);
-  const Y = (_, N) => {
-    s(_, (I) => ({ ...I, ...N }));
-  }, E = async (_) => {
-    const N = _.target.files?.[0];
-    if (_.target.value = "", !N) return;
-    const I = await N.text(), { tasks: z, ok: ye } = Pe(I);
-    ye && i(z);
-  }, R = () => U.current?.click(), C = () => {
-    const _ = new Blob([JSON.stringify(e, null, 2)], { type: "application/json" }), N = URL.createObjectURL(_), I = document.createElement("a");
-    I.href = N, I.download = "sapwiki-tasks.json", I.click(), URL.revokeObjectURL(N);
+  const O = (S, T) => {
+    s(S, (R) => ({ ...R, ...T }));
+  }, Z = async (S) => {
+    const T = S.target.files?.[0];
+    if (S.target.value = "", !T) return;
+    const R = await T.text(), { tasks: V, ok: q } = Ve(R);
+    q && i(V);
+  }, D = () => b.current?.click(), P = () => {
+    const S = new Blob([JSON.stringify(e, null, 2)], { type: "application/json" }), T = URL.createObjectURL(S), R = document.createElement("a");
+    R.href = T;
+    const V = /* @__PURE__ */ new Date(), q = (Re) => Re.toString().padStart(2, "0"), Se = `LocalWiki_Backup_${V.getFullYear()}${q(V.getMonth() + 1)}${q(V.getDate())}_${q(
+      V.getHours()
+    )}${q(V.getMinutes())}${q(V.getSeconds())}.json`;
+    R.download = Se, R.click(), URL.revokeObjectURL(T);
   };
-  return /* @__PURE__ */ l.createElement("div", { className: "app", "data-theme": a.theme }, /* @__PURE__ */ l.createElement("header", { className: "hero card" }, /* @__PURE__ */ l.createElement("div", { className: "hero-copy" }, /* @__PURE__ */ l.createElement("h1", null, "Local wiki"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Persisted locally with host storage. Import legacy backups, add notes, and keep images with each entry."), /* @__PURE__ */ l.createElement("div", { className: "chips" }, /* @__PURE__ */ l.createElement("span", { className: `chip ${t ? "chip-ok" : "chip-warn"}` }, /* @__PURE__ */ l.createElement("span", { className: "dot" }), " ", t ? "Ready" : "Restoring data..."), /* @__PURE__ */ l.createElement("span", { className: "chip soft" }, o.total, " entries"))), /* @__PURE__ */ l.createElement("div", { className: "hero-actions" }, /* @__PURE__ */ l.createElement("button", { className: "ghost", onClick: R, disabled: !t }, "Import"), /* @__PURE__ */ l.createElement("button", { onClick: C, disabled: !t || !e.length }, "Export"), /* @__PURE__ */ l.createElement("input", { ref: U, type: "file", accept: "application/json", hidden: !0, onChange: E }), /* @__PURE__ */ l.createElement("div", { className: "header-search" }, /* @__PURE__ */ l.createElement(
+  return /* @__PURE__ */ l.createElement("div", { className: "app", "data-theme": a.theme }, /* @__PURE__ */ l.createElement("header", { className: "hero card" }, /* @__PURE__ */ l.createElement("div", { className: "hero-copy" }, /* @__PURE__ */ l.createElement("h1", null, "Local wiki"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Persisted locally with host storage. Import legacy backups, add notes, and keep images with each entry."), /* @__PURE__ */ l.createElement("div", { className: "chips" }, /* @__PURE__ */ l.createElement("span", { className: `chip ${t ? "chip-ok" : "chip-warn"}` }, /* @__PURE__ */ l.createElement("span", { className: "dot" }), " ", t ? "Ready" : "Restoring data..."), /* @__PURE__ */ l.createElement("span", { className: "chip soft" }, o.total, " entries"))), /* @__PURE__ */ l.createElement("div", { className: "hero-actions" }, /* @__PURE__ */ l.createElement("button", { className: "ghost", onClick: D, disabled: !t }, "Import"), /* @__PURE__ */ l.createElement("button", { onClick: P, disabled: !t || !e.length }, "Export"), /* @__PURE__ */ l.createElement("input", { ref: b, type: "file", accept: "application/json", hidden: !0, onChange: Z }), /* @__PURE__ */ l.createElement("div", { className: "header-search" }, /* @__PURE__ */ l.createElement(
     "input",
     {
       "aria-label": "Search entries",
       className: "search-input",
       placeholder: "Search title, description, steps, or T-code",
-      value: G,
-      onChange: (_) => se(_.target.value)
+      value: K,
+      onChange: (S) => ie(S.target.value)
     }
   )))), /* @__PURE__ */ l.createElement("section", { className: "layout" }, /* @__PURE__ */ l.createElement("div", { className: "panel card" }, /* @__PURE__ */ l.createElement("div", { className: "panel-header" }, /* @__PURE__ */ l.createElement("div", null, /* @__PURE__ */ l.createElement("h2", null, "Add an entry"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Quickly record SAP cases, solutions, and visuals for future reference."))), /* @__PURE__ */ l.createElement(xt, { onSubmit: r })), /* @__PURE__ */ l.createElement("div", { className: "panel card" }, /* @__PURE__ */ l.createElement("div", { className: "panel-header" }, /* @__PURE__ */ l.createElement("div", null, /* @__PURE__ */ l.createElement("h2", null, "Notes"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Edit inline, keep evidence, and tidy up when complete."))), /* @__PURE__ */ l.createElement(
-    be,
+    ke,
     {
-      tasks: Le(() => {
-        const _ = G.trim().toLowerCase();
-        return _ ? e.filter((N) => [N.title, N.requirement || "", N.steps || "", N.tCode || "", (N.tCodes || []).join(" ")].join(" ").toLowerCase().includes(_)) : e;
-      }, [e, G]),
+      tasks: ze(() => {
+        const S = K.trim().toLowerCase();
+        return S ? e.filter((T) => [T.title, T.requirement || "", T.steps || "", T.tCode || "", (T.tCodes || []).join(" ")].join(" ").toLowerCase().includes(S)) : e;
+      }, [e, K]),
       onDelete: n,
-      onUpdate: Y
+      onUpdate: O
     }
   ))), /* @__PURE__ */ l.createElement(
     _t,
@@ -3146,40 +3139,40 @@ const pt = "tasks", Gt = "1.0.0", Yt = "TASK_COUNT_CHANGED", ft = "sapwiki", Ae 
       initialIndex: f,
       title: w,
       onClose: () => d(!1),
-      onSaveAnnotated: (_, N) => {
-        j && (s(j, (I) => {
-          const z = Array.isArray(I.images) ? I.images.slice() : [];
-          return z[N] = _, { ...I, images: z, imageData: z[0] };
+      onSaveAnnotated: (S, T) => {
+        j && (s(j, (R) => {
+          const V = Array.isArray(R.images) ? R.images.slice() : [];
+          return V[T] = S, { ...R, images: V, imageData: V[0] };
         }), d(!1));
       }
     }
   ));
-}, oa = "#plugin-sapwiki{--bg: #f4f6fb;--card: #ffffff;--card-strong: #0f172a;--border: #e2e8f0;--text: #0f172a;--muted: #5b6577;--primary: #0f52ba;--primary-strong: #0a3c87;--accent: #22c55e;--warn: #f59e0b;font-family:Segoe UI,system-ui,-apple-system,sans-serif;color:var(--text);background:radial-gradient(circle at 20% 20%,#e5edff,transparent 45%),radial-gradient(circle at 80% 0%,#e8fff4,transparent 35%),var(--bg);min-height:100vh;overflow-x:hidden}#plugin-sapwiki .app{box-sizing:border-box;padding:12px 20px 24px;width:calc(100% - 40px);max-width:none;margin:0;display:flex;flex-direction:column;gap:12px}#plugin-sapwiki *,#plugin-sapwiki *:before,#plugin-sapwiki *:after{box-sizing:inherit}#plugin-sapwiki .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;box-shadow:0 14px 38px #0f172a14}#plugin-sapwiki .hero{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,#0f172a,#153e75);color:#e2e8f0;border:none;box-shadow:0 20px 50px #0f172a47}#plugin-sapwiki .hero .muted{color:#e2e8f0d9}#plugin-sapwiki .hero h1{margin:6px 0 10px;color:#f8fafc}#plugin-sapwiki .hero-copy{max-width:640px}#plugin-sapwiki .hero-actions{display:flex;gap:10px;align-items:flex-start}#plugin-sapwiki .header-search{width:100%;margin-top:12px}#plugin-sapwiki .search-input{width:360px;max-width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#fff;font:inherit}@media (min-width: 1000px){#plugin-sapwiki .hero-actions{align-items:center}#plugin-sapwiki .header-search{margin-left:12px;margin-top:0}}#plugin-sapwiki .eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:inherit;margin:0 0 4px}#plugin-sapwiki .muted{color:var(--muted);margin:0}#plugin-sapwiki .chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}#plugin-sapwiki .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#ffffff14;color:#f8fafc;border:1px solid rgba(255,255,255,.16);font-weight:600}#plugin-sapwiki .chip.soft{background:#e2e8f0;color:var(--text);border:1px solid transparent}#plugin-sapwiki .chip-ok{background:#22c55e29;color:#e8fff2;border-color:#22c55e52}#plugin-sapwiki .chip-warn{background:#f59e0b2e;color:#fef3c7;border-color:#f59e0b4d}#plugin-sapwiki .dot{width:10px;height:10px;border-radius:50%;display:inline-block;background:#f8fafc;box-shadow:0 0 0 4px #ffffff14}#plugin-sapwiki .layout{display:flex;gap:20px;align-items:flex-start}#plugin-sapwiki .layout>.panel:first-child{flex:0 0 30%}#plugin-sapwiki .layout>.panel:last-child{flex:1 1 70%}#plugin-sapwiki .panel{display:flex;flex-direction:column;gap:12px}#plugin-sapwiki .panel.card{border:none;box-shadow:0 10px 30px #0f172a0f}#plugin-sapwiki .panel-header h2{margin:4px 0 6px}#plugin-sapwiki .label{text-transform:uppercase;font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0}#plugin-sapwiki .toolbar,#plugin-sapwiki .actions{display:flex;gap:10px;align-items:center}#plugin-sapwiki button{padding:11px 16px;border-radius:12px;border:1px solid var(--primary-strong);background:var(--primary);color:#fff;font-weight:650;cursor:pointer;transition:transform .12s ease,box-shadow .16s ease,background .16s ease;box-shadow:0 8px 20px #0f52ba40}#plugin-sapwiki button:disabled{opacity:.6;cursor:not-allowed;box-shadow:none}#plugin-sapwiki button:hover:not(:disabled){transform:translateY(-1px);background:var(--primary-strong)}#plugin-sapwiki button.ghost{background:transparent;color:var(--primary-strong);border-color:var(--border);box-shadow:none}#plugin-sapwiki .hero button.ghost{color:#f8fafc;border-color:#ffffff47}#plugin-sapwiki .task-form{display:grid;gap:12px}#plugin-sapwiki .layout>.panel:first-child .task-form{display:flex;flex-direction:column;gap:12px;flex:0 0 auto}#plugin-sapwiki .layout>.panel:first-child .task-form .steps-field{display:flex;flex-direction:column;min-height:220px}#plugin-sapwiki .layout>.panel:first-child .task-form .steps-field textarea.steps-input{min-height:220px;resize:vertical}#plugin-sapwiki .layout>.panel:last-child .task-grid{flex:1 1 auto;overflow:auto}#plugin-sapwiki .task-card{display:flex;flex-direction:column;gap:12px;min-height:220px}#plugin-sapwiki .task-card .notes-field{display:flex;flex-direction:column}#plugin-sapwiki .task-card .notes-field textarea.notes-input{min-height:270px;resize:vertical}#plugin-sapwiki .field{display:flex;flex-direction:column;gap:6px}#plugin-sapwiki .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}#plugin-sapwiki label{font-weight:600;color:var(--text)}#plugin-sapwiki input,#plugin-sapwiki textarea{width:100%;border-radius:12px;border:1px solid var(--border);padding:12px 14px;font:inherit;background:#f8fafc;transition:border .12s ease,box-shadow .12s ease}#plugin-sapwiki input:focus,#plugin-sapwiki textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px #0f52ba1f;outline:none}#plugin-sapwiki textarea{resize:vertical;min-height:100px}#plugin-sapwiki .task-grid{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px}#plugin-sapwiki .task-card h3{margin:4px 0 8px}#plugin-sapwiki .task-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}#plugin-sapwiki .tags{display:flex;flex-wrap:wrap;gap:6px}#plugin-sapwiki .tags .edit-tcodes-input{min-width:180px;max-width:420px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:#fff;font:inherit}#plugin-sapwiki .tags .edit-actions{display:inline-flex;gap:8px;align-items:center}#plugin-sapwiki .tags button.small{padding:6px 8px;border-radius:8px;font-size:13px}#plugin-sapwiki .attach-field{border:2px dashed rgba(15,23,42,.08);background:linear-gradient(180deg,#f8fafc99,#f8fafc66);padding:12px;border-radius:12px;cursor:pointer}#plugin-sapwiki .attach-field.drag-over{border-color:#0f52ba99;box-shadow:0 6px 18px #0f52ba14}#plugin-sapwiki .attach-hint{color:var(--muted);padding:18px 10px}#plugin-sapwiki .attach-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}#plugin-sapwiki .attach-preview{position:relative;width:96px;height:96px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:#fff}#plugin-sapwiki .attach-preview img{width:100%;height:100%;object-fit:cover;display:block}#plugin-sapwiki .attach-preview .remove{position:absolute;right:8px;top:8px;width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;border:none;display:inline-flex;align-items:center;justify-content:center;font-size:14px;line-height:1;padding:0;cursor:pointer;box-shadow:0 2px 6px #0000001f}#plugin-sapwiki .attach-preview .remove:hover{background:#dc2626;transform:translateY(-1px)}#plugin-sapwiki .pill{background:#e2e8f0;border-radius:999px;padding:4px 10px;font-size:12px;color:var(--text);border:1px solid transparent}#plugin-sapwiki .preview{width:100%;max-height:220px;object-fit:contain;border-radius:10px;border:1px solid var(--border);background:#f8fafc}#plugin-sapwiki .preview.clickable{cursor:pointer}#plugin-sapwiki .pv-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;z-index:9999;padding:clamp(12px,2.2vw,24px)}#plugin-sapwiki .pv-dialog{width:min(96vw,1400px);max-height:calc(100dvh - 32px);border-radius:16px;background:#04243a;color:#fff;border:1px solid rgba(255,255,255,.08);padding:16px;#plugin-sapwiki .pv-toolbar .pv-brush-group{margin:0 auto;display:flex;gap:8px;align-items:center}box-shadow:0 30px 60px #02102899;overflow:auto}#plugin-sapwiki .pv-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}#plugin-sapwiki .pv-title{font-weight:700;color:#d1fae5}#plugin-sapwiki .pv-controls button{margin-left:8px}#plugin-sapwiki .pv-controls button.ghost{color:#fff;border-color:#ffffff0f}#plugin-sapwiki .pv-toolbar{position:relative;display:flex;gap:8px;align-items:center;margin-bottom:12px;--pv-toolbar-btn-h: 36px;justify-content:center}#plugin-sapwiki .pv-toolbar button,#plugin-sapwiki .pv-toolbar .primary,#plugin-sapwiki .pv-toolbar input[type=color]{height:var(--pv-toolbar-btn-h);min-height:var(--pv-toolbar-btn-h);display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border-radius:10px}#plugin-sapwiki .pv-toolbar button{padding:0 12px}#plugin-sapwiki .pv-toolbar input[type=color]{width:var(--pv-toolbar-btn-h);padding:0;border-radius:8px}#plugin-sapwiki .pv-toolbar input[type=range]{height:28px;margin:0 8px;align-self:center;width:340px;max-width:40vw}#plugin-sapwiki .pv-toolbar .pv-brush-group{position:static;margin:0 12px;display:flex;gap:8px;align-items:center}#plugin-sapwiki .pv-toolbar input[type=color]{-webkit-appearance:none;-moz-appearance:none;appearance:none;width:36px;height:36px;padding:0;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;cursor:pointer}#plugin-sapwiki .pv-toolbar input[type=color]::-webkit-color-swatch-wrapper{padding:0}#plugin-sapwiki .pv-toolbar input[type=color]::-webkit-color-swatch{border-radius:6px;border:none}#plugin-sapwiki .pv-toolbar input[type=color]::-moz-color-swatch{border-radius:6px;border:none}#plugin-sapwiki .pv-toolbar button.active{background:#22c55e29;color:#eafff0}#plugin-sapwiki .pv-toolbar .primary{background:#10b981;color:#fff}#plugin-sapwiki .pv-body{display:flex;justify-content:center}#plugin-sapwiki .pv-image-wrap{position:relative}#plugin-sapwiki .pv-image{display:block;max-width:min(90vw,1320px);max-height:72vh;border-radius:12px}#plugin-sapwiki .pv-canvas{position:absolute;left:0;top:0}#plugin-sapwiki .pv-canvas.disabled{pointer-events:none}#plugin-sapwiki .pv-canvas.draw{cursor:crosshair}#plugin-sapwiki .pv-canvas.erase{cursor:cell}@media (max-width: 860px){#plugin-sapwiki .pv-dialog{width:min(98vw,1400px);padding:12px;border-radius:12px}#plugin-sapwiki .pv-header{flex-direction:column;align-items:flex-start}#plugin-sapwiki .pv-controls{width:100%;display:flex;flex-wrap:wrap;gap:8px}#plugin-sapwiki .pv-controls button{margin-left:0}#plugin-sapwiki .pv-toolbar{flex-wrap:wrap}#plugin-sapwiki .pv-image{max-height:62vh}}#plugin-sapwiki .field.images .image-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start}#plugin-sapwiki .field.images .image-row .preview{width:140px;height:96px;max-height:none;object-fit:cover}#plugin-sapwiki .empty{text-align:left;padding:16px;border-style:dashed;border-color:var(--border);background:linear-gradient(135deg,#f8fafc,#eef2ff)}@media (max-width: 900px){#plugin-sapwiki .layout{display:grid;grid-template-columns:1fr}#plugin-sapwiki .task-grid{grid-template-columns:1fr}#plugin-sapwiki .hero{align-items:flex-start}#plugin-sapwiki .hero-actions{width:100%;flex-wrap:wrap}#plugin-sapwiki button,#plugin-sapwiki button.ghost{width:auto}}", la = "1.0.2", ca = {
+}, oa = "#plugin-sapwiki{--bg: #f4f6fb;--card: #ffffff;--card-strong: #0f172a;--border: #e2e8f0;--text: #0f172a;--muted: #5b6577;--primary: #0f52ba;--primary-strong: #0a3c87;--accent: #22c55e;--warn: #f59e0b;font-family:Segoe UI,system-ui,-apple-system,sans-serif;color:var(--text);background:radial-gradient(circle at 20% 20%,#e5edff,transparent 45%),radial-gradient(circle at 80% 0%,#e8fff4,transparent 35%),var(--bg);min-height:100vh;overflow-x:hidden}#plugin-sapwiki .app{box-sizing:border-box;padding:12px 20px 24px;width:calc(100% - 40px);max-width:none;margin:0;display:flex;flex-direction:column;gap:12px}#plugin-sapwiki *,#plugin-sapwiki *:before,#plugin-sapwiki *:after{box-sizing:inherit}#plugin-sapwiki .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;box-shadow:0 14px 38px #0f172a14}#plugin-sapwiki .hero{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,#0f172a,#153e75);color:#e2e8f0;border:none;box-shadow:0 20px 50px #0f172a47}#plugin-sapwiki .hero .muted{color:#e2e8f0d9}#plugin-sapwiki .hero h1{margin:6px 0 10px;color:#f8fafc}#plugin-sapwiki .hero-copy{max-width:640px}#plugin-sapwiki .hero-actions{display:flex;gap:10px;align-items:flex-start}#plugin-sapwiki .header-search{width:100%;margin-top:12px}#plugin-sapwiki .search-input{width:360px;max-width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#fff;font:inherit}@media (min-width: 1000px){#plugin-sapwiki .hero-actions{align-items:center}#plugin-sapwiki .header-search{margin-left:12px;margin-top:0}}#plugin-sapwiki .eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:inherit;margin:0 0 4px}#plugin-sapwiki .muted{color:var(--muted);margin:0}#plugin-sapwiki .chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}#plugin-sapwiki .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#ffffff14;color:#f8fafc;border:1px solid rgba(255,255,255,.16);font-weight:600}#plugin-sapwiki .chip.soft{background:#e2e8f0;color:var(--text);border:1px solid transparent}#plugin-sapwiki .chip-ok{background:#22c55e29;color:#e8fff2;border-color:#22c55e52}#plugin-sapwiki .chip-warn{background:#f59e0b2e;color:#fef3c7;border-color:#f59e0b4d}#plugin-sapwiki .dot{width:10px;height:10px;border-radius:50%;display:inline-block;background:#f8fafc;box-shadow:0 0 0 4px #ffffff14}#plugin-sapwiki .layout{display:flex;gap:20px;align-items:flex-start}#plugin-sapwiki .layout>.panel:first-child{flex:0 0 30%}#plugin-sapwiki .layout>.panel:last-child{flex:1 1 70%}#plugin-sapwiki .panel{display:flex;flex-direction:column;gap:12px}#plugin-sapwiki .panel.card{border:none;box-shadow:0 10px 30px #0f172a0f}#plugin-sapwiki .panel-header h2{margin:4px 0 6px}#plugin-sapwiki .label{text-transform:uppercase;font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0}#plugin-sapwiki .toolbar,#plugin-sapwiki .actions{display:flex;gap:10px;align-items:center}#plugin-sapwiki button{padding:11px 16px;border-radius:12px;border:1px solid var(--primary-strong);background:var(--primary);color:#fff;font-weight:650;cursor:pointer;transition:transform .12s ease,box-shadow .16s ease,background .16s ease;box-shadow:0 8px 20px #0f52ba40}#plugin-sapwiki button:disabled{opacity:.6;cursor:not-allowed;box-shadow:none}#plugin-sapwiki button:hover:not(:disabled){transform:translateY(-1px);background:var(--primary-strong)}#plugin-sapwiki button.ghost{background:transparent;color:var(--primary-strong);border-color:var(--border);box-shadow:none}#plugin-sapwiki .hero button.ghost{color:#f8fafc;border-color:#ffffff47}#plugin-sapwiki .task-form{display:grid;gap:12px}#plugin-sapwiki .layout>.panel:first-child .task-form{display:flex;flex-direction:column;gap:12px;flex:0 0 auto}#plugin-sapwiki .layout>.panel:first-child .task-form .steps-field{display:flex;flex-direction:column;min-height:220px}#plugin-sapwiki .layout>.panel:first-child .task-form .steps-field textarea.steps-input{min-height:220px;resize:vertical}#plugin-sapwiki .layout>.panel:last-child .task-grid{flex:1 1 auto;overflow:auto}#plugin-sapwiki .task-card{display:flex;flex-direction:column;gap:12px;min-height:220px}#plugin-sapwiki .task-card .notes-field{display:flex;flex-direction:column}#plugin-sapwiki .task-card .notes-field textarea.notes-input{min-height:270px;resize:vertical}#plugin-sapwiki .field{display:flex;flex-direction:column;gap:6px}#plugin-sapwiki .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}#plugin-sapwiki label{font-weight:600;color:var(--text)}#plugin-sapwiki input,#plugin-sapwiki textarea{width:100%;border-radius:12px;border:1px solid var(--border);padding:12px 14px;font:inherit;background:#f8fafc;transition:border .12s ease,box-shadow .12s ease}#plugin-sapwiki input:focus,#plugin-sapwiki textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px #0f52ba1f;outline:none}#plugin-sapwiki textarea{resize:vertical;min-height:100px}#plugin-sapwiki .task-grid{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px}#plugin-sapwiki .task-card h3{margin:4px 0 8px}#plugin-sapwiki .task-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}#plugin-sapwiki .tags{display:flex;flex-wrap:wrap;gap:6px}#plugin-sapwiki .tags .edit-tcodes-input{min-width:180px;max-width:420px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:#fff;font:inherit}#plugin-sapwiki .tags .edit-actions{display:inline-flex;gap:8px;align-items:center}#plugin-sapwiki .tags button.small{padding:6px 8px;border-radius:8px;font-size:13px}#plugin-sapwiki .attach-field{border:2px dashed rgba(15,23,42,.08);background:linear-gradient(180deg,#f8fafc99,#f8fafc66);padding:12px;border-radius:12px;cursor:default}#plugin-sapwiki .attach-field.drag-over{border-color:#0f52ba99;box-shadow:0 6px 18px #0f52ba14}#plugin-sapwiki .attach-hint{color:var(--muted);padding:18px 10px}#plugin-sapwiki .attach-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}#plugin-sapwiki .attach-preview{position:relative;width:96px;height:96px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:#fff}#plugin-sapwiki .attach-preview img{width:100%;height:100%;object-fit:contain;object-position:center top;display:block;background:#f8fafc}#plugin-sapwiki .attach-preview .remove{position:absolute;right:8px;top:8px;width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;border:none;display:inline-flex;align-items:center;justify-content:center;font-size:14px;line-height:1;padding:0;cursor:pointer;box-shadow:0 2px 6px #0000001f}#plugin-sapwiki .attach-preview .remove:hover{background:#dc2626;transform:translateY(-1px)}#plugin-sapwiki .pill{background:#e2e8f0;border-radius:999px;padding:4px 10px;font-size:12px;color:var(--text);border:1px solid transparent}#plugin-sapwiki .preview{width:100%;max-height:220px;object-fit:contain;border-radius:10px;border:1px solid var(--border);background:#f8fafc}#plugin-sapwiki .preview.clickable{cursor:pointer}#plugin-sapwiki .pv-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;z-index:9999;padding:clamp(12px,2.2vw,24px)}#plugin-sapwiki .pv-dialog{width:min(96vw,1400px);max-height:calc(100dvh - 32px);border-radius:16px;background:#04243a;color:#fff;border:1px solid rgba(255,255,255,.08);padding:16px;box-shadow:0 30px 60px #02102899;overflow:auto}#plugin-sapwiki .pv-toolbar .pv-brush-group{margin:0 auto;display:flex;gap:8px;align-items:center}#plugin-sapwiki .pv-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}#plugin-sapwiki .pv-title{font-weight:700;color:#d1fae5}#plugin-sapwiki .pv-controls button{margin-left:8px}#plugin-sapwiki .pv-controls button.ghost{color:#fff;border-color:#ffffff0f}#plugin-sapwiki .pv-toolbar{position:relative;display:flex;gap:8px;align-items:center;margin-bottom:12px;--pv-toolbar-btn-h: 36px;justify-content:center}#plugin-sapwiki .pv-toolbar button,#plugin-sapwiki .pv-toolbar .primary,#plugin-sapwiki .pv-toolbar input[type=color]{height:var(--pv-toolbar-btn-h);min-height:var(--pv-toolbar-btn-h);display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border-radius:10px}#plugin-sapwiki .pv-toolbar button{padding:0 12px}#plugin-sapwiki .pv-toolbar input[type=color]{width:var(--pv-toolbar-btn-h);padding:0;border-radius:8px}#plugin-sapwiki .pv-toolbar input[type=range]{height:28px;margin:0 8px;align-self:center;width:340px;max-width:40vw}#plugin-sapwiki .pv-toolbar .pv-brush-group{position:static;margin:0 12px;display:flex;gap:8px;align-items:center}#plugin-sapwiki .pv-toolbar input[type=color]{-webkit-appearance:none;-moz-appearance:none;appearance:none;width:36px;height:36px;padding:0;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;cursor:pointer}#plugin-sapwiki .pv-toolbar input[type=color]::-webkit-color-swatch-wrapper{padding:0}#plugin-sapwiki .pv-toolbar input[type=color]::-webkit-color-swatch{border-radius:6px;border:none}#plugin-sapwiki .pv-toolbar input[type=color]::-moz-color-swatch{border-radius:6px;border:none}#plugin-sapwiki .pv-toolbar button.active{background:#22c55e29;color:#eafff0}#plugin-sapwiki .pv-toolbar .primary{background:#10b981;color:#fff}#plugin-sapwiki .pv-body{display:flex;justify-content:center}#plugin-sapwiki .pv-image-wrap{position:relative}#plugin-sapwiki .pv-image{display:block;max-width:min(90vw,1320px);max-height:72vh;border-radius:12px}#plugin-sapwiki .pv-canvas{position:absolute;left:0;top:0}#plugin-sapwiki .pv-canvas.disabled{pointer-events:none}#plugin-sapwiki .pv-canvas.draw{cursor:crosshair}#plugin-sapwiki .pv-canvas.erase{cursor:cell}@media (max-width: 860px){#plugin-sapwiki .pv-dialog{width:min(98vw,1400px);padding:12px;border-radius:12px}#plugin-sapwiki .pv-header{flex-direction:column;align-items:flex-start}#plugin-sapwiki .pv-controls{width:100%;display:flex;flex-wrap:wrap;gap:8px}#plugin-sapwiki .pv-controls button{margin-left:0}#plugin-sapwiki .pv-toolbar{flex-wrap:wrap}#plugin-sapwiki .pv-image{max-height:62vh}}#plugin-sapwiki .field.images .image-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start}#plugin-sapwiki .field.images .image-row .attach-preview{width:140px;height:96px}#plugin-sapwiki .field.images .image-row .preview{width:100%;height:100%;max-height:none;object-fit:contain;object-position:center top}#plugin-sapwiki .empty{text-align:left;padding:16px;border-style:dashed;border-color:var(--border);background:linear-gradient(135deg,#f8fafc,#eef2ff)}@media (max-width: 900px){#plugin-sapwiki .layout{display:grid;grid-template-columns:1fr}#plugin-sapwiki .task-grid{grid-template-columns:1fr}#plugin-sapwiki .hero{align-items:flex-start}#plugin-sapwiki .hero-actions{width:100%;flex-wrap:wrap}#plugin-sapwiki button,#plugin-sapwiki button.ghost{width:auto}}", la = "1.1.0", ca = {
   version: la
 };
-let ie = null, ke = null, X = null;
+let oe = null, be = null, ee = null;
 const da = (a) => {
   const e = a.querySelector(`#${Ae}`);
   if (e) return e;
   const t = document.createElement("div");
   return t.id = Ae, a.appendChild(t), t;
 }, ua = () => {
-  X || (X = document.createElement("style"), X.id = `${Ae}-style`, X.textContent = oa, document.head.appendChild(X));
+  ee || (ee = document.createElement("style"), ee.id = `${Ae}-style`, ee.textContent = oa, document.head.appendChild(ee));
 }, ha = {
-  id: ft,
+  id: mt,
   name: "SAPWiki",
   version: ca?.version,
   mount(a, e) {
     ua();
     const t = da(a);
-    ke = t, ie && ie.unmount(), ie = yt(t), ie.render(
+    be = t, oe && oe.unmount(), oe = yt(t), oe.render(
       /* @__PURE__ */ l.createElement(l.StrictMode, null, /* @__PURE__ */ l.createElement(ia, { context: e }))
     );
   },
   unmount(a) {
-    ie && (ie.unmount(), ie = null), ke && (ke.replaceChildren(), ke = null);
+    oe && (oe.unmount(), oe = null), be && (be.replaceChildren(), be = null);
     const e = a.querySelector(`#${Ae}`);
-    e && e.replaceChildren(), X && (X.remove(), X = null);
+    e && e.replaceChildren(), ee && (ee.remove(), ee = null);
   }
 };
 export {
