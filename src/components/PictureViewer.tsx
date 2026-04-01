@@ -24,13 +24,46 @@ export default function PictureViewer({
   const [brushSize, setBrushSize] = useState(4);
   const [undoCount, setUndoCount] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [imageMaxHeight, setImageMaxHeight] = useState<number | null>(null);
 
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const toolbarRef = useRef<HTMLDivElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawingRef = useRef(false);
   const hasDrawnInStrokeRef = useRef(false);
   const lastPointRef = useRef<{ x: number; y: number } | null>(null);
   const historyRef = useRef<string[]>([]);
+
+  const getViewportHeight = () => {
+    const candidates = [
+      window.innerHeight,
+      document.documentElement?.clientHeight ?? 0,
+      window.visualViewport?.height ?? 0,
+      document.body?.clientHeight ?? 0,
+    ].filter((value) => Number.isFinite(value) && value > 0);
+    return candidates.length ? Math.max(...candidates) : window.innerHeight;
+  };
+
+  const setViewportHeightVar = () => {
+    const vh = getViewportHeight() * 0.01;
+    document.documentElement.style.setProperty('--pv-vh', `${vh}px`);
+  };
+
+  const updateImageLayout = () => {
+    const dialog = dialogRef.current;
+    const header = headerRef.current;
+    const toolbar = toolbarRef.current;
+    if (!dialog) return;
+
+    const dialogHeight = dialog.clientHeight;
+    const headerHeight = header?.offsetHeight ?? 0;
+    const toolbarHeight = toolbar?.offsetHeight ?? 0;
+    // Reserve space for paddings/gaps so image area never collapses in host WebView.
+    const available = Math.max(220, dialogHeight - headerHeight - toolbarHeight - 56);
+    setImageMaxHeight(available);
+  };
 
   const currentImage = useMemo(() => images[currentIndex], [images, currentIndex]);
 
@@ -77,17 +110,32 @@ export default function PictureViewer({
 
   useEffect(() => {
     if (!isOpen) return;
-    const onResize = () => syncCanvasSize();
+    setViewportHeightVar();
+    const onResize = () => {
+      setViewportHeightVar();
+      updateImageLayout();
+      syncCanvasSize();
+    };
+    const visualViewport = window.visualViewport;
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    visualViewport?.addEventListener('resize', onResize);
+    const raf = window.requestAnimationFrame(onResize);
+    const delayed = window.setTimeout(onResize, 120);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      visualViewport?.removeEventListener('resize', onResize);
+      window.cancelAnimationFrame(raf);
+      window.clearTimeout(delayed);
+    };
   }, [isOpen, currentIndex]);
 
   useEffect(() => {
     if (!isOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    setViewportHeightVar();
+    updateImageLayout();
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.documentElement.style.removeProperty('--pv-vh');
+      setImageMaxHeight(null);
     };
   }, [isOpen]);
 
@@ -210,8 +258,8 @@ export default function PictureViewer({
 
   return (
     <div className="pv-overlay" role="dialog" aria-modal="true">
-      <div className="pv-dialog">
-        <div className="pv-header">
+      <div className="pv-dialog" ref={dialogRef}>
+        <div className="pv-header" ref={headerRef}>
           <p className="pv-title">{title} - Image {currentIndex + 1} / {images.length}</p>
           <div className="pv-controls">
             <button type="button" onClick={() => setCurrentIndex((p) => (p - 1 + images.length) % images.length)}>Prev</button>
@@ -220,7 +268,7 @@ export default function PictureViewer({
           </div>
         </div>
 
-        <div className="pv-toolbar">
+        <div className="pv-toolbar" ref={toolbarRef}>
           <button type="button" onClick={() => setDrawEnabled((p) => !p)} className={drawEnabled ? 'active' : ''}>{drawEnabled ? 'Drawing On' : 'Draw'}</button>
           <button type="button" onClick={() => { setEraseEnabled((p) => !p); if (!drawEnabled) setDrawEnabled(true); }} className={eraseEnabled ? 'active' : ''}>{eraseEnabled ? 'Eraser On' : 'Eraser'}</button>
 
@@ -238,7 +286,17 @@ export default function PictureViewer({
 
         <div className="pv-body">
           <div className="pv-image-wrap">
-            <img ref={imageRef} src={currentImage} alt={`Viewer image ${currentIndex + 1}`} className="pv-image" onLoad={syncCanvasSize} />
+            <img
+              ref={imageRef}
+              src={currentImage}
+              alt={`Viewer image ${currentIndex + 1}`}
+              className="pv-image"
+              style={imageMaxHeight ? { maxHeight: `${imageMaxHeight}px` } : undefined}
+              onLoad={() => {
+                updateImageLayout();
+                syncCanvasSize();
+              }}
+            />
             <canvas ref={canvasRef} className={`pv-canvas ${drawEnabled ? (eraseEnabled ? 'erase' : 'draw') : 'disabled'}`} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerLeave={handlePointerUp} />
           </div>
         </div>

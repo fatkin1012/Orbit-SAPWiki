@@ -32,6 +32,10 @@ const plugin: IPlugin = {
   name: 'SAPWiki',
   version: pkg?.version || '0.0.0',
   mount(container: HTMLElement, context: IAppContext) {
+    // Defensive reset for host reload cycles.
+    document.body.style.removeProperty('overflow');
+    document.documentElement.style.removeProperty('--pv-vh');
+
     ensureStyles();
     const target = ensureContainer(container);
     mountedContainer = target;
@@ -66,6 +70,10 @@ const plugin: IPlugin = {
       styleTag.remove();
       styleTag = null;
     }
+
+    // Ensure host scrolling always recovers after plugin teardown.
+    document.body.style.removeProperty('overflow');
+    document.documentElement.style.removeProperty('--pv-vh');
   },
 };
 

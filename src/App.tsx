@@ -94,7 +94,7 @@ const App = ({ context }: Props) => {
     <div className="app" data-theme={context.theme}>
       <header className="hero card">
         <div className="hero-copy">
-          <h1>Local wiki</h1>
+          <h1>Local wiki 123</h1>
           <p className="muted">
             Persisted locally with host storage. Import legacy backups, add notes, and keep images with each entry.
           </p>

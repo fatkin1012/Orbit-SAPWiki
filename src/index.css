@@ -445,7 +445,7 @@ textarea {
 
 .pv-dialog {
   width: min(96vw, 1400px);
-  max-height: calc(100dvh - 32px);
+  max-height: calc((var(--pv-vh, 1vh) * 100) - 32px);
   border-radius: 16px;
   background: #04243a;
   color: #fff;
@@ -546,12 +546,21 @@ textarea {
 .pv-toolbar button.active { background: rgba(34,197,94,0.16); color: #eafff0; }
 .pv-toolbar .primary { background: #10b981; color: #fff; }
 
-.pv-body { display:flex; justify-content:center; }
+.pv-body {
+  display: flex;
+  justify-content: center;
+  min-height: min(260px, calc(var(--pv-vh, 1vh) * 42));
+}
 .pv-image-wrap { position: relative; }
 .pv-image {
   display: block;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center center;
+  transform: none;
   max-width: min(90vw, 1320px);
-  max-height: 72vh;
+  max-height: calc(var(--pv-vh, 1vh) * 72);
   border-radius: 12px;
 }
 .pv-canvas { position: absolute; left: 0; top: 0; }
@@ -587,7 +596,7 @@ textarea {
   }
 
   .pv-image {
-    max-height: 62vh;
+    max-height: calc(var(--pv-vh, 1vh) * 62);
   }
 }
 
