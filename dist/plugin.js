@@ -1,49 +1,49 @@
-import l, { useState as $, useRef as Y, useMemo as ze, useEffect as G, useCallback as be } from "react";
-import { createRoot as _t } from "react-dom/client";
-const wt = ({ onSubmit: a }) => {
-  const [e, t] = $(""), [r, n] = $(""), [s, i] = $(""), [o, u] = $(""), [d, v] = $([]), A = (b) => new Promise((O, Z) => {
-    const D = new FileReader();
-    D.onload = () => {
-      typeof D.result == "string" ? O(D.result) : Z(new Error("invalid file result"));
-    }, D.onerror = () => Z(new Error("file read error")), D.readAsDataURL(b);
+import l, { useState as D, useRef as H, useMemo as ze, useEffect as G, useCallback as be } from "react";
+import { createRoot as wt } from "react-dom/client";
+const bt = ({ onSubmit: a }) => {
+  const [e, t] = D(""), [r, n] = D(""), [s, i] = D(""), [o, u] = D(""), [d, v] = D([]), A = (b) => new Promise((O, Z) => {
+    const $ = new FileReader();
+    $.onload = () => {
+      typeof $.result == "string" ? O($.result) : Z(new Error("invalid file result"));
+    }, $.onerror = () => Z(new Error("file read error")), $.readAsDataURL(b);
   }), f = async (b) => {
     try {
       const O = b.clipboardData?.items;
       if (!O) return;
       const Z = [];
-      for (let P = 0; P < O.length; P++) {
-        const S = O[P];
-        if (S.kind === "file" && S.type.startsWith("image/")) {
-          const T = S.getAsFile();
-          T && Z.push(T);
+      for (let U = 0; U < O.length; U++) {
+        const k = O[U];
+        if (k.kind === "file" && k.type.startsWith("image/")) {
+          const S = k.getAsFile();
+          S && Z.push(S);
         }
       }
       if (!Z.length) return;
       b.preventDefault();
-      const D = await Promise.all(Z.map((P) => A(P)));
-      v((P) => [...P, ...D]);
+      const $ = await Promise.all(Z.map((U) => A(U)));
+      v((U) => [...U, ...$]);
     } catch (O) {
       console.error("failed to paste image", O);
     }
-  }, y = Y(0), [E, I] = $(!1), j = (b) => {
+  }, y = H(0), [C, I] = D(!1), j = (b) => {
     b.preventDefault(), y.current++, I(!0);
   }, F = (b) => {
     b.preventDefault(), y.current--, y.current <= 0 && (y.current = 0, I(!1));
-  }, U = async (b) => {
+  }, M = async (b) => {
     b.preventDefault(), I(!1), y.current = 0;
     const O = Array.from(b.dataTransfer.files).filter((Z) => Z.type.startsWith("image/"));
     if (O.length)
       try {
-        const Z = await Promise.all(O.map((D) => A(D)));
-        v((D) => [...D, ...Z]);
+        const Z = await Promise.all(O.map(($) => A($)));
+        v(($) => [...$, ...Z]);
       } catch (Z) {
         console.error("failed to drop images", Z);
       }
-  }, Q = (b) => v((O) => O.filter((Z, D) => D !== b)), X = (b) => {
+  }, Q = (b) => v((O) => O.filter((Z, $) => $ !== b)), X = (b) => {
     b.preventDefault();
     const O = e.trim();
     if (!O) return;
-    const Z = r.split(",").map((D) => D.trim()).filter(Boolean);
+    const Z = r.split(",").map(($) => $.trim()).filter(Boolean);
     a({
       title: O,
       tCodes: Z,
@@ -70,12 +70,12 @@ const wt = ({ onSubmit: a }) => {
   )), /* @__PURE__ */ l.createElement(
     "div",
     {
-      className: `field attach-field ${E ? "drag-over" : ""}`,
+      className: `field attach-field ${C ? "drag-over" : ""}`,
       onPaste: f,
       onDragOver: (b) => b.preventDefault(),
       onDragEnter: j,
       onDragLeave: F,
-      onDrop: U,
+      onDrop: M,
       tabIndex: 0
     },
     /* @__PURE__ */ l.createElement("label", null, "Attach screenshots (optional)"),
@@ -93,34 +93,34 @@ const wt = ({ onSubmit: a }) => {
     )))) : /* @__PURE__ */ l.createElement("div", { className: "attach-hint" }, "Drop or paste images here")
   ), /* @__PURE__ */ l.createElement("div", { className: "actions" }, /* @__PURE__ */ l.createElement("button", { type: "submit" }, "Save entry")));
 }, Ee = ({ tasks: a, onDelete: e, onUpdate: t, onOpenViewer: r }) => {
-  const [n, s] = $(null), [i, o] = $(""), u = (f) => new Promise((y, E) => {
+  const [n, s] = D(null), [i, o] = D(""), u = (f) => new Promise((y, C) => {
     const I = new FileReader();
     I.onload = () => {
-      typeof I.result == "string" ? y(I.result) : E(new Error("invalid file result"));
-    }, I.onerror = () => E(new Error("file read error")), I.readAsDataURL(f);
+      typeof I.result == "string" ? y(I.result) : C(new Error("invalid file result"));
+    }, I.onerror = () => C(new Error("file read error")), I.readAsDataURL(f);
   }), d = async (f, y) => {
     if (!(!y || !y.length))
       try {
-        const E = Array.from(y).filter((U) => U.type.startsWith("image/"));
-        if (!E.length) return;
-        const I = await Promise.all(E.map((U) => u(U))), j = a.find((U) => U.id === f), F = Array.isArray(j?.images) && j.images.length ? j.images : j?.imageData ? [j.imageData] : [];
+        const C = Array.from(y).filter((M) => M.type.startsWith("image/"));
+        if (!C.length) return;
+        const I = await Promise.all(C.map((M) => u(M))), j = a.find((M) => M.id === f), F = Array.isArray(j?.images) && j.images.length ? j.images : j?.imageData ? [j.imageData] : [];
         t(f, { images: [...F, ...I] });
-      } catch (E) {
-        console.error("failed to add images", E);
+      } catch (C) {
+        console.error("failed to add images", C);
       }
   }, v = (f, y) => {
-    const E = a.find((F) => F.id === f);
-    if (!E) return;
-    const j = (Array.isArray(E.images) && E.images.length ? E.images : E.imageData ? [E.imageData] : []).filter((F, U) => U !== y);
+    const C = a.find((F) => F.id === f);
+    if (!C) return;
+    const j = (Array.isArray(C.images) && C.images.length ? C.images : C.imageData ? [C.imageData] : []).filter((F, M) => M !== y);
     j.length ? t(f, { images: j }) : t(f, { images: [], imageData: void 0 });
-  }, A = (f, y, E, I) => {
+  }, A = (f, y, C, I) => {
     if (typeof r == "function") {
-      r(f, y, E, I);
+      r(f, y, C, I);
       return;
     }
-    typeof Ee.openViewerCallback == "function" && Ee.openViewerCallback(f, y, E, I);
+    typeof Ee.openViewerCallback == "function" && Ee.openViewerCallback(f, y, C, I);
     try {
-      const j = new CustomEvent("sapwiki:openViewer", { detail: { taskId: f, images: y, index: E, title: I } });
+      const j = new CustomEvent("sapwiki:openViewer", { detail: { taskId: f, images: y, index: C, title: I } });
       window.dispatchEvent(j);
     } catch {
     }
@@ -139,7 +139,7 @@ const wt = ({ onSubmit: a }) => {
       type: "button",
       className: "ghost small",
       onClick: () => {
-        const y = i.split(",").map((E) => E.trim()).filter(Boolean);
+        const y = i.split(",").map((C) => C.trim()).filter(Boolean);
         t(f.id, { tCodes: y, tCode: "" }), s(null);
       }
     },
@@ -192,9 +192,9 @@ const wt = ({ onSubmit: a }) => {
         accept: "image/*",
         multiple: !0,
         style: { display: "none" },
-        onChange: (E) => d(f.id, E.target.files)
+        onChange: (C) => d(f.id, C.target.files)
       }
-    ), /* @__PURE__ */ l.createElement("div", { className: "image-row" }, y.map((E, I) => /* @__PURE__ */ l.createElement(
+    ), /* @__PURE__ */ l.createElement("div", { className: "image-row" }, y.map((C, I) => /* @__PURE__ */ l.createElement(
       "div",
       {
         className: "attach-preview",
@@ -209,7 +209,7 @@ const wt = ({ onSubmit: a }) => {
       /* @__PURE__ */ l.createElement(
         "img",
         {
-          src: E,
+          src: C,
           alt: `${f.title} ${I + 1}`,
           className: "preview clickable"
         }
@@ -229,7 +229,7 @@ const wt = ({ onSubmit: a }) => {
     )))) : null;
   })()))) : /* @__PURE__ */ l.createElement("div", { className: "empty card" }, /* @__PURE__ */ l.createElement("h3", null, "No entries yet"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Add a new entry or import from your legacy backup."));
 };
-function bt({
+function kt({
   isOpen: a,
   images: e,
   initialIndex: t,
@@ -237,142 +237,142 @@ function bt({
   onClose: n,
   onSaveAnnotated: s
 }) {
-  const [i, o] = $(t), [u, d] = $(!1), [v, A] = $(!1), [f, y] = $("#ff3344"), [E, I] = $(4), [j, F] = $(0), [U, Q] = $(!1), X = Y(null), b = Y(null), O = Y(!1), Z = Y(!1), D = Y(null), P = Y([]), S = () => {
+  const [i, o] = D(t), [u, d] = D(!1), [v, A] = D(!1), [f, y] = D("#ff3344"), [C, I] = D(4), [j, F] = D(0), [M, Q] = D(!1), X = H(null), b = H(null), O = H(null), Z = H(!1), $ = H(!1), U = H(null), k = H([]), S = () => {
     const h = [
       window.visualViewport?.height ?? 0,
       window.innerHeight,
       document.documentElement?.clientHeight ?? 0
     ].filter((x) => Number.isFinite(x) && x > 0);
     return h.length ? Math.min(...h) : window.innerHeight;
-  }, T = () => {
+  }, R = () => {
     const h = S() * 0.01;
     document.documentElement.style.setProperty("--pv-vh", `${h}px`);
-  }, R = ze(() => e[i], [e, i]);
+  }, V = ze(() => e[i], [e, i]);
   G(() => {
-    a && (o(t), d(!1), A(!1));
+    a && (o(t), d(!1), A(!1), O.current && O.current.scrollIntoView({ behavior: "smooth", block: "center" }));
   }, [t, a]), G(() => {
     if (!a) return;
     const h = (x) => {
-      x.key === "Escape" && n(), x.key === "ArrowRight" && o((L) => (L + 1) % e.length), x.key === "ArrowLeft" && o((L) => (L - 1 + e.length) % e.length);
+      x.key === "Escape" && n(), x.key === "ArrowRight" && o((P) => (P + 1) % e.length), x.key === "ArrowLeft" && o((P) => (P - 1 + e.length) % e.length);
     };
     return window.addEventListener("keydown", h), () => window.removeEventListener("keydown", h);
   }, [e.length, a, n]);
-  const z = () => {
+  const q = () => {
     const h = b.current;
     if (!h) return;
     const x = h.toDataURL("image/png");
-    P.current[P.current.length - 1] !== x && (P.current = [...P.current, x], F(P.current.length - 1));
-  }, q = () => {
+    k.current[k.current.length - 1] !== x && (k.current = [...k.current, x], F(k.current.length - 1));
+  }, ge = () => {
     const h = X.current, x = b.current;
     if (!h || !x) return;
     x.width = h.clientWidth, x.height = h.clientHeight;
-    const L = x.getContext("2d");
-    L && (L.clearRect(0, 0, x.width, x.height), P.current = [x.toDataURL("image/png")], F(0));
+    const P = x.getContext("2d");
+    P && (P.clearRect(0, 0, x.width, x.height), k.current = [x.toDataURL("image/png")], F(0));
   };
   G(() => {
     if (!a) return;
-    T();
+    R();
     const h = () => {
-      T(), q();
+      R(), ge();
     }, x = window.visualViewport;
     window.addEventListener("resize", h), x?.addEventListener("resize", h);
-    const L = window.requestAnimationFrame(h), M = window.setTimeout(h, 120);
+    const P = window.requestAnimationFrame(h), z = window.setTimeout(h, 120);
     return () => {
-      window.removeEventListener("resize", h), x?.removeEventListener("resize", h), window.cancelAnimationFrame(L), window.clearTimeout(M);
+      window.removeEventListener("resize", h), x?.removeEventListener("resize", h), window.cancelAnimationFrame(P), window.clearTimeout(z);
     };
   }, [a, i]), G(() => {
     if (!a) return;
     const h = X.current;
     if (!h || typeof ResizeObserver > "u") return;
     const x = new ResizeObserver(() => {
-      q();
+      ge();
     });
     return x.observe(h), () => x.disconnect();
   }, [a, i]), G(() => {
     if (a)
-      return T(), () => {
+      return R(), () => {
         document.documentElement.style.removeProperty("--pv-vh");
       };
   }, [a]);
-  const xe = (h, x) => {
-    const L = b.current;
-    if (!L) return;
-    const M = L.getContext("2d");
-    M && (M.globalCompositeOperation = v ? "destination-out" : "source-over", M.strokeStyle = v ? "rgba(0,0,0,1)" : f, M.lineWidth = E, M.lineCap = "round", M.lineJoin = "round", M.beginPath(), M.moveTo(h.x, h.y), M.lineTo(x.x, x.y), M.stroke());
-  }, _e = (h) => {
+  const _e = (h, x) => {
+    const P = b.current;
+    if (!P) return;
+    const z = P.getContext("2d");
+    z && (z.globalCompositeOperation = v ? "destination-out" : "source-over", z.strokeStyle = v ? "rgba(0,0,0,1)" : f, z.lineWidth = C, z.lineCap = "round", z.lineJoin = "round", z.beginPath(), z.moveTo(h.x, h.y), z.lineTo(x.x, x.y), z.stroke());
+  }, Be = (h) => {
     const x = b.current;
     if (!x) return { x: 0, y: 0 };
-    const L = x.getBoundingClientRect();
-    return { x: h.clientX - L.left, y: h.clientY - L.top };
-  }, gt = (h) => {
-    if (!u) return;
-    const x = _e(h);
-    O.current = !0, Z.current = !0, D.current = x, xe(x, x), h.currentTarget.setPointerCapture(h.pointerId);
+    const P = x.getBoundingClientRect();
+    return { x: h.clientX - P.left, y: h.clientY - P.top };
   }, vt = (h) => {
-    if (!u || !O.current || !D.current) return;
-    const x = _e(h);
-    xe(D.current, x), Z.current = !0, D.current = x;
-  }, Be = (h) => {
-    O.current && Z.current && z(), O.current = !1, Z.current = !1, D.current = null, h.currentTarget.hasPointerCapture(h.pointerId) && h.currentTarget.releasePointerCapture(h.pointerId);
-  }, yt = () => {
+    if (!u) return;
+    const x = Be(h);
+    Z.current = !0, $.current = !0, U.current = x, _e(x, x), h.currentTarget.setPointerCapture(h.pointerId);
+  }, yt = (h) => {
+    if (!u || !Z.current || !U.current) return;
+    const x = Be(h);
+    _e(U.current, x), $.current = !0, U.current = x;
+  }, Fe = (h) => {
+    Z.current && $.current && q(), Z.current = !1, $.current = !1, U.current = null, h.currentTarget.hasPointerCapture(h.pointerId) && h.currentTarget.releasePointerCapture(h.pointerId);
+  }, xt = () => {
     const h = b.current;
-    if (!h || P.current.length <= 1) return;
-    P.current = P.current.slice(0, -1);
-    const x = P.current[P.current.length - 1];
+    if (!h || k.current.length <= 1) return;
+    k.current = k.current.slice(0, -1);
+    const x = k.current[k.current.length - 1];
     if (!x) return;
-    const L = h.getContext("2d");
-    if (!L) return;
-    const M = new Image();
-    M.onload = () => {
-      L.clearRect(0, 0, h.width, h.height), L.drawImage(M, 0, 0, h.width, h.height), F(P.current.length - 1);
-    }, M.src = x;
-  }, Fe = () => {
+    const P = h.getContext("2d");
+    if (!P) return;
+    const z = new Image();
+    z.onload = () => {
+      P.clearRect(0, 0, h.width, h.height), P.drawImage(z, 0, 0, h.width, h.height), F(k.current.length - 1);
+    }, z.src = x;
+  }, We = () => {
     const h = b.current;
     if (!h) return;
     const x = h.getContext("2d");
-    x && (x.clearRect(0, 0, h.width, h.height), z());
-  }, xt = async () => {
-    const h = e[i], x = b.current, L = X.current;
-    if (!(!h || !x || !L)) {
+    x && (x.clearRect(0, 0, h.width, h.height), q());
+  }, _t = async () => {
+    const h = e[i], x = b.current, P = X.current;
+    if (!(!h || !x || !P)) {
       Q(!0);
       try {
-        const M = await new Promise((We, qe) => {
+        const z = await new Promise((qe, He) => {
           const ce = new Image();
           ce.onload = () => {
-            const J = document.createElement("canvas");
-            J.width = ce.naturalWidth, J.height = ce.naturalHeight;
-            const Ie = J.getContext("2d");
+            const Y = document.createElement("canvas");
+            Y.width = ce.naturalWidth, Y.height = ce.naturalHeight;
+            const Ie = Y.getContext("2d");
             if (!Ie) {
-              qe(new Error("Could not create drawing context."));
+              He(new Error("Could not create drawing context."));
               return;
             }
-            Ie.drawImage(ce, 0, 0, J.width, J.height);
+            Ie.drawImage(ce, 0, 0, Y.width, Y.height);
             const we = new Image();
             we.onload = () => {
-              Ie.drawImage(we, 0, 0, J.width, J.height), We(J.toDataURL("image/png"));
-            }, we.onerror = () => We(J.toDataURL("image/png")), we.src = x.toDataURL("image/png");
-          }, ce.onerror = () => qe(new Error("Failed to load source image.")), ce.src = h;
+              Ie.drawImage(we, 0, 0, Y.width, Y.height), qe(Y.toDataURL("image/png"));
+            }, we.onerror = () => qe(Y.toDataURL("image/png")), we.src = x.toDataURL("image/png");
+          }, ce.onerror = () => He(new Error("Failed to load source image.")), ce.src = h;
         });
-        s(M, i), Fe(), d(!1), A(!1);
+        s(z, i), We(), d(!1), A(!1);
       } finally {
         Q(!1);
       }
     }
   };
-  return !a || e.length === 0 || !R ? null : /* @__PURE__ */ l.createElement("div", { className: "pv-overlay", role: "dialog", "aria-modal": "true" }, /* @__PURE__ */ l.createElement("div", { className: "pv-dialog" }, /* @__PURE__ */ l.createElement("div", { className: "pv-header" }, /* @__PURE__ */ l.createElement("p", { className: "pv-title" }, r, " - Image ", i + 1, " / ", e.length), /* @__PURE__ */ l.createElement("div", { className: "pv-controls" }, /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => o((h) => (h - 1 + e.length) % e.length) }, "Prev"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => o((h) => (h + 1) % e.length) }, "Next"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: n, className: "ghost" }, "Close"))), /* @__PURE__ */ l.createElement("div", { className: "pv-toolbar" }, /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => d((h) => !h), className: u ? "active" : "" }, u ? "Drawing On" : "Draw"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => {
+  return !a || e.length === 0 || !V ? null : /* @__PURE__ */ l.createElement("div", { className: "pv-overlay", ref: O, role: "dialog", "aria-modal": "true" }, /* @__PURE__ */ l.createElement("div", { className: "pv-dialog" }, /* @__PURE__ */ l.createElement("div", { className: "pv-header" }, /* @__PURE__ */ l.createElement("p", { className: "pv-title" }, r, " - Image ", i + 1, " / ", e.length), /* @__PURE__ */ l.createElement("div", { className: "pv-controls" }, /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => o((h) => (h - 1 + e.length) % e.length) }, "Prev"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => o((h) => (h + 1) % e.length) }, "Next"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: n, className: "ghost" }, "Close"))), /* @__PURE__ */ l.createElement("div", { className: "pv-toolbar" }, /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => d((h) => !h), className: u ? "active" : "" }, u ? "Drawing On" : "Draw"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: () => {
     A((h) => !h), u || d(!0);
-  }, className: v ? "active" : "" }, v ? "Eraser On" : "Eraser"), /* @__PURE__ */ l.createElement("div", { className: "pv-brush-group" }, /* @__PURE__ */ l.createElement("label", null, "Color"), /* @__PURE__ */ l.createElement("input", { type: "color", value: f, onChange: (h) => y(h.target.value), "aria-label": "Brush color" }), /* @__PURE__ */ l.createElement("label", { htmlFor: "brush-size" }, "Brush"), /* @__PURE__ */ l.createElement("input", { id: "brush-size", type: "range", min: 2, max: 18, value: E, onChange: (h) => I(Number(h.target.value)) })), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: yt, disabled: j === 0 }, "Undo"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: Fe }, "Clear"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: xt, disabled: U, className: "primary" }, U ? "Saving..." : "Save")), /* @__PURE__ */ l.createElement("div", { className: "pv-body" }, /* @__PURE__ */ l.createElement("div", { className: "pv-image-wrap" }, /* @__PURE__ */ l.createElement(
+  }, className: v ? "active" : "" }, v ? "Eraser On" : "Eraser"), /* @__PURE__ */ l.createElement("div", { className: "pv-brush-group" }, /* @__PURE__ */ l.createElement("label", null, "Color"), /* @__PURE__ */ l.createElement("input", { type: "color", value: f, onChange: (h) => y(h.target.value), "aria-label": "Brush color" }), /* @__PURE__ */ l.createElement("label", { htmlFor: "brush-size" }, "Brush"), /* @__PURE__ */ l.createElement("input", { id: "brush-size", type: "range", min: 2, max: 18, value: C, onChange: (h) => I(Number(h.target.value)) })), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: xt, disabled: j === 0 }, "Undo"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: We }, "Clear"), /* @__PURE__ */ l.createElement("button", { type: "button", onClick: _t, disabled: M, className: "primary" }, M ? "Saving..." : "Save")), /* @__PURE__ */ l.createElement("div", { className: "pv-body" }, /* @__PURE__ */ l.createElement("div", { className: "pv-image-wrap" }, /* @__PURE__ */ l.createElement(
     "img",
     {
       ref: X,
-      src: R,
+      src: V,
       alt: `Viewer image ${i + 1}`,
       className: "pv-image",
-      onLoad: q
+      onLoad: ge
     }
-  ), /* @__PURE__ */ l.createElement("canvas", { ref: b, className: `pv-canvas ${u ? v ? "erase" : "draw" : "disabled"}`, onPointerDown: gt, onPointerMove: vt, onPointerUp: Be, onPointerLeave: Be })))));
+  ), /* @__PURE__ */ l.createElement("canvas", { ref: b, className: `pv-canvas ${u ? v ? "erase" : "draw" : "disabled"}`, onPointerDown: vt, onPointerMove: yt, onPointerUp: Fe, onPointerLeave: Fe })))));
 }
-var N;
+var T;
 (function(a) {
   a.assertEqual = (n) => {
   };
@@ -408,16 +408,16 @@ var N;
     return n.map((i) => typeof i == "string" ? `'${i}'` : i).join(s);
   }
   a.joinValues = r, a.jsonStringifyReplacer = (n, s) => typeof s == "bigint" ? s.toString() : s;
-})(N || (N = {}));
-var He;
+})(T || (T = {}));
+var Je;
 (function(a) {
   a.mergeShapes = (e, t) => ({
     ...e,
     ...t
     // second overwrites first
   });
-})(He || (He = {}));
-const m = N.arrayToEnum([
+})(Je || (Je = {}));
+const m = T.arrayToEnum([
   "string",
   "nan",
   "number",
@@ -459,7 +459,7 @@ const m = N.arrayToEnum([
     default:
       return m.unknown;
   }
-}, c = N.arrayToEnum([
+}, c = T.arrayToEnum([
   "invalid_type",
   "invalid_literal",
   "custom",
@@ -521,7 +521,7 @@ class K extends Error {
     return this.message;
   }
   get message() {
-    return JSON.stringify(this.issues, N.jsonStringifyReplacer, 2);
+    return JSON.stringify(this.issues, T.jsonStringifyReplacer, 2);
   }
   get isEmpty() {
     return this.issues.length === 0;
@@ -548,19 +548,19 @@ const Ze = (a, e) => {
       a.received === m.undefined ? t = "Required" : t = `Expected ${a.expected}, received ${a.received}`;
       break;
     case c.invalid_literal:
-      t = `Invalid literal value, expected ${JSON.stringify(a.expected, N.jsonStringifyReplacer)}`;
+      t = `Invalid literal value, expected ${JSON.stringify(a.expected, T.jsonStringifyReplacer)}`;
       break;
     case c.unrecognized_keys:
-      t = `Unrecognized key(s) in object: ${N.joinValues(a.keys, ", ")}`;
+      t = `Unrecognized key(s) in object: ${T.joinValues(a.keys, ", ")}`;
       break;
     case c.invalid_union:
       t = "Invalid input";
       break;
     case c.invalid_union_discriminator:
-      t = `Invalid discriminator value. Expected ${N.joinValues(a.options)}`;
+      t = `Invalid discriminator value. Expected ${T.joinValues(a.options)}`;
       break;
     case c.invalid_enum_value:
-      t = `Invalid enum value. Expected ${N.joinValues(a.options)}, received '${a.received}'`;
+      t = `Invalid enum value. Expected ${T.joinValues(a.options)}, received '${a.received}'`;
       break;
     case c.invalid_arguments:
       t = "Invalid function arguments";
@@ -572,7 +572,7 @@ const Ze = (a, e) => {
       t = "Invalid date";
       break;
     case c.invalid_string:
-      typeof a.validation == "object" ? "includes" in a.validation ? (t = `Invalid input: must include "${a.validation.includes}"`, typeof a.validation.position == "number" && (t = `${t} at one or more positions greater than or equal to ${a.validation.position}`)) : "startsWith" in a.validation ? t = `Invalid input: must start with "${a.validation.startsWith}"` : "endsWith" in a.validation ? t = `Invalid input: must end with "${a.validation.endsWith}"` : N.assertNever(a.validation) : a.validation !== "regex" ? t = `Invalid ${a.validation}` : t = "Invalid";
+      typeof a.validation == "object" ? "includes" in a.validation ? (t = `Invalid input: must include "${a.validation.includes}"`, typeof a.validation.position == "number" && (t = `${t} at one or more positions greater than or equal to ${a.validation.position}`)) : "startsWith" in a.validation ? t = `Invalid input: must start with "${a.validation.startsWith}"` : "endsWith" in a.validation ? t = `Invalid input: must end with "${a.validation.endsWith}"` : T.assertNever(a.validation) : a.validation !== "regex" ? t = `Invalid ${a.validation}` : t = "Invalid";
       break;
     case c.too_small:
       a.type === "array" ? t = `Array must contain ${a.exact ? "exactly" : a.inclusive ? "at least" : "more than"} ${a.minimum} element(s)` : a.type === "string" ? t = `String must contain ${a.exact ? "exactly" : a.inclusive ? "at least" : "over"} ${a.minimum} character(s)` : a.type === "number" ? t = `Number must be ${a.exact ? "exactly equal to " : a.inclusive ? "greater than or equal to " : "greater than "}${a.minimum}` : a.type === "bigint" ? t = `Number must be ${a.exact ? "exactly equal to " : a.inclusive ? "greater than or equal to " : "greater than "}${a.minimum}` : a.type === "date" ? t = `Date must be ${a.exact ? "exactly equal to " : a.inclusive ? "greater than or equal to " : "greater than "}${new Date(Number(a.minimum))}` : t = "Invalid input";
@@ -593,15 +593,15 @@ const Ze = (a, e) => {
       t = "Number must be finite";
       break;
     default:
-      t = e.defaultError, N.assertNever(a);
+      t = e.defaultError, T.assertNever(a);
   }
   return { message: t };
 };
-let kt = Ze;
-function Et() {
-  return kt;
+let Et = Ze;
+function Ct() {
+  return Et;
 }
-const Ct = (a) => {
+const Nt = (a) => {
   const { data: e, path: t, errorMaps: r, issueData: n } = a, s = [...t, ...n.path || []], i = {
     ...n,
     path: s
@@ -623,7 +623,7 @@ const Ct = (a) => {
   };
 };
 function p(a, e) {
-  const t = Et(), r = Ct({
+  const t = Ct(), r = Nt({
     issueData: e,
     data: a.data,
     path: a.path,
@@ -683,7 +683,7 @@ class B {
 }
 const _ = Object.freeze({
   status: "aborted"
-}), ge = (a) => ({ status: "dirty", value: a }), W = (a) => ({ status: "valid", value: a }), Je = (a) => a.status === "aborted", Ye = (a) => a.status === "dirty", ue = (a) => a.status === "valid", Ce = (a) => typeof Promise < "u" && a instanceof Promise;
+}), ve = (a) => ({ status: "dirty", value: a }), W = (a) => ({ status: "valid", value: a }), Ye = (a) => a.status === "aborted", Ge = (a) => a.status === "dirty", ue = (a) => a.status === "valid", Ce = (a) => typeof Promise < "u" && a instanceof Promise;
 var g;
 (function(a) {
   a.errToObj = (e) => typeof e == "string" ? { message: e } : e || {}, a.toString = (e) => typeof e == "string" ? e : e?.message;
@@ -696,7 +696,7 @@ class se {
     return this._cachedPath.length || (Array.isArray(this._key) ? this._cachedPath.push(...this._path, ...this._key) : this._cachedPath.push(...this._path, this._key)), this._cachedPath;
   }
 }
-const Ge = (a, e) => {
+const Ke = (a, e) => {
   if (ue(e))
     return { success: !0, data: e.value };
   if (!a.common.issues.length)
@@ -711,7 +711,7 @@ const Ge = (a, e) => {
     }
   };
 };
-function k(a) {
+function E(a) {
   if (!a)
     return {};
   const { errorMap: e, invalid_type_error: t, required_error: r, description: n } = a;
@@ -722,7 +722,7 @@ function k(a) {
     return i.code === "invalid_enum_value" ? { message: u ?? o.defaultError } : typeof o.data > "u" ? { message: u ?? r ?? o.defaultError } : i.code !== "invalid_type" ? { message: o.defaultError } : { message: u ?? t ?? o.defaultError };
   }, description: n };
 }
-class C {
+class N {
   get description() {
     return this._def.description;
   }
@@ -781,7 +781,7 @@ class C {
       data: e,
       parsedType: te(e)
     }, n = this._parseSync({ data: e, path: r.path, parent: r });
-    return Ge(r, n);
+    return Ke(r, n);
   }
   "~validate"(e) {
     const t = {
@@ -834,7 +834,7 @@ class C {
       data: e,
       parsedType: te(e)
     }, n = this._parse({ data: e, path: r.path, parent: r }), s = await (Ce(n) ? n : Promise.resolve(n));
-    return Ge(r, s);
+    return Ke(r, s);
   }
   refine(e, t) {
     const r = (n) => typeof t == "string" || typeof t > "u" ? { message: t } : typeof t == "function" ? t(n) : t;
@@ -876,7 +876,7 @@ class C {
     return this.nullable().optional();
   }
   array() {
-    return H.create(this);
+    return J.create(this);
   }
   promise() {
     return Se.create(this, this._def);
@@ -889,7 +889,7 @@ class C {
   }
   transform(e) {
     return new he({
-      ...k(this._def),
+      ...E(this._def),
       schema: this,
       typeName: w.ZodEffects,
       effect: { type: "transform", transform: e }
@@ -898,23 +898,23 @@ class C {
   default(e) {
     const t = typeof e == "function" ? e : () => e;
     return new De({
-      ...k(this._def),
+      ...E(this._def),
       innerType: this,
       defaultValue: t,
       typeName: w.ZodDefault
     });
   }
   brand() {
-    return new Jt({
+    return new Yt({
       typeName: w.ZodBranded,
       type: this,
-      ...k(this._def)
+      ...E(this._def)
     });
   }
   catch(e) {
     const t = typeof e == "function" ? e : () => e;
     return new $e({
-      ...k(this._def),
+      ...E(this._def),
       innerType: this,
       catchValue: t,
       typeName: w.ZodCatch
@@ -940,28 +940,28 @@ class C {
     return this.safeParse(null).success;
   }
 }
-const Nt = /^c[^\s-]{8,}$/i, Tt = /^[0-9a-z]+$/, At = /^[0-9A-HJKMNP-TV-Z]{26}$/i, St = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i, Rt = /^[a-z0-9_-]{21}$/i, It = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]*$/, Ot = /^[-+]?P(?!$)(?:(?:[-+]?\d+Y)|(?:[-+]?\d+[.,]\d+Y$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:(?:[-+]?\d+W)|(?:[-+]?\d+[.,]\d+W$))?(?:(?:[-+]?\d+D)|(?:[-+]?\d+[.,]\d+D$))?(?:T(?=[\d+-])(?:(?:[-+]?\d+H)|(?:[-+]?\d+[.,]\d+H$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:[-+]?\d+(?:[.,]\d+)?S)?)??$/, Zt = /^(?!\.)(?!.*\.\.)([A-Z0-9_'+\-\.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i, jt = "^(\\p{Extended_Pictographic}|\\p{Emoji_Component})+$";
+const Tt = /^c[^\s-]{8,}$/i, At = /^[0-9a-z]+$/, St = /^[0-9A-HJKMNP-TV-Z]{26}$/i, Rt = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i, It = /^[a-z0-9_-]{21}$/i, Ot = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]*$/, Zt = /^[-+]?P(?!$)(?:(?:[-+]?\d+Y)|(?:[-+]?\d+[.,]\d+Y$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:(?:[-+]?\d+W)|(?:[-+]?\d+[.,]\d+W$))?(?:(?:[-+]?\d+D)|(?:[-+]?\d+[.,]\d+D$))?(?:T(?=[\d+-])(?:(?:[-+]?\d+H)|(?:[-+]?\d+[.,]\d+H$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:[-+]?\d+(?:[.,]\d+)?S)?)??$/, jt = /^(?!\.)(?!.*\.\.)([A-Z0-9_'+\-\.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i, Dt = "^(\\p{Extended_Pictographic}|\\p{Emoji_Component})+$";
 let Oe;
-const Dt = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$/, $t = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\/(3[0-2]|[12]?[0-9])$/, Pt = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/, Lt = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))\/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$/, Vt = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/, zt = /^([0-9a-zA-Z-_]{4})*(([0-9a-zA-Z-_]{2}(==)?)|([0-9a-zA-Z-_]{3}(=)?))?$/, ut = "((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))", Mt = new RegExp(`^${ut}$`);
-function pt(a) {
+const $t = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$/, Pt = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\/(3[0-2]|[12]?[0-9])$/, Lt = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/, Vt = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))\/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$/, zt = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/, Mt = /^([0-9a-zA-Z-_]{4})*(([0-9a-zA-Z-_]{2}(==)?)|([0-9a-zA-Z-_]{3}(=)?))?$/, pt = "((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))", Ut = new RegExp(`^${pt}$`);
+function ft(a) {
   let e = "[0-5]\\d";
   a.precision ? e = `${e}\\.\\d{${a.precision}}` : a.precision == null && (e = `${e}(\\.\\d+)?`);
   const t = a.precision ? "+" : "?";
   return `([01]\\d|2[0-3]):[0-5]\\d(:${e})${t}`;
 }
-function Ut(a) {
-  return new RegExp(`^${pt(a)}$`);
-}
 function Bt(a) {
-  let e = `${ut}T${pt(a)}`;
+  return new RegExp(`^${ft(a)}$`);
+}
+function Ft(a) {
+  let e = `${pt}T${ft(a)}`;
   const t = [];
   return t.push(a.local ? "Z?" : "Z"), a.offset && t.push("([+-]\\d{2}:?\\d{2})"), e = `${e}(${t.join("|")})`, new RegExp(`^${e}$`);
 }
-function Ft(a, e) {
-  return !!((e === "v4" || !e) && Dt.test(a) || (e === "v6" || !e) && Pt.test(a));
-}
 function Wt(a, e) {
-  if (!It.test(a))
+  return !!((e === "v4" || !e) && $t.test(a) || (e === "v6" || !e) && Lt.test(a));
+}
+function qt(a, e) {
+  if (!Ot.test(a))
     return !1;
   try {
     const [t] = a.split(".");
@@ -973,10 +973,10 @@ function Wt(a, e) {
     return !1;
   }
 }
-function qt(a, e) {
-  return !!((e === "v4" || !e) && $t.test(a) || (e === "v6" || !e) && Lt.test(a));
+function Ht(a, e) {
+  return !!((e === "v4" || !e) && Pt.test(a) || (e === "v6" || !e) && Vt.test(a));
 }
-class re extends C {
+class re extends N {
   _parse(e) {
     if (this._def.coerce && (e.data = String(e.data)), this._getType(e) !== m.string) {
       const s = this._getOrReturnCtx(e);
@@ -1025,43 +1025,43 @@ class re extends C {
           message: s.message
         }), r.dirty());
       } else if (s.kind === "email")
-        Zt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+        jt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
           validation: "email",
           code: c.invalid_string,
           message: s.message
         }), r.dirty());
       else if (s.kind === "emoji")
-        Oe || (Oe = new RegExp(jt, "u")), Oe.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+        Oe || (Oe = new RegExp(Dt, "u")), Oe.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
           validation: "emoji",
           code: c.invalid_string,
           message: s.message
         }), r.dirty());
       else if (s.kind === "uuid")
-        St.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+        Rt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
           validation: "uuid",
           code: c.invalid_string,
           message: s.message
         }), r.dirty());
       else if (s.kind === "nanoid")
-        Rt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+        It.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
           validation: "nanoid",
           code: c.invalid_string,
           message: s.message
         }), r.dirty());
       else if (s.kind === "cuid")
-        Nt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+        Tt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
           validation: "cuid",
           code: c.invalid_string,
           message: s.message
         }), r.dirty());
       else if (s.kind === "cuid2")
-        Tt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+        At.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
           validation: "cuid2",
           code: c.invalid_string,
           message: s.message
         }), r.dirty());
       else if (s.kind === "ulid")
-        At.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+        St.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
           validation: "ulid",
           code: c.invalid_string,
           message: s.message
@@ -1092,43 +1092,43 @@ class re extends C {
         code: c.invalid_string,
         validation: { endsWith: s.value },
         message: s.message
-      }), r.dirty()) : s.kind === "datetime" ? Bt(s).test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+      }), r.dirty()) : s.kind === "datetime" ? Ft(s).test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
         code: c.invalid_string,
         validation: "datetime",
         message: s.message
-      }), r.dirty()) : s.kind === "date" ? Mt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+      }), r.dirty()) : s.kind === "date" ? Ut.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
         code: c.invalid_string,
         validation: "date",
         message: s.message
-      }), r.dirty()) : s.kind === "time" ? Ut(s).test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+      }), r.dirty()) : s.kind === "time" ? Bt(s).test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
         code: c.invalid_string,
         validation: "time",
         message: s.message
-      }), r.dirty()) : s.kind === "duration" ? Ot.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+      }), r.dirty()) : s.kind === "duration" ? Zt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
         validation: "duration",
         code: c.invalid_string,
         message: s.message
-      }), r.dirty()) : s.kind === "ip" ? Ft(e.data, s.version) || (n = this._getOrReturnCtx(e, n), p(n, {
+      }), r.dirty()) : s.kind === "ip" ? Wt(e.data, s.version) || (n = this._getOrReturnCtx(e, n), p(n, {
         validation: "ip",
         code: c.invalid_string,
         message: s.message
-      }), r.dirty()) : s.kind === "jwt" ? Wt(e.data, s.alg) || (n = this._getOrReturnCtx(e, n), p(n, {
+      }), r.dirty()) : s.kind === "jwt" ? qt(e.data, s.alg) || (n = this._getOrReturnCtx(e, n), p(n, {
         validation: "jwt",
         code: c.invalid_string,
         message: s.message
-      }), r.dirty()) : s.kind === "cidr" ? qt(e.data, s.version) || (n = this._getOrReturnCtx(e, n), p(n, {
+      }), r.dirty()) : s.kind === "cidr" ? Ht(e.data, s.version) || (n = this._getOrReturnCtx(e, n), p(n, {
         validation: "cidr",
         code: c.invalid_string,
         message: s.message
-      }), r.dirty()) : s.kind === "base64" ? Vt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+      }), r.dirty()) : s.kind === "base64" ? zt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
         validation: "base64",
         code: c.invalid_string,
         message: s.message
-      }), r.dirty()) : s.kind === "base64url" ? zt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
+      }), r.dirty()) : s.kind === "base64url" ? Mt.test(e.data) || (n = this._getOrReturnCtx(e, n), p(n, {
         validation: "base64url",
         code: c.invalid_string,
         message: s.message
-      }), r.dirty()) : N.assertNever(s);
+      }), r.dirty()) : T.assertNever(s);
     return { status: r.value, value: e.data };
   }
   _regex(e, t, r) {
@@ -1357,13 +1357,13 @@ re.create = (a) => new re({
   checks: [],
   typeName: w.ZodString,
   coerce: a?.coerce ?? !1,
-  ...k(a)
+  ...E(a)
 });
-function Ht(a, e) {
+function Jt(a, e) {
   const t = (a.toString().split(".")[1] || "").length, r = (e.toString().split(".")[1] || "").length, n = t > r ? t : r, s = Number.parseInt(a.toFixed(n).replace(".", "")), i = Number.parseInt(e.toFixed(n).replace(".", ""));
   return s % i / 10 ** n;
 }
-class pe extends C {
+class pe extends N {
   constructor() {
     super(...arguments), this.min = this.gte, this.max = this.lte, this.step = this.multipleOf;
   }
@@ -1379,7 +1379,7 @@ class pe extends C {
     let r;
     const n = new B();
     for (const s of this._def.checks)
-      s.kind === "int" ? N.isInteger(e.data) || (r = this._getOrReturnCtx(e, r), p(r, {
+      s.kind === "int" ? T.isInteger(e.data) || (r = this._getOrReturnCtx(e, r), p(r, {
         code: c.invalid_type,
         expected: "integer",
         received: "float",
@@ -1398,14 +1398,14 @@ class pe extends C {
         inclusive: s.inclusive,
         exact: !1,
         message: s.message
-      }), n.dirty()) : s.kind === "multipleOf" ? Ht(e.data, s.value) !== 0 && (r = this._getOrReturnCtx(e, r), p(r, {
+      }), n.dirty()) : s.kind === "multipleOf" ? Jt(e.data, s.value) !== 0 && (r = this._getOrReturnCtx(e, r), p(r, {
         code: c.not_multiple_of,
         multipleOf: s.value,
         message: s.message
       }), n.dirty()) : s.kind === "finite" ? Number.isFinite(e.data) || (r = this._getOrReturnCtx(e, r), p(r, {
         code: c.not_finite,
         message: s.message
-      }), n.dirty()) : N.assertNever(s);
+      }), n.dirty()) : T.assertNever(s);
     return { status: n.value, value: e.data };
   }
   gte(e, t) {
@@ -1517,7 +1517,7 @@ class pe extends C {
     return e;
   }
   get isInt() {
-    return !!this._def.checks.find((e) => e.kind === "int" || e.kind === "multipleOf" && N.isInteger(e.value));
+    return !!this._def.checks.find((e) => e.kind === "int" || e.kind === "multipleOf" && T.isInteger(e.value));
   }
   get isFinite() {
     let e = null, t = null;
@@ -1533,9 +1533,9 @@ pe.create = (a) => new pe({
   checks: [],
   typeName: w.ZodNumber,
   coerce: a?.coerce || !1,
-  ...k(a)
+  ...E(a)
 });
-class ve extends C {
+class ye extends N {
   constructor() {
     super(...arguments), this.min = this.gte, this.max = this.lte;
   }
@@ -1567,7 +1567,7 @@ class ve extends C {
         code: c.not_multiple_of,
         multipleOf: s.value,
         message: s.message
-      }), n.dirty()) : N.assertNever(s);
+      }), n.dirty()) : T.assertNever(s);
     return { status: n.value, value: e.data };
   }
   _getInvalidInput(e) {
@@ -1591,7 +1591,7 @@ class ve extends C {
     return this.setLimit("max", e, !1, g.toString(t));
   }
   setLimit(e, t, r, n) {
-    return new ve({
+    return new ye({
       ...this._def,
       checks: [
         ...this._def.checks,
@@ -1605,7 +1605,7 @@ class ve extends C {
     });
   }
   _addCheck(e) {
-    return new ve({
+    return new ye({
       ...this._def,
       checks: [...this._def.checks, e]
     });
@@ -1662,13 +1662,13 @@ class ve extends C {
     return e;
   }
 }
-ve.create = (a) => new ve({
+ye.create = (a) => new ye({
   checks: [],
   typeName: w.ZodBigInt,
   coerce: a?.coerce ?? !1,
-  ...k(a)
+  ...E(a)
 });
-class Ke extends C {
+class Qe extends N {
   _parse(e) {
     if (this._def.coerce && (e.data = !!e.data), this._getType(e) !== m.boolean) {
       const r = this._getOrReturnCtx(e);
@@ -1681,12 +1681,12 @@ class Ke extends C {
     return W(e.data);
   }
 }
-Ke.create = (a) => new Ke({
+Qe.create = (a) => new Qe({
   typeName: w.ZodBoolean,
   coerce: a?.coerce || !1,
-  ...k(a)
+  ...E(a)
 });
-class Ne extends C {
+class Ne extends N {
   _parse(e) {
     if (this._def.coerce && (e.data = new Date(e.data)), this._getType(e) !== m.date) {
       const s = this._getOrReturnCtx(e);
@@ -1719,7 +1719,7 @@ class Ne extends C {
         exact: !1,
         maximum: s.value,
         type: "date"
-      }), r.dirty()) : N.assertNever(s);
+      }), r.dirty()) : T.assertNever(s);
     return {
       status: r.value,
       value: new Date(e.data.getTime())
@@ -1762,9 +1762,9 @@ Ne.create = (a) => new Ne({
   checks: [],
   coerce: a?.coerce || !1,
   typeName: w.ZodDate,
-  ...k(a)
+  ...E(a)
 });
-class Qe extends C {
+class Xe extends N {
   _parse(e) {
     if (this._getType(e) !== m.symbol) {
       const r = this._getOrReturnCtx(e);
@@ -1777,11 +1777,11 @@ class Qe extends C {
     return W(e.data);
   }
 }
-Qe.create = (a) => new Qe({
+Xe.create = (a) => new Xe({
   typeName: w.ZodSymbol,
-  ...k(a)
+  ...E(a)
 });
-class Xe extends C {
+class et extends N {
   _parse(e) {
     if (this._getType(e) !== m.undefined) {
       const r = this._getOrReturnCtx(e);
@@ -1794,11 +1794,11 @@ class Xe extends C {
     return W(e.data);
   }
 }
-Xe.create = (a) => new Xe({
+et.create = (a) => new et({
   typeName: w.ZodUndefined,
-  ...k(a)
+  ...E(a)
 });
-class et extends C {
+class tt extends N {
   _parse(e) {
     if (this._getType(e) !== m.null) {
       const r = this._getOrReturnCtx(e);
@@ -1811,11 +1811,11 @@ class et extends C {
     return W(e.data);
   }
 }
-et.create = (a) => new et({
+tt.create = (a) => new tt({
   typeName: w.ZodNull,
-  ...k(a)
+  ...E(a)
 });
-class tt extends C {
+class at extends N {
   constructor() {
     super(...arguments), this._any = !0;
   }
@@ -1823,11 +1823,11 @@ class tt extends C {
     return W(e.data);
   }
 }
-tt.create = (a) => new tt({
+at.create = (a) => new at({
   typeName: w.ZodAny,
-  ...k(a)
+  ...E(a)
 });
-class at extends C {
+class rt extends N {
   constructor() {
     super(...arguments), this._unknown = !0;
   }
@@ -1835,11 +1835,11 @@ class at extends C {
     return W(e.data);
   }
 }
-at.create = (a) => new at({
+rt.create = (a) => new rt({
   typeName: w.ZodUnknown,
-  ...k(a)
+  ...E(a)
 });
-class ie extends C {
+class ie extends N {
   _parse(e) {
     const t = this._getOrReturnCtx(e);
     return p(t, {
@@ -1851,9 +1851,9 @@ class ie extends C {
 }
 ie.create = (a) => new ie({
   typeName: w.ZodNever,
-  ...k(a)
+  ...E(a)
 });
-class rt extends C {
+class nt extends N {
   _parse(e) {
     if (this._getType(e) !== m.undefined) {
       const r = this._getOrReturnCtx(e);
@@ -1866,11 +1866,11 @@ class rt extends C {
     return W(e.data);
   }
 }
-rt.create = (a) => new rt({
+nt.create = (a) => new nt({
   typeName: w.ZodVoid,
-  ...k(a)
+  ...E(a)
 });
-class H extends C {
+class J extends N {
   _parse(e) {
     const { ctx: t, status: r } = this._processInputParams(e), n = this._def;
     if (t.parsedType !== m.array)
@@ -1914,19 +1914,19 @@ class H extends C {
     return this._def.type;
   }
   min(e, t) {
-    return new H({
+    return new J({
       ...this._def,
       minLength: { value: e, message: g.toString(t) }
     });
   }
   max(e, t) {
-    return new H({
+    return new J({
       ...this._def,
       maxLength: { value: e, message: g.toString(t) }
     });
   }
   length(e, t) {
-    return new H({
+    return new J({
       ...this._def,
       exactLength: { value: e, message: g.toString(t) }
     });
@@ -1935,38 +1935,38 @@ class H extends C {
     return this.min(1, e);
   }
 }
-H.create = (a, e) => new H({
+J.create = (a, e) => new J({
   type: a,
   minLength: null,
   maxLength: null,
   exactLength: null,
   typeName: w.ZodArray,
-  ...k(e)
+  ...E(e)
 });
 function de(a) {
-  if (a instanceof V) {
+  if (a instanceof L) {
     const e = {};
     for (const t in a.shape) {
       const r = a.shape[t];
       e[t] = ne.create(de(r));
     }
-    return new V({
+    return new L({
       ...a._def,
       shape: () => e
     });
-  } else return a instanceof H ? new H({
+  } else return a instanceof J ? new J({
     ...a._def,
     type: de(a.element)
   }) : a instanceof ne ? ne.create(de(a.unwrap())) : a instanceof me ? me.create(de(a.unwrap())) : a instanceof le ? le.create(a.items.map((e) => de(e))) : a;
 }
-class V extends C {
+class L extends N {
   constructor() {
     super(...arguments), this._cached = null, this.nonstrict = this.passthrough, this.augment = this.extend;
   }
   _getCached() {
     if (this._cached !== null)
       return this._cached;
-    const e = this._def.shape(), t = N.objectKeys(e);
+    const e = this._def.shape(), t = T.objectKeys(e);
     return this._cached = { shape: e, keys: t }, this._cached;
   }
   _parse(e) {
@@ -2036,7 +2036,7 @@ class V extends C {
     return this._def.shape();
   }
   strict(e) {
-    return g.errToObj, new V({
+    return g.errToObj, new L({
       ...this._def,
       unknownKeys: "strict",
       ...e !== void 0 ? {
@@ -2052,13 +2052,13 @@ class V extends C {
     });
   }
   strip() {
-    return new V({
+    return new L({
       ...this._def,
       unknownKeys: "strip"
     });
   }
   passthrough() {
-    return new V({
+    return new L({
       ...this._def,
       unknownKeys: "passthrough"
     });
@@ -2081,7 +2081,7 @@ class V extends C {
   //     }) as any;
   //   };
   extend(e) {
-    return new V({
+    return new L({
       ...this._def,
       shape: () => ({
         ...this._def.shape(),
@@ -2095,7 +2095,7 @@ class V extends C {
    * upgrade if you are experiencing issues.
    */
   merge(e) {
-    return new V({
+    return new L({
       unknownKeys: e._def.unknownKeys,
       catchall: e._def.catchall,
       shape: () => ({
@@ -2165,25 +2165,25 @@ class V extends C {
   //   return merged;
   // }
   catchall(e) {
-    return new V({
+    return new L({
       ...this._def,
       catchall: e
     });
   }
   pick(e) {
     const t = {};
-    for (const r of N.objectKeys(e))
+    for (const r of T.objectKeys(e))
       e[r] && this.shape[r] && (t[r] = this.shape[r]);
-    return new V({
+    return new L({
       ...this._def,
       shape: () => t
     });
   }
   omit(e) {
     const t = {};
-    for (const r of N.objectKeys(this.shape))
+    for (const r of T.objectKeys(this.shape))
       e[r] || (t[r] = this.shape[r]);
-    return new V({
+    return new L({
       ...this._def,
       shape: () => t
     });
@@ -2196,18 +2196,18 @@ class V extends C {
   }
   partial(e) {
     const t = {};
-    for (const r of N.objectKeys(this.shape)) {
+    for (const r of T.objectKeys(this.shape)) {
       const n = this.shape[r];
       e && !e[r] ? t[r] = n : t[r] = n.optional();
     }
-    return new V({
+    return new L({
       ...this._def,
       shape: () => t
     });
   }
   required(e) {
     const t = {};
-    for (const r of N.objectKeys(this.shape))
+    for (const r of T.objectKeys(this.shape))
       if (e && !e[r])
         t[r] = this.shape[r];
       else {
@@ -2216,37 +2216,37 @@ class V extends C {
           s = s._def.innerType;
         t[r] = s;
       }
-    return new V({
+    return new L({
       ...this._def,
       shape: () => t
     });
   }
   keyof() {
-    return ft(N.objectKeys(this.shape));
+    return ht(T.objectKeys(this.shape));
   }
 }
-V.create = (a, e) => new V({
+L.create = (a, e) => new L({
   shape: () => a,
   unknownKeys: "strip",
   catchall: ie.create(),
   typeName: w.ZodObject,
-  ...k(e)
+  ...E(e)
 });
-V.strictCreate = (a, e) => new V({
+L.strictCreate = (a, e) => new L({
   shape: () => a,
   unknownKeys: "strict",
   catchall: ie.create(),
   typeName: w.ZodObject,
-  ...k(e)
+  ...E(e)
 });
-V.lazycreate = (a, e) => new V({
+L.lazycreate = (a, e) => new L({
   shape: a,
   unknownKeys: "strip",
   catchall: ie.create(),
   typeName: w.ZodObject,
-  ...k(e)
+  ...E(e)
 });
-class Te extends C {
+class Te extends N {
   _parse(e) {
     const { ctx: t } = this._processInputParams(e), r = this._def.options;
     function n(s) {
@@ -2317,14 +2317,14 @@ class Te extends C {
 Te.create = (a, e) => new Te({
   options: a,
   typeName: w.ZodUnion,
-  ...k(e)
+  ...E(e)
 });
 function je(a, e) {
   const t = te(a), r = te(e);
   if (a === e)
     return { valid: !0, data: a };
   if (t === m.object && r === m.object) {
-    const n = N.objectKeys(e), s = N.objectKeys(a).filter((o) => n.indexOf(o) !== -1), i = { ...a, ...e };
+    const n = T.objectKeys(e), s = T.objectKeys(a).filter((o) => n.indexOf(o) !== -1), i = { ...a, ...e };
     for (const o of s) {
       const u = je(a[o], e[o]);
       if (!u.valid)
@@ -2345,13 +2345,13 @@ function je(a, e) {
     return { valid: !0, data: n };
   } else return t === m.date && r === m.date && +a == +e ? { valid: !0, data: a } : { valid: !1 };
 }
-class Ae extends C {
+class Ae extends N {
   _parse(e) {
     const { status: t, ctx: r } = this._processInputParams(e), n = (s, i) => {
-      if (Je(s) || Je(i))
+      if (Ye(s) || Ye(i))
         return _;
       const o = je(s.value, i.value);
-      return o.valid ? ((Ye(s) || Ye(i)) && t.dirty(), { status: t.value, value: o.data }) : (p(r, {
+      return o.valid ? ((Ge(s) || Ge(i)) && t.dirty(), { status: t.value, value: o.data }) : (p(r, {
         code: c.invalid_intersection_types
       }), _);
     };
@@ -2381,9 +2381,9 @@ Ae.create = (a, e, t) => new Ae({
   left: a,
   right: e,
   typeName: w.ZodIntersection,
-  ...k(t)
+  ...E(t)
 });
-class le extends C {
+class le extends N {
   _parse(e) {
     const { status: t, ctx: r } = this._processInputParams(e);
     if (r.parsedType !== m.array)
@@ -2430,10 +2430,10 @@ le.create = (a, e) => {
     items: a,
     typeName: w.ZodTuple,
     rest: null,
-    ...k(e)
+    ...E(e)
   });
 };
-class nt extends C {
+class st extends N {
   get keySchema() {
     return this._def.keyType;
   }
@@ -2475,13 +2475,13 @@ class nt extends C {
     }
   }
 }
-nt.create = (a, e, t) => new nt({
+st.create = (a, e, t) => new st({
   valueType: e,
   keyType: a,
   typeName: w.ZodMap,
-  ...k(t)
+  ...E(t)
 });
-class ye extends C {
+class xe extends N {
   _parse(e) {
     const { status: t, ctx: r } = this._processInputParams(e);
     if (r.parsedType !== m.set)
@@ -2520,13 +2520,13 @@ class ye extends C {
     return r.common.async ? Promise.all(o).then((u) => i(u)) : i(o);
   }
   min(e, t) {
-    return new ye({
+    return new xe({
       ...this._def,
       minSize: { value: e, message: g.toString(t) }
     });
   }
   max(e, t) {
-    return new ye({
+    return new xe({
       ...this._def,
       maxSize: { value: e, message: g.toString(t) }
     });
@@ -2538,14 +2538,14 @@ class ye extends C {
     return this.min(1, e);
   }
 }
-ye.create = (a, e) => new ye({
+xe.create = (a, e) => new xe({
   valueType: a,
   minSize: null,
   maxSize: null,
   typeName: w.ZodSet,
-  ...k(e)
+  ...E(e)
 });
-class st extends C {
+class it extends N {
   get schema() {
     return this._def.getter();
   }
@@ -2554,12 +2554,12 @@ class st extends C {
     return this._def.getter()._parse({ data: t.data, path: t.path, parent: t });
   }
 }
-st.create = (a, e) => new st({
+it.create = (a, e) => new it({
   getter: a,
   typeName: w.ZodLazy,
-  ...k(e)
+  ...E(e)
 });
-class it extends C {
+class ot extends N {
   _parse(e) {
     if (e.data !== this._def.value) {
       const t = this._getOrReturnCtx(e);
@@ -2575,24 +2575,24 @@ class it extends C {
     return this._def.value;
   }
 }
-it.create = (a, e) => new it({
+ot.create = (a, e) => new ot({
   value: a,
   typeName: w.ZodLiteral,
-  ...k(e)
+  ...E(e)
 });
-function ft(a, e) {
+function ht(a, e) {
   return new fe({
     values: a,
     typeName: w.ZodEnum,
-    ...k(e)
+    ...E(e)
   });
 }
-class fe extends C {
+class fe extends N {
   _parse(e) {
     if (typeof e.data != "string") {
       const t = this._getOrReturnCtx(e), r = this._def.values;
       return p(t, {
-        expected: N.joinValues(r),
+        expected: T.joinValues(r),
         received: t.parsedType,
         code: c.invalid_type
       }), _;
@@ -2641,20 +2641,20 @@ class fe extends C {
     });
   }
 }
-fe.create = ft;
-class ot extends C {
+fe.create = ht;
+class lt extends N {
   _parse(e) {
-    const t = N.getValidEnumValues(this._def.values), r = this._getOrReturnCtx(e);
+    const t = T.getValidEnumValues(this._def.values), r = this._getOrReturnCtx(e);
     if (r.parsedType !== m.string && r.parsedType !== m.number) {
-      const n = N.objectValues(t);
+      const n = T.objectValues(t);
       return p(r, {
-        expected: N.joinValues(n),
+        expected: T.joinValues(n),
         received: r.parsedType,
         code: c.invalid_type
       }), _;
     }
-    if (this._cache || (this._cache = new Set(N.getValidEnumValues(this._def.values))), !this._cache.has(e.data)) {
-      const n = N.objectValues(t);
+    if (this._cache || (this._cache = new Set(T.getValidEnumValues(this._def.values))), !this._cache.has(e.data)) {
+      const n = T.objectValues(t);
       return p(r, {
         received: r.data,
         code: c.invalid_enum_value,
@@ -2667,12 +2667,12 @@ class ot extends C {
     return this._def.values;
   }
 }
-ot.create = (a, e) => new ot({
+lt.create = (a, e) => new lt({
   values: a,
   typeName: w.ZodNativeEnum,
-  ...k(e)
+  ...E(e)
 });
-class Se extends C {
+class Se extends N {
   unwrap() {
     return this._def.type;
   }
@@ -2694,9 +2694,9 @@ class Se extends C {
 Se.create = (a, e) => new Se({
   type: a,
   typeName: w.ZodPromise,
-  ...k(e)
+  ...E(e)
 });
-class he extends C {
+class he extends N {
   innerType() {
     return this._def.schema;
   }
@@ -2723,7 +2723,7 @@ class he extends C {
             path: r.path,
             parent: r
           });
-          return u.status === "aborted" ? _ : u.status === "dirty" || t.value === "dirty" ? ge(u.value) : u;
+          return u.status === "aborted" ? _ : u.status === "dirty" || t.value === "dirty" ? ve(u.value) : u;
         });
       {
         if (t.value === "aborted")
@@ -2733,7 +2733,7 @@ class he extends C {
           path: r.path,
           parent: r
         });
-        return o.status === "aborted" ? _ : o.status === "dirty" || t.value === "dirty" ? ge(o.value) : o;
+        return o.status === "aborted" ? _ : o.status === "dirty" || t.value === "dirty" ? ve(o.value) : o;
       }
     }
     if (n.type === "refinement") {
@@ -2773,22 +2773,22 @@ class he extends C {
           status: t.value,
           value: o
         })) : _);
-    N.assertNever(n);
+    T.assertNever(n);
   }
 }
 he.create = (a, e, t) => new he({
   schema: a,
   typeName: w.ZodEffects,
   effect: e,
-  ...k(t)
+  ...E(t)
 });
 he.createWithPreprocess = (a, e, t) => new he({
   schema: e,
   effect: { type: "preprocess", transform: a },
   typeName: w.ZodEffects,
-  ...k(t)
+  ...E(t)
 });
-class ne extends C {
+class ne extends N {
   _parse(e) {
     return this._getType(e) === m.undefined ? W(void 0) : this._def.innerType._parse(e);
   }
@@ -2799,9 +2799,9 @@ class ne extends C {
 ne.create = (a, e) => new ne({
   innerType: a,
   typeName: w.ZodOptional,
-  ...k(e)
+  ...E(e)
 });
-class me extends C {
+class me extends N {
   _parse(e) {
     return this._getType(e) === m.null ? W(null) : this._def.innerType._parse(e);
   }
@@ -2812,9 +2812,9 @@ class me extends C {
 me.create = (a, e) => new me({
   innerType: a,
   typeName: w.ZodNullable,
-  ...k(e)
+  ...E(e)
 });
-class De extends C {
+class De extends N {
   _parse(e) {
     const { ctx: t } = this._processInputParams(e);
     let r = t.data;
@@ -2832,9 +2832,9 @@ De.create = (a, e) => new De({
   innerType: a,
   typeName: w.ZodDefault,
   defaultValue: typeof e.default == "function" ? e.default : () => e.default,
-  ...k(e)
+  ...E(e)
 });
-class $e extends C {
+class $e extends N {
   _parse(e) {
     const { ctx: t } = this._processInputParams(e), r = {
       ...t,
@@ -2875,9 +2875,9 @@ $e.create = (a, e) => new $e({
   innerType: a,
   typeName: w.ZodCatch,
   catchValue: typeof e.catch == "function" ? e.catch : () => e.catch,
-  ...k(e)
+  ...E(e)
 });
-class lt extends C {
+class ct extends N {
   _parse(e) {
     if (this._getType(e) !== m.nan) {
       const r = this._getOrReturnCtx(e);
@@ -2890,11 +2890,11 @@ class lt extends C {
     return { status: "valid", value: e.data };
   }
 }
-lt.create = (a) => new lt({
+ct.create = (a) => new ct({
   typeName: w.ZodNaN,
-  ...k(a)
+  ...E(a)
 });
-class Jt extends C {
+class Yt extends N {
   _parse(e) {
     const { ctx: t } = this._processInputParams(e), r = t.data;
     return this._def.type._parse({
@@ -2907,7 +2907,7 @@ class Jt extends C {
     return this._def.type;
   }
 }
-class Me extends C {
+class Me extends N {
   _parse(e) {
     const { status: t, ctx: r } = this._processInputParams(e);
     if (r.common.async)
@@ -2917,7 +2917,7 @@ class Me extends C {
           path: r.path,
           parent: r
         });
-        return s.status === "aborted" ? _ : s.status === "dirty" ? (t.dirty(), ge(s.value)) : this._def.out._parseAsync({
+        return s.status === "aborted" ? _ : s.status === "dirty" ? (t.dirty(), ve(s.value)) : this._def.out._parseAsync({
           data: s.value,
           path: r.path,
           parent: r
@@ -2947,7 +2947,7 @@ class Me extends C {
     });
   }
 }
-class Pe extends C {
+class Pe extends N {
   _parse(e) {
     const t = this._def.innerType._parse(e), r = (n) => (ue(n) && (n.value = Object.freeze(n.value)), n);
     return Ce(t) ? t.then((n) => r(n)) : r(t);
@@ -2959,15 +2959,15 @@ class Pe extends C {
 Pe.create = (a, e) => new Pe({
   innerType: a,
   typeName: w.ZodReadonly,
-  ...k(e)
+  ...E(e)
 });
 var w;
 (function(a) {
   a.ZodString = "ZodString", a.ZodNumber = "ZodNumber", a.ZodNaN = "ZodNaN", a.ZodBigInt = "ZodBigInt", a.ZodBoolean = "ZodBoolean", a.ZodDate = "ZodDate", a.ZodSymbol = "ZodSymbol", a.ZodUndefined = "ZodUndefined", a.ZodNull = "ZodNull", a.ZodAny = "ZodAny", a.ZodUnknown = "ZodUnknown", a.ZodNever = "ZodNever", a.ZodVoid = "ZodVoid", a.ZodArray = "ZodArray", a.ZodObject = "ZodObject", a.ZodUnion = "ZodUnion", a.ZodDiscriminatedUnion = "ZodDiscriminatedUnion", a.ZodIntersection = "ZodIntersection", a.ZodTuple = "ZodTuple", a.ZodRecord = "ZodRecord", a.ZodMap = "ZodMap", a.ZodSet = "ZodSet", a.ZodFunction = "ZodFunction", a.ZodLazy = "ZodLazy", a.ZodLiteral = "ZodLiteral", a.ZodEnum = "ZodEnum", a.ZodEffects = "ZodEffects", a.ZodNativeEnum = "ZodNativeEnum", a.ZodOptional = "ZodOptional", a.ZodNullable = "ZodNullable", a.ZodDefault = "ZodDefault", a.ZodCatch = "ZodCatch", a.ZodPromise = "ZodPromise", a.ZodBranded = "ZodBranded", a.ZodPipeline = "ZodPipeline", a.ZodReadonly = "ZodReadonly";
 })(w || (w = {}));
-const ee = re.create, Yt = pe.create;
+const ee = re.create, Gt = pe.create;
 ie.create;
-const Le = H.create, Gt = V.create;
+const Le = J.create, Kt = L.create;
 Te.create;
 Ae.create;
 le.create;
@@ -2975,44 +2975,44 @@ fe.create;
 Se.create;
 ne.create;
 me.create;
-const ht = "tasks", Kt = "1.0.0", Qt = "TASK_COUNT_CHANGED", mt = "sapwiki", Re = `plugin-${mt}`, Xt = Gt({
+const mt = "tasks", Qt = "1.0.0", Xt = "TASK_COUNT_CHANGED", gt = "sapwiki", Re = `plugin-${gt}`, ea = Kt({
   id: ee(),
   title: ee().min(1, "Title is required"),
   requirement: ee().optional().default(""),
   steps: ee().optional().default(""),
   tCode: ee().optional().default(""),
   tCodes: Le(ee()).optional().default([]),
-  createdAt: Yt().default(() => Date.now()),
+  createdAt: Gt().default(() => Date.now()),
   imageData: ee().optional(),
   images: Le(ee()).optional().default([])
-}), Ue = Le(Xt), ct = 240, ea = (a) => {
+}), Ue = Le(ea), dt = 240, ta = (a) => {
   try {
     const e = typeof a == "string" ? a : JSON.stringify(a);
-    return e.length > ct ? `${e.slice(0, ct)}...` : e;
+    return e.length > dt ? `${e.slice(0, dt)}...` : e;
   } catch (e) {
     return `[unserializable ${String(e)}]`;
   }
-}, dt = (a) => {
+}, ut = (a) => {
   if (typeof a != "string") return a;
   try {
     return JSON.parse(a);
   } catch {
     return a;
   }
-}, ta = (a) => {
-  const e = dt(a);
+}, aa = (a) => {
+  const e = ut(a);
   if (Array.isArray(e))
     return { candidate: e, source: "raw" };
   if (e && typeof e == "object") {
     const t = e, r = ["data", "value", "payload", "tasks", "cases"];
     for (const n of r) {
-      const s = dt(t[n]);
+      const s = ut(t[n]);
       if (Array.isArray(s))
         return { candidate: s, source: n };
     }
   }
   return { candidate: [], source: "raw" };
-}, aa = (a) => {
+}, ra = (a) => {
   if (!a || typeof a != "object") return a;
   const e = { ...a }, t = Array.isArray(e.images) ? e.images.slice() : [], r = [
     e.imageData,
@@ -3027,15 +3027,15 @@ const ht = "tasks", Kt = "1.0.0", Qt = "TASK_COUNT_CHANGED", mt = "sapwiki", Re 
   for (const n of r)
     typeof n == "string" && n && !t.includes(n) && t.push(n);
   return t.length && (e.images = t, e.imageData || (e.imageData = t[0])), !e.tCode && typeof e.tcode == "string" && (e.tCode = e.tcode), !e.tCodes && Array.isArray(e.tcodes) && (e.tCodes = e.tcodes), e;
-}, ra = (a) => Array.isArray(a) ? a.map((e) => aa(e)) : a, Ve = (a) => {
-  const { candidate: e, source: t } = ta(a), r = ra(e), n = Ue.safeParse(r);
+}, na = (a) => Array.isArray(a) ? a.map((e) => ra(e)) : a, Ve = (a) => {
+  const { candidate: e, source: t } = aa(a), r = na(e), n = Ue.safeParse(r);
   return n.success ? { tasks: n.data, source: t, ok: !0 } : (console.error("[task-board] restore failed", n.error), { tasks: [], source: t, ok: !1 });
-}, na = async (a) => {
+}, sa = async (a) => {
   console.info("[task-board] restore start");
   try {
-    const e = await a.storage.get(ht), { tasks: t, source: r, ok: n } = Ve(e);
+    const e = await a.storage.get(mt), { tasks: t, source: r, ok: n } = Ve(e);
     return console.info("[task-board] restore payload", {
-      preview: ea(e),
+      preview: ta(e),
       extractedPath: r
     }), n && console.info("[task-board] restore success", {
       count: t.length,
@@ -3044,7 +3044,7 @@ const ht = "tasks", Kt = "1.0.0", Qt = "TASK_COUNT_CHANGED", mt = "sapwiki", Re 
   } catch (e) {
     return console.error("[task-board] restore failed", e), [];
   }
-}, sa = async (a, e) => {
+}, ia = async (a, e) => {
   console.info(`[task-board] save triggered (count=${e.length})`);
   const t = Ue.safeParse(e);
   if (!t.success) {
@@ -3052,11 +3052,11 @@ const ht = "tasks", Kt = "1.0.0", Qt = "TASK_COUNT_CHANGED", mt = "sapwiki", Re 
     return;
   }
   try {
-    await a.storage.save(ht, t.data, Kt);
+    await a.storage.save(mt, t.data, Qt);
   } catch (r) {
     console.error("[task-board] save failed", r);
   }
-}, ia = (a) => ({
+}, oa = (a) => ({
   id: crypto.randomUUID ? crypto.randomUUID() : `task-${Date.now()}`,
   title: a.title.trim(),
   requirement: a.requirement ?? "",
@@ -3066,12 +3066,12 @@ const ht = "tasks", Kt = "1.0.0", Qt = "TASK_COUNT_CHANGED", mt = "sapwiki", Re 
   createdAt: Date.now(),
   images: a.images ?? [],
   imageData: a.imageData ?? (Array.isArray(a.images) && a.images.length ? a.images[0] : void 0)
-}), oa = (a) => {
-  const [e, t] = $([]), [r, n] = $(!1), s = Y(!1);
+}), la = (a) => {
+  const [e, t] = D([]), [r, n] = D(!1), s = H(!1);
   G(() => {
     let A = !0;
     return (async () => {
-      const f = await na(a);
+      const f = await sa(a);
       A && (t(f), n(!0));
     })(), () => {
       A = !1;
@@ -3082,13 +3082,13 @@ const ht = "tasks", Kt = "1.0.0", Qt = "TASK_COUNT_CHANGED", mt = "sapwiki", Re 
         s.current = !0;
         return;
       }
-      sa(a, e), a.eventBus.emit(Qt, { count: e.length });
+      ia(a, e), a.eventBus.emit(Xt, { count: e.length });
     }
   }, [a, r, e]);
   const i = be((A) => {
-    t((f) => [...f, ia(A)]);
+    t((f) => [...f, oa(A)]);
   }, []), o = be((A, f) => {
-    t((y) => y.map((E) => E.id === A ? f(E) : E));
+    t((y) => y.map((C) => C.id === A ? f(C) : C));
   }, []), u = be((A) => {
     t((f) => f.filter((y) => y.id !== A));
   }, []), d = be((A) => {
@@ -3109,97 +3109,97 @@ const ht = "tasks", Kt = "1.0.0", Qt = "TASK_COUNT_CHANGED", mt = "sapwiki", Re 
     replaceTasks: d,
     stats: v
   };
-}, la = ({ context: a }) => {
-  const { tasks: e, hydrated: t, addTask: r, removeTask: n, updateTask: s, replaceTasks: i, stats: o } = oa(a), [u, d] = $(!1), [v, A] = $([]), [f, y] = $(0), [E, I] = $(""), [j, F] = $(null), U = (S, T, R, z) => {
-    !T || !T.length || (F(S), A(T), y(R || 0), I(z || ""), d(!0));
+}, ca = ({ context: a }) => {
+  const { tasks: e, hydrated: t, addTask: r, removeTask: n, updateTask: s, replaceTasks: i, stats: o } = la(a), [u, d] = D(!1), [v, A] = D([]), [f, y] = D(0), [C, I] = D(""), [j, F] = D(null), M = (k, S, R, V) => {
+    !S || !S.length || (F(k), A(S), y(R || 0), I(V || ""), d(!0));
   };
-  Ee.openViewerCallback = U, G(() => {
-    const S = (T) => {
-      const R = T?.detail;
-      !R || !R.images || U(R.taskId || "", R.images, R.index || 0, R.title || "");
+  Ee.openViewerCallback = M, G(() => {
+    const k = (S) => {
+      const R = S?.detail;
+      !R || !R.images || M(R.taskId || "", R.images, R.index || 0, R.title || "");
     };
-    return window.addEventListener("sapwiki:openViewer", S), () => window.removeEventListener("sapwiki:openViewer", S);
-  }, [U]);
-  const [Q, X] = $(""), b = Y(null);
+    return window.addEventListener("sapwiki:openViewer", k), () => window.removeEventListener("sapwiki:openViewer", k);
+  }, [M]);
+  const [Q, X] = D(""), b = H(null);
   G(() => {
-    const S = (T) => {
-      const { tasks: R, ok: z } = Ve(T);
-      z && R.length && i(R);
+    const k = (S) => {
+      const { tasks: R, ok: V } = Ve(S);
+      V && R.length && i(R);
     };
-    return a.eventBus.on("SAPWIKI_IMPORT", S), () => {
-      a.eventBus.off("SAPWIKI_IMPORT", S);
+    return a.eventBus.on("SAPWIKI_IMPORT", k), () => {
+      a.eventBus.off("SAPWIKI_IMPORT", k);
     };
   }, [a, i]);
-  const O = (S, T) => {
-    s(S, (R) => ({ ...R, ...T }));
-  }, Z = async (S) => {
-    const T = S.target.files?.[0];
-    if (S.target.value = "", !T) return;
-    const R = await T.text(), { tasks: z, ok: q } = Ve(R);
-    q && i(z);
-  }, D = () => b.current?.click(), P = () => {
-    const S = new Blob([JSON.stringify(e, null, 2)], { type: "application/json" }), T = URL.createObjectURL(S), R = document.createElement("a");
-    R.href = T;
-    const z = /* @__PURE__ */ new Date(), q = (_e) => _e.toString().padStart(2, "0"), xe = `LocalWiki_Backup_${z.getFullYear()}${q(z.getMonth() + 1)}${q(z.getDate())}_${q(
-      z.getHours()
-    )}${q(z.getMinutes())}${q(z.getSeconds())}.json`;
-    R.download = xe, R.click(), URL.revokeObjectURL(T);
+  const O = (k, S) => {
+    s(k, (R) => ({ ...R, ...S }));
+  }, Z = async (k) => {
+    const S = k.target.files?.[0];
+    if (k.target.value = "", !S) return;
+    const R = await S.text(), { tasks: V, ok: q } = Ve(R);
+    q && i(V);
+  }, $ = () => b.current?.click(), U = () => {
+    const k = new Blob([JSON.stringify(e, null, 2)], { type: "application/json" }), S = URL.createObjectURL(k), R = document.createElement("a");
+    R.href = S;
+    const V = /* @__PURE__ */ new Date(), q = (_e) => _e.toString().padStart(2, "0"), ge = `LocalWiki_Backup_${V.getFullYear()}${q(V.getMonth() + 1)}${q(V.getDate())}_${q(
+      V.getHours()
+    )}${q(V.getMinutes())}${q(V.getSeconds())}.json`;
+    R.download = ge, R.click(), URL.revokeObjectURL(S);
   };
-  return /* @__PURE__ */ l.createElement("div", { className: "app", "data-theme": a.theme }, /* @__PURE__ */ l.createElement("header", { className: "hero card" }, /* @__PURE__ */ l.createElement("div", { className: "hero-copy" }, /* @__PURE__ */ l.createElement("h1", null, "Local wiki"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Persisted locally with host storage. Import legacy backups, add notes, and keep images with each entry."), /* @__PURE__ */ l.createElement("div", { className: "chips" }, /* @__PURE__ */ l.createElement("span", { className: `chip ${t ? "chip-ok" : "chip-warn"}` }, /* @__PURE__ */ l.createElement("span", { className: "dot" }), " ", t ? "Ready" : "Restoring data..."), /* @__PURE__ */ l.createElement("span", { className: "chip soft" }, o.total, " entries"))), /* @__PURE__ */ l.createElement("div", { className: "hero-actions" }, /* @__PURE__ */ l.createElement("button", { className: "ghost", onClick: D, disabled: !t }, "Import"), /* @__PURE__ */ l.createElement("button", { onClick: P, disabled: !t || !e.length }, "Export"), /* @__PURE__ */ l.createElement("input", { ref: b, type: "file", accept: "application/json", hidden: !0, onChange: Z }), /* @__PURE__ */ l.createElement("div", { className: "header-search" }, /* @__PURE__ */ l.createElement(
+  return /* @__PURE__ */ l.createElement("div", { className: "app", "data-theme": a.theme }, /* @__PURE__ */ l.createElement("header", { className: "hero card" }, /* @__PURE__ */ l.createElement("div", { className: "hero-copy" }, /* @__PURE__ */ l.createElement("h1", null, "Local wiki"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Persisted locally with host storage. Import legacy backups, add notes, and keep images with each entry."), /* @__PURE__ */ l.createElement("div", { className: "chips" }, /* @__PURE__ */ l.createElement("span", { className: `chip ${t ? "chip-ok" : "chip-warn"}` }, /* @__PURE__ */ l.createElement("span", { className: "dot" }), " ", t ? "Ready" : "Restoring data..."), /* @__PURE__ */ l.createElement("span", { className: "chip soft" }, o.total, " entries"))), /* @__PURE__ */ l.createElement("div", { className: "hero-actions" }, /* @__PURE__ */ l.createElement("button", { className: "ghost", onClick: $, disabled: !t }, "Import"), /* @__PURE__ */ l.createElement("button", { onClick: U, disabled: !t || !e.length }, "Export"), /* @__PURE__ */ l.createElement("input", { ref: b, type: "file", accept: "application/json", hidden: !0, onChange: Z }), /* @__PURE__ */ l.createElement("div", { className: "header-search" }, /* @__PURE__ */ l.createElement(
     "input",
     {
       "aria-label": "Search entries",
       className: "search-input",
       placeholder: "Search title, description, steps, or T-code",
       value: Q,
-      onChange: (S) => X(S.target.value)
+      onChange: (k) => X(k.target.value)
     }
-  )))), /* @__PURE__ */ l.createElement("section", { className: "layout" }, /* @__PURE__ */ l.createElement("div", { className: "panel card" }, /* @__PURE__ */ l.createElement("div", { className: "panel-header" }, /* @__PURE__ */ l.createElement("div", null, /* @__PURE__ */ l.createElement("h2", null, "Add an entry"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Quickly record SAP cases, solutions, and visuals for future reference."))), /* @__PURE__ */ l.createElement(wt, { onSubmit: r })), /* @__PURE__ */ l.createElement("div", { className: "panel card" }, /* @__PURE__ */ l.createElement("div", { className: "panel-header" }, /* @__PURE__ */ l.createElement("div", null, /* @__PURE__ */ l.createElement("h2", null, "Notes"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Edit inline, keep evidence, and tidy up when complete."))), /* @__PURE__ */ l.createElement(
+  )))), /* @__PURE__ */ l.createElement("section", { className: "layout" }, /* @__PURE__ */ l.createElement("div", { className: "panel card" }, /* @__PURE__ */ l.createElement("div", { className: "panel-header" }, /* @__PURE__ */ l.createElement("div", null, /* @__PURE__ */ l.createElement("h2", null, "Add an entry"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Quickly record SAP cases, solutions, and visuals for future reference."))), /* @__PURE__ */ l.createElement(bt, { onSubmit: r })), /* @__PURE__ */ l.createElement("div", { className: "panel card" }, /* @__PURE__ */ l.createElement("div", { className: "panel-header" }, /* @__PURE__ */ l.createElement("div", null, /* @__PURE__ */ l.createElement("h2", null, "Notes"), /* @__PURE__ */ l.createElement("p", { className: "muted" }, "Edit inline, keep evidence, and tidy up when complete."))), /* @__PURE__ */ l.createElement(
     Ee,
     {
       tasks: ze(() => {
-        const S = Q.trim().toLowerCase();
-        return S ? e.filter((T) => [T.title, T.requirement || "", T.steps || "", T.tCode || "", (T.tCodes || []).join(" ")].join(" ").toLowerCase().includes(S)) : e;
+        const k = Q.trim().toLowerCase();
+        return k ? e.filter((S) => [S.title, S.requirement || "", S.steps || "", S.tCode || "", (S.tCodes || []).join(" ")].join(" ").toLowerCase().includes(k)) : e;
       }, [e, Q]),
       onDelete: n,
       onUpdate: O
     }
   ))), /* @__PURE__ */ l.createElement(
-    bt,
+    kt,
     {
       isOpen: u,
       images: v,
       initialIndex: f,
-      title: E,
+      title: C,
       onClose: () => d(!1),
-      onSaveAnnotated: (S, T) => {
+      onSaveAnnotated: (k, S) => {
         j && (s(j, (R) => {
-          const z = Array.isArray(R.images) ? R.images.slice() : [];
-          return z[T] = S, { ...R, images: z, imageData: z[0] };
+          const V = Array.isArray(R.images) ? R.images.slice() : [];
+          return V[S] = k, { ...R, images: V, imageData: V[0] };
         }), d(!1));
       }
     }
   ));
-}, ca = "#plugin-sapwiki{--bg: #f4f6fb;--card: #ffffff;--card-strong: #0f172a;--border: #e2e8f0;--text: #0f172a;--muted: #5b6577;--primary: #0f52ba;--primary-strong: #0a3c87;--accent: #22c55e;--warn: #f59e0b;font-family:Segoe UI,system-ui,-apple-system,sans-serif;color:var(--text);background:radial-gradient(circle at 20% 20%,#e5edff,transparent 45%),radial-gradient(circle at 80% 0%,#e8fff4,transparent 35%),var(--bg);min-height:100vh;overflow-x:hidden}#plugin-sapwiki .app{box-sizing:border-box;padding:12px 20px 24px;width:calc(100% - 40px);max-width:none;margin:0;display:flex;flex-direction:column;gap:12px}#plugin-sapwiki *,#plugin-sapwiki *:before,#plugin-sapwiki *:after{box-sizing:inherit}#plugin-sapwiki .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;box-shadow:0 14px 38px #0f172a14}#plugin-sapwiki .hero{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,#0f172a,#153e75);color:#e2e8f0;border:none;box-shadow:0 20px 50px #0f172a47}#plugin-sapwiki .hero .muted{color:#e2e8f0d9}#plugin-sapwiki .hero h1{margin:6px 0 10px;color:#f8fafc}#plugin-sapwiki .hero-copy{max-width:640px}#plugin-sapwiki .hero-actions{display:flex;gap:10px;align-items:flex-start}#plugin-sapwiki .header-search{width:100%;margin-top:12px}#plugin-sapwiki .search-input{width:360px;max-width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#fff;font:inherit}@media (min-width: 1000px){#plugin-sapwiki .hero-actions{align-items:center}#plugin-sapwiki .header-search{margin-left:12px;margin-top:0}}#plugin-sapwiki .eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:inherit;margin:0 0 4px}#plugin-sapwiki .muted{color:var(--muted);margin:0}#plugin-sapwiki .chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}#plugin-sapwiki .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#ffffff14;color:#f8fafc;border:1px solid rgba(255,255,255,.16);font-weight:600}#plugin-sapwiki .chip.soft{background:#e2e8f0;color:var(--text);border:1px solid transparent}#plugin-sapwiki .chip-ok{background:#22c55e29;color:#e8fff2;border-color:#22c55e52}#plugin-sapwiki .chip-warn{background:#f59e0b2e;color:#fef3c7;border-color:#f59e0b4d}#plugin-sapwiki .dot{width:10px;height:10px;border-radius:50%;display:inline-block;background:#f8fafc;box-shadow:0 0 0 4px #ffffff14}#plugin-sapwiki .layout{display:flex;gap:20px;align-items:flex-start}#plugin-sapwiki .layout>.panel:first-child{flex:0 0 30%}#plugin-sapwiki .layout>.panel:last-child{flex:1 1 70%}#plugin-sapwiki .panel{display:flex;flex-direction:column;gap:12px}#plugin-sapwiki .panel.card{border:none;box-shadow:0 10px 30px #0f172a0f}#plugin-sapwiki .panel-header h2{margin:4px 0 6px}#plugin-sapwiki .label{text-transform:uppercase;font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0}#plugin-sapwiki .toolbar,#plugin-sapwiki .actions{display:flex;gap:10px;align-items:center}#plugin-sapwiki button{padding:11px 16px;border-radius:12px;border:1px solid var(--primary-strong);background:var(--primary);color:#fff;font-weight:650;cursor:pointer;transition:transform .12s ease,box-shadow .16s ease,background .16s ease;box-shadow:0 8px 20px #0f52ba40}#plugin-sapwiki button:disabled{opacity:.6;cursor:not-allowed;box-shadow:none}#plugin-sapwiki button:hover:not(:disabled){transform:translateY(-1px);background:var(--primary-strong)}#plugin-sapwiki button.ghost{background:transparent;color:var(--primary-strong);border-color:var(--border);box-shadow:none}#plugin-sapwiki .hero button.ghost{color:#f8fafc;border-color:#ffffff47}#plugin-sapwiki .task-form{display:grid;gap:12px}#plugin-sapwiki .layout>.panel:first-child .task-form{display:flex;flex-direction:column;gap:12px;flex:0 0 auto}#plugin-sapwiki .layout>.panel:first-child .task-form .steps-field{display:flex;flex-direction:column;min-height:220px}#plugin-sapwiki .layout>.panel:first-child .task-form .steps-field textarea.steps-input{min-height:220px;resize:vertical}#plugin-sapwiki .layout>.panel:last-child .task-grid{flex:1 1 auto;overflow:auto}#plugin-sapwiki .task-card{display:flex;flex-direction:column;gap:12px;min-height:220px}#plugin-sapwiki .task-card .notes-field{display:flex;flex-direction:column}#plugin-sapwiki .task-card .notes-field textarea.notes-input{min-height:270px;resize:vertical}#plugin-sapwiki .field{display:flex;flex-direction:column;gap:6px}#plugin-sapwiki .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}#plugin-sapwiki label{font-weight:600;color:var(--text)}#plugin-sapwiki input,#plugin-sapwiki textarea{width:100%;border-radius:12px;border:1px solid var(--border);padding:12px 14px;font:inherit;background:#f8fafc;transition:border .12s ease,box-shadow .12s ease}#plugin-sapwiki input:focus,#plugin-sapwiki textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px #0f52ba1f;outline:none}#plugin-sapwiki textarea{resize:vertical;min-height:100px}#plugin-sapwiki .task-grid{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px}#plugin-sapwiki .task-card h3{margin:4px 0 8px}#plugin-sapwiki .task-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}#plugin-sapwiki .tags{display:flex;flex-wrap:wrap;gap:6px}#plugin-sapwiki .tags .edit-tcodes-input{min-width:180px;max-width:420px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:#fff;font:inherit}#plugin-sapwiki .tags .edit-actions{display:inline-flex;gap:8px;align-items:center}#plugin-sapwiki .tags button.small{padding:6px 8px;border-radius:8px;font-size:13px}#plugin-sapwiki .attach-field{border:2px dashed rgba(15,23,42,.08);background:linear-gradient(180deg,#f8fafc99,#f8fafc66);padding:12px;border-radius:12px;cursor:default}#plugin-sapwiki .attach-field.drag-over{border-color:#0f52ba99;box-shadow:0 6px 18px #0f52ba14}#plugin-sapwiki .attach-hint{color:var(--muted);padding:18px 10px}#plugin-sapwiki .attach-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}#plugin-sapwiki .attach-preview{position:relative;width:96px;height:96px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:#fff}#plugin-sapwiki .attach-preview img{width:100%;height:100%;object-fit:contain;object-position:center top;display:block;background:#f8fafc}#plugin-sapwiki .attach-preview .remove{position:absolute;right:8px;top:8px;width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;border:none;display:inline-flex;align-items:center;justify-content:center;font-size:14px;line-height:1;padding:0;cursor:pointer;box-shadow:0 2px 6px #0000001f}#plugin-sapwiki .attach-preview .remove:hover{background:#dc2626;transform:translateY(-1px)}#plugin-sapwiki .pill{background:#e2e8f0;border-radius:999px;padding:4px 10px;font-size:12px;color:var(--text);border:1px solid transparent}#plugin-sapwiki .preview{width:100%;max-height:220px;object-fit:contain;border-radius:10px;border:1px solid var(--border);background:#f8fafc}#plugin-sapwiki .preview.clickable{cursor:pointer}#plugin-sapwiki .pv-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;z-index:9999;padding:clamp(12px,2.2vw,24px)}#plugin-sapwiki .pv-dialog{width:min(96vw,1400px);height:calc((var(--pv-vh, 1vh) * 100) - 32px);max-height:calc((var(--pv-vh, 1vh) * 100) - 32px);border-radius:16px;background:#04243a;color:#fff;border:1px solid rgba(255,255,255,.08);padding:16px;box-shadow:0 30px 60px #02102899;display:grid;grid-template-rows:auto auto minmax(0,1fr);overflow:hidden}#plugin-sapwiki .pv-toolbar .pv-brush-group{margin:0 auto;display:flex;gap:8px;align-items:center}#plugin-sapwiki .pv-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}#plugin-sapwiki .pv-title{font-weight:700;color:#d1fae5}#plugin-sapwiki .pv-controls button{margin-left:8px}#plugin-sapwiki .pv-controls button.ghost{color:#fff;border-color:#ffffff0f}#plugin-sapwiki .pv-toolbar{position:relative;display:flex;gap:8px;align-items:center;margin-bottom:12px;--pv-toolbar-btn-h: 36px;justify-content:center}#plugin-sapwiki .pv-toolbar button,#plugin-sapwiki .pv-toolbar .primary,#plugin-sapwiki .pv-toolbar input[type=color]{height:var(--pv-toolbar-btn-h);min-height:var(--pv-toolbar-btn-h);display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border-radius:10px}#plugin-sapwiki .pv-toolbar button{padding:0 12px}#plugin-sapwiki .pv-toolbar input[type=color]{width:var(--pv-toolbar-btn-h);padding:0;border-radius:8px}#plugin-sapwiki .pv-toolbar input[type=range]{height:28px;margin:0 8px;align-self:center;width:340px;max-width:40vw}#plugin-sapwiki .pv-toolbar .pv-brush-group{position:static;margin:0 12px;display:flex;gap:8px;align-items:center}#plugin-sapwiki .pv-toolbar input[type=color]{-webkit-appearance:none;-moz-appearance:none;appearance:none;width:36px;height:36px;padding:0;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;cursor:pointer}#plugin-sapwiki .pv-toolbar input[type=color]::-webkit-color-swatch-wrapper{padding:0}#plugin-sapwiki .pv-toolbar input[type=color]::-webkit-color-swatch{border-radius:6px;border:none}#plugin-sapwiki .pv-toolbar input[type=color]::-moz-color-swatch{border-radius:6px;border:none}#plugin-sapwiki .pv-toolbar button.active{background:#22c55e29;color:#eafff0}#plugin-sapwiki .pv-toolbar .primary{background:#10b981;color:#fff}#plugin-sapwiki .pv-body{min-height:0;display:grid;place-items:center;overflow:hidden}#plugin-sapwiki .pv-image-wrap{position:relative;display:inline-block;max-width:100%;max-height:100%}#plugin-sapwiki .pv-image{display:block;width:auto;height:auto;object-fit:contain;object-position:center center;transform:none;max-width:100%;max-height:100%;border-radius:12px}#plugin-sapwiki .pv-canvas{position:absolute;left:0;top:0}#plugin-sapwiki .pv-canvas.disabled{pointer-events:none}#plugin-sapwiki .pv-canvas.draw{cursor:crosshair}#plugin-sapwiki .pv-canvas.erase{cursor:cell}@media (max-width: 860px){#plugin-sapwiki .pv-dialog{width:min(98vw,1400px);height:calc((var(--pv-vh, 1vh) * 100) - 24px);max-height:calc((var(--pv-vh, 1vh) * 100) - 24px);padding:12px;border-radius:12px}#plugin-sapwiki .pv-header{flex-direction:column;align-items:flex-start}#plugin-sapwiki .pv-controls{width:100%;display:flex;flex-wrap:wrap;gap:8px}#plugin-sapwiki .pv-controls button{margin-left:0}#plugin-sapwiki .pv-toolbar{flex-wrap:wrap}}#plugin-sapwiki .field.images .image-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start}#plugin-sapwiki .field.images .image-row .attach-preview{width:140px;height:96px}#plugin-sapwiki .field.images .image-row .preview{width:100%;height:100%;max-height:none;object-fit:contain;object-position:center top}#plugin-sapwiki .empty{text-align:left;padding:16px;border-style:dashed;border-color:var(--border);background:linear-gradient(135deg,#f8fafc,#eef2ff)}@media (max-width: 900px){#plugin-sapwiki .layout{display:grid;grid-template-columns:1fr}#plugin-sapwiki .task-grid{grid-template-columns:1fr}#plugin-sapwiki .hero{align-items:flex-start}#plugin-sapwiki .hero-actions{width:100%;flex-wrap:wrap}#plugin-sapwiki button,#plugin-sapwiki button.ghost{width:auto}}", da = "1.1.0", ua = {
-  version: da
+}, da = "#plugin-sapwiki{--bg: #f4f6fb;--card: #ffffff;--card-strong: #0f172a;--border: #e2e8f0;--text: #0f172a;--muted: #5b6577;--primary: #0f52ba;--primary-strong: #0a3c87;--accent: #22c55e;--warn: #f59e0b;font-family:Segoe UI,system-ui,-apple-system,sans-serif;color:var(--text);background:radial-gradient(circle at 20% 20%,#e5edff,transparent 45%),radial-gradient(circle at 80% 0%,#e8fff4,transparent 35%),var(--bg);min-height:100vh;overflow-x:hidden}#plugin-sapwiki .app{box-sizing:border-box;padding:12px 20px 24px;width:calc(100% - 40px);max-width:none;margin:0;display:flex;flex-direction:column;gap:12px}#plugin-sapwiki *,#plugin-sapwiki *:before,#plugin-sapwiki *:after{box-sizing:inherit}#plugin-sapwiki .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;box-shadow:0 14px 38px #0f172a14}#plugin-sapwiki .hero{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,#0f172a,#153e75);color:#e2e8f0;border:none;box-shadow:0 20px 50px #0f172a47}#plugin-sapwiki .hero .muted{color:#e2e8f0d9}#plugin-sapwiki .hero h1{margin:6px 0 10px;color:#f8fafc}#plugin-sapwiki .hero-copy{max-width:640px}#plugin-sapwiki .hero-actions{display:flex;gap:10px;align-items:flex-start}#plugin-sapwiki .header-search{width:100%;margin-top:12px}#plugin-sapwiki .search-input{width:360px;max-width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#fff;font:inherit}@media (min-width: 1000px){#plugin-sapwiki .hero-actions{align-items:center}#plugin-sapwiki .header-search{margin-left:12px;margin-top:0}}#plugin-sapwiki .eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:inherit;margin:0 0 4px}#plugin-sapwiki .muted{color:var(--muted);margin:0}#plugin-sapwiki .chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}#plugin-sapwiki .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#ffffff14;color:#f8fafc;border:1px solid rgba(255,255,255,.16);font-weight:600}#plugin-sapwiki .chip.soft{background:#e2e8f0;color:var(--text);border:1px solid transparent}#plugin-sapwiki .chip-ok{background:#22c55e29;color:#e8fff2;border-color:#22c55e52}#plugin-sapwiki .chip-warn{background:#f59e0b2e;color:#fef3c7;border-color:#f59e0b4d}#plugin-sapwiki .dot{width:10px;height:10px;border-radius:50%;display:inline-block;background:#f8fafc;box-shadow:0 0 0 4px #ffffff14}#plugin-sapwiki .layout{display:flex;gap:20px;align-items:flex-start}#plugin-sapwiki .layout>.panel:first-child{flex:0 0 30%}#plugin-sapwiki .layout>.panel:last-child{flex:1 1 70%}#plugin-sapwiki .panel{display:flex;flex-direction:column;gap:12px}#plugin-sapwiki .panel.card{border:none;box-shadow:0 10px 30px #0f172a0f}#plugin-sapwiki .panel-header h2{margin:4px 0 6px}#plugin-sapwiki .label{text-transform:uppercase;font-size:12px;letter-spacing:.06em;color:var(--muted);margin:0}#plugin-sapwiki .toolbar,#plugin-sapwiki .actions{display:flex;gap:10px;align-items:center}#plugin-sapwiki button{padding:11px 16px;border-radius:12px;border:1px solid var(--primary-strong);background:var(--primary);color:#fff;font-weight:650;cursor:pointer;transition:transform .12s ease,box-shadow .16s ease,background .16s ease;box-shadow:0 8px 20px #0f52ba40}#plugin-sapwiki button:disabled{opacity:.6;cursor:not-allowed;box-shadow:none}#plugin-sapwiki button:hover:not(:disabled){transform:translateY(-1px);background:var(--primary-strong)}#plugin-sapwiki button.ghost{background:transparent;color:var(--primary-strong);border-color:var(--border);box-shadow:none}#plugin-sapwiki .hero button.ghost{color:#f8fafc;border-color:#ffffff47}#plugin-sapwiki .task-form{display:grid;gap:12px}#plugin-sapwiki .layout>.panel:first-child .task-form{display:flex;flex-direction:column;gap:12px;flex:0 0 auto}#plugin-sapwiki .layout>.panel:first-child .task-form .steps-field{display:flex;flex-direction:column;min-height:220px}#plugin-sapwiki .layout>.panel:first-child .task-form .steps-field textarea.steps-input{min-height:220px;resize:vertical}#plugin-sapwiki .layout>.panel:last-child .task-grid{flex:1 1 auto;overflow:auto}#plugin-sapwiki .task-card{display:flex;flex-direction:column;gap:12px;min-height:220px}#plugin-sapwiki .task-card .notes-field{display:flex;flex-direction:column}#plugin-sapwiki .task-card .notes-field textarea.notes-input{min-height:270px;resize:vertical}#plugin-sapwiki .field{display:flex;flex-direction:column;gap:6px}#plugin-sapwiki .two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}#plugin-sapwiki label{font-weight:600;color:var(--text)}#plugin-sapwiki input,#plugin-sapwiki textarea{width:100%;border-radius:12px;border:1px solid var(--border);padding:12px 14px;font:inherit;background:#f8fafc;transition:border .12s ease,box-shadow .12s ease}#plugin-sapwiki input:focus,#plugin-sapwiki textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px #0f52ba1f;outline:none}#plugin-sapwiki textarea{resize:vertical;min-height:100px}#plugin-sapwiki .task-grid{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));gap:12px}#plugin-sapwiki .task-card h3{margin:4px 0 8px}#plugin-sapwiki .task-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}#plugin-sapwiki .tags{display:flex;flex-wrap:wrap;gap:6px}#plugin-sapwiki .tags .edit-tcodes-input{min-width:180px;max-width:420px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:#fff;font:inherit}#plugin-sapwiki .tags .edit-actions{display:inline-flex;gap:8px;align-items:center}#plugin-sapwiki .tags button.small{padding:6px 8px;border-radius:8px;font-size:13px}#plugin-sapwiki .attach-field{border:2px dashed rgba(15,23,42,.08);background:linear-gradient(180deg,#f8fafc99,#f8fafc66);padding:12px;border-radius:12px;cursor:default}#plugin-sapwiki .attach-field.drag-over{border-color:#0f52ba99;box-shadow:0 6px 18px #0f52ba14}#plugin-sapwiki .attach-hint{color:var(--muted);padding:18px 10px}#plugin-sapwiki .attach-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}#plugin-sapwiki .attach-preview{position:relative;width:96px;height:96px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:#fff}#plugin-sapwiki .attach-preview img{width:100%;height:100%;object-fit:contain;object-position:center top;display:block;background:#f8fafc}#plugin-sapwiki .attach-preview .remove{position:absolute;right:8px;top:8px;width:22px;height:22px;border-radius:50%;background:#ef4444;color:#fff;border:none;display:inline-flex;align-items:center;justify-content:center;font-size:14px;line-height:1;padding:0;cursor:pointer;box-shadow:0 2px 6px #0000001f}#plugin-sapwiki .attach-preview .remove:hover{background:#dc2626;transform:translateY(-1px)}#plugin-sapwiki .pill{background:#e2e8f0;border-radius:999px;padding:4px 10px;font-size:12px;color:var(--text);border:1px solid transparent}#plugin-sapwiki .preview{width:100%;max-height:220px;object-fit:contain;border-radius:10px;border:1px solid var(--border);background:#f8fafc}#plugin-sapwiki .preview.clickable{cursor:pointer}#plugin-sapwiki .pv-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0009;z-index:9999;padding:clamp(12px,2.2vw,24px)}#plugin-sapwiki .pv-dialog{width:min(96vw,1400px);height:calc((var(--pv-vh, 1vh) * 100) - 32px);max-height:calc((var(--pv-vh, 1vh) * 100) - 32px);border-radius:16px;background:#04243a;color:#fff;border:1px solid rgba(255,255,255,.08);padding:16px;box-shadow:0 30px 60px #02102899;display:grid;grid-template-rows:auto auto minmax(0,1fr);overflow:hidden}#plugin-sapwiki .pv-toolbar .pv-brush-group{margin:0 auto;display:flex;gap:8px;align-items:center}#plugin-sapwiki .pv-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}#plugin-sapwiki .pv-title{font-weight:700;color:#d1fae5}#plugin-sapwiki .pv-controls button{margin-left:8px}#plugin-sapwiki .pv-controls button.ghost{color:#fff;border-color:#ffffff0f}#plugin-sapwiki .pv-toolbar{position:relative;display:flex;gap:8px;align-items:center;margin-bottom:12px;--pv-toolbar-btn-h: 36px;justify-content:center}#plugin-sapwiki .pv-toolbar button,#plugin-sapwiki .pv-toolbar .primary,#plugin-sapwiki .pv-toolbar input[type=color]{height:var(--pv-toolbar-btn-h);min-height:var(--pv-toolbar-btn-h);display:inline-flex;align-items:center;justify-content:center;padding:0 12px;border-radius:10px}#plugin-sapwiki .pv-toolbar button{padding:0 12px}#plugin-sapwiki .pv-toolbar input[type=color]{width:var(--pv-toolbar-btn-h);padding:0;border-radius:8px}#plugin-sapwiki .pv-toolbar input[type=range]{height:28px;margin:0 8px;align-self:center;width:340px;max-width:40vw}#plugin-sapwiki .pv-toolbar .pv-brush-group{position:static;margin:0 12px;display:flex;gap:8px;align-items:center}#plugin-sapwiki .pv-toolbar input[type=color]{-webkit-appearance:none;-moz-appearance:none;appearance:none;width:36px;height:36px;padding:0;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;cursor:pointer}#plugin-sapwiki .pv-toolbar input[type=color]::-webkit-color-swatch-wrapper{padding:0}#plugin-sapwiki .pv-toolbar input[type=color]::-webkit-color-swatch{border-radius:6px;border:none}#plugin-sapwiki .pv-toolbar input[type=color]::-moz-color-swatch{border-radius:6px;border:none}#plugin-sapwiki .pv-toolbar button.active{background:#22c55e29;color:#eafff0}#plugin-sapwiki .pv-toolbar .primary{background:#10b981;color:#fff}#plugin-sapwiki .pv-body{min-height:0;display:grid;place-items:center;overflow:hidden}#plugin-sapwiki .pv-image-wrap{position:relative;display:inline-block;max-width:100%;max-height:100%}#plugin-sapwiki .pv-image{display:block;width:auto;height:auto;object-fit:contain;object-position:center center;transform:none;max-width:100%;max-height:100%;border-radius:12px}#plugin-sapwiki .pv-canvas{position:absolute;left:0;top:0}#plugin-sapwiki .pv-canvas.disabled{pointer-events:none}#plugin-sapwiki .pv-canvas.draw{cursor:crosshair}#plugin-sapwiki .pv-canvas.erase{cursor:cell}@media (max-width: 860px){#plugin-sapwiki .pv-dialog{width:min(98vw,1400px);height:calc((var(--pv-vh, 1vh) * 100) - 24px);max-height:calc((var(--pv-vh, 1vh) * 100) - 24px);padding:12px;border-radius:12px}#plugin-sapwiki .pv-header{flex-direction:column;align-items:flex-start}#plugin-sapwiki .pv-controls{width:100%;display:flex;flex-wrap:wrap;gap:8px}#plugin-sapwiki .pv-controls button{margin-left:0}#plugin-sapwiki .pv-toolbar{flex-wrap:wrap}}#plugin-sapwiki .field.images .image-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start}#plugin-sapwiki .field.images .image-row .attach-preview{width:140px;height:96px}#plugin-sapwiki .field.images .image-row .preview{width:100%;height:100%;max-height:none;object-fit:contain;object-position:center top}#plugin-sapwiki .empty{text-align:left;padding:16px;border-style:dashed;border-color:var(--border);background:linear-gradient(135deg,#f8fafc,#eef2ff)}@media (max-width: 900px){#plugin-sapwiki .layout{display:grid;grid-template-columns:1fr}#plugin-sapwiki .task-grid{grid-template-columns:1fr}#plugin-sapwiki .hero{align-items:flex-start}#plugin-sapwiki .hero-actions{width:100%;flex-wrap:wrap}#plugin-sapwiki button,#plugin-sapwiki button.ghost{width:auto}}", ua = "1.1.0", pa = {
+  version: ua
 };
 let oe = null, ke = null, ae = null;
-const pa = (a) => {
+const fa = (a) => {
   const e = a.querySelector(`#${Re}`);
   if (e) return e;
   const t = document.createElement("div");
   return t.id = Re, a.appendChild(t), t;
-}, fa = () => {
-  ae || (ae = document.createElement("style"), ae.id = `${Re}-style`, ae.textContent = ca, document.head.appendChild(ae));
-}, ga = {
-  id: mt,
+}, ha = () => {
+  ae || (ae = document.createElement("style"), ae.id = `${Re}-style`, ae.textContent = da, document.head.appendChild(ae));
+}, va = {
+  id: gt,
   name: "SAPWiki",
-  version: ua?.version,
+  version: pa?.version,
   mount(a, e) {
-    document.body.style.removeProperty("overflow"), document.documentElement.style.removeProperty("--pv-vh"), fa();
-    const t = pa(a);
-    ke = t, oe && oe.unmount(), oe = _t(t), oe.render(
-      /* @__PURE__ */ l.createElement(l.StrictMode, null, /* @__PURE__ */ l.createElement(la, { context: e }))
+    document.body.style.removeProperty("overflow"), document.documentElement.style.removeProperty("--pv-vh"), ha();
+    const t = fa(a);
+    ke = t, oe && oe.unmount(), oe = wt(t), oe.render(
+      /* @__PURE__ */ l.createElement(l.StrictMode, null, /* @__PURE__ */ l.createElement(ca, { context: e }))
     );
   },
   unmount(a) {
@@ -3209,6 +3209,6 @@ const pa = (a) => {
   }
 };
 export {
-  ga as default
+  va as default
 };
 //# sourceMappingURL=plugin.js.map

@@ -27,6 +27,7 @@ export default function PictureViewer({
 
   const imageRef = useRef<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
   const drawingRef = useRef(false);
   const hasDrawnInStrokeRef = useRef(false);
   const lastPointRef = useRef<{ x: number; y: number } | null>(null);
@@ -54,6 +55,10 @@ export default function PictureViewer({
       setCurrentIndex(initialIndex);
       setDrawEnabled(false);
       setEraseEnabled(false);
+      // Scroll the overlay into view so user doesn't need to scroll
+      if (overlayRef.current) {
+        overlayRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   }, [initialIndex, isOpen]);
 
@@ -247,7 +252,7 @@ export default function PictureViewer({
   if (!isOpen || images.length === 0 || !currentImage) return null;
 
   return (
-    <div className="pv-overlay" role="dialog" aria-modal="true">
+    <div className="pv-overlay" ref={overlayRef} role="dialog" aria-modal="true">
       <div className="pv-dialog">
         <div className="pv-header">
           <p className="pv-title">{title} - Image {currentIndex + 1} / {images.length}</p>
